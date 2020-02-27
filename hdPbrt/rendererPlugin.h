@@ -4,13 +4,16 @@
 
 namespace pbrt
 {
-
 /// Plugin entry points (construction, destruction) for the pbrt render delegate.
-class HdPbrtPlugin final : public PXR_NS::HdRendererPlugin
+class HdPbrtRendererPlugin final : public PXR_NS::HdRendererPlugin
 {
 public:
-    HdPbrtPlugin()           = default;
-    ~HdPbrtPlugin() override = default;
+    HdPbrtRendererPlugin()           = default;
+    ~HdPbrtRendererPlugin() override = default;
+
+    /// Cannot copy.
+    HdPbrtRendererPlugin( const HdPbrtRendererPlugin& ) = delete;
+    HdPbrtRendererPlugin& operator=( const HdPbrtRendererPlugin& ) = delete;
 
     /// Create a new pbrt render delegate instance.
     HdRenderDelegate* CreateRenderDelegate() override;
@@ -23,10 +26,6 @@ public:
     {
         return true;
     }
-
-private:
-    HdPbrtPlugin( const HdPbrtPlugin& ) = delete;
-    HdPbrtPlugin& operator=( const HdPbrtPlugin& ) = delete;
 };
 
 } // namespace pbrt

@@ -9,15 +9,15 @@ PXR_NAMESPACE_USING_DIRECTIVE
 
 TF_REGISTRY_FUNCTION( TfType )
 {
-    HdRendererPluginRegistry::Define< HdPbrtPlugin >();
+    HdRendererPluginRegistry::Define< HdPbrtRendererPlugin >();
 }
 
-HdRenderDelegate* HdPbrtPlugin::CreateRenderDelegate()
+HdRenderDelegate* HdPbrtRendererPlugin::CreateRenderDelegate()
 {
-    return new HdPbrtDelegate();
+    return new HdPbrtRenderDelegate();
 }
 
-void HdPbrtPlugin::DeleteRenderDelegate( HdRenderDelegate* renderDelegate )
+void HdPbrtRendererPlugin::DeleteRenderDelegate( HdRenderDelegate* renderDelegate )
 {
     delete renderDelegate;
 }

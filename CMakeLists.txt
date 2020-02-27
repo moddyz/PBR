@@ -24,5 +24,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_compile_options(-g -O3 -Werror)
 
 # Build targets.
-add_subdirectory(pbrt)
+#add_subdirectory(pbrt)
 add_subdirectory(hdPbrt)

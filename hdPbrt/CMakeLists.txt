@@ -14,7 +14,7 @@ set_target_properties(${PACKAGE_NAME} PROPERTIES PREFIX "")
 target_include_directories(${PACKAGE_NAME} 
     PUBLIC 
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
-        ${LLVM_INCLUDES}
+        ${USD_INCLUDE_DIR}
 )
 target_link_libraries(${PACKAGE_NAME} 
     PUBLIC 
@@ -31,6 +31,12 @@ target_link_libraries(${PACKAGE_NAME}
         hf
         hd
         hdx
+)
+
+# PlugInfo.
+install(
+    FILES plugInfo.json
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/usd/${PACKAGE_NAME}/resources
 )
 
 install(TARGETS ${PACKAGE_NAME}
