@@ -3,14 +3,15 @@
 
 #include <pxr/imaging/hd/rendererPluginRegistry.h>
 
-namespace pbrt
-{
 PXR_NAMESPACE_USING_DIRECTIVE
 
 TF_REGISTRY_FUNCTION( TfType )
 {
-    HdRendererPluginRegistry::Define< HdPbrtRendererPlugin >();
+    HdRendererPluginRegistry::Define< pbrt::HdPbrtRendererPlugin >();
 }
+
+namespace pbrt
+{
 
 HdRenderDelegate* HdPbrtRendererPlugin::CreateRenderDelegate()
 {
@@ -20,6 +21,11 @@ HdRenderDelegate* HdPbrtRendererPlugin::CreateRenderDelegate()
 void HdPbrtRendererPlugin::DeleteRenderDelegate( HdRenderDelegate* renderDelegate )
 {
     delete renderDelegate;
+}
+
+bool HdPbrtRendererPlugin::IsSupported() const
+{
+    return true;
 }
 
 } // namespace pbrt

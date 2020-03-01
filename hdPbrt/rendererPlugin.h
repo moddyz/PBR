@@ -5,7 +5,7 @@
 namespace pbrt
 {
 /// Plugin entry points (construction, destruction) for the pbrt render delegate.
-class HdPbrtRendererPlugin final : public PXR_NS::HdRendererPlugin
+class HdPbrtRendererPlugin final : public pxr::HdRendererPlugin
 {
 public:
     HdPbrtRendererPlugin()           = default;
@@ -16,16 +16,13 @@ public:
     HdPbrtRendererPlugin& operator=( const HdPbrtRendererPlugin& ) = delete;
 
     /// Create a new pbrt render delegate instance.
-    PXR_NS::HdRenderDelegate* CreateRenderDelegate() override;
+    virtual pxr::HdRenderDelegate* CreateRenderDelegate() override;
 
     /// Delete a pbrt render delegate instance.
-    void DeleteRenderDelegate( PXR_NS::HdRenderDelegate* renderDelegate ) override;
+    virtual void DeleteRenderDelegate( pxr::HdRenderDelegate* renderDelegate ) override;
 
-    /// Is this plugin supported.
-    bool IsSupported() const override
-    {
-        return true;
-    }
+    /// Is this plugin supported?
+    virtual bool IsSupported() const override;
 };
 
 } // namespace pbrt

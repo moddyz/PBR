@@ -3,7 +3,7 @@
         {
             "Info": {
                 "Types": {
-                    "HdPbrtPlugin": {
+                    "pbrt::HdPbrtRendererPlugin": {
                         "bases": [
                             "HdRendererPlugin"
                         ],
@@ -12,7 +12,7 @@
                     }
                 }
             },
-            "LibraryPath": "../lib/hdPbrt.so",
+            "LibraryPath": "../../hdPbrt.so",
             "Name": "hdPbrt",
             "ResourcePath": "resources",
             "Root": "../",
@@ -20,4 +20,3 @@
         }
     ]
 }
-

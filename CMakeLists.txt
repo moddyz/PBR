@@ -21,12 +21,13 @@ find_package(TBB REQUIRED)
 find_package(Boost REQUIRED)
 find_package(PythonLibs 2.7 REQUIRED)
 
-# Build with C++14
-set(CMAKE_CXX_STANDARD 14)
+# Build with C++11
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Compiler options
-add_compile_options(-g -O3 -D_GLIBCXX_USE_CXX11_ABI=0)
+add_compile_options(-g -O3 -Wno-deprecated -Werror)
+string(APPEND CMAKE_SHARED_LINKER_FLAGS " -Wl,--no-undefined")
 
 # Build targets.
 #add_subdirectory(pbrt)

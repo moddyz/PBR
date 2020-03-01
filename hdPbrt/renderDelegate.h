@@ -3,13 +3,13 @@
 #include <hdPbrt/api.h>
 
 #include <pxr/imaging/hd/renderDelegate.h>
-#include <pxr/imaging/hd/renderThread.h>
+#include <pxr/imaging/hd/resourceRegistry.h>
 
 namespace pbrt
 {
 class HdPbrtRenderParam;
 
-class HdPbrtRenderDelegate final : public PXR_NS::HdRenderDelegate
+class HdPbrtRenderDelegate final : public pxr::HdRenderDelegate
 {
 public:
     HdPbrtRenderDelegate();
@@ -18,25 +18,70 @@ public:
     HdPbrtRenderDelegate( const HdPbrtRenderDelegate& ) = delete;
     HdPbrtRenderDelegate& operator=( const HdPbrtRenderDelegate& ) = delete;
 
-    virtual const PXR_NS::TfTokenVector& GetSupportedRprimTypes() const override;
-    virtual const PXR_NS::TfTokenVector& GetSupportedSprimTypes() const override;
-    virtual const PXR_NS::TfTokenVector& GetSupportedBprimTypes() const override;
+    /// Query supported hydra prim types.
+    virtual const pxr::TfTokenVector& GetSupportedRprimTypes() const override;
+    virtual const pxr::TfTokenVector& GetSupportedSprimTypes() const override;
+    virtual const pxr::TfTokenVector& GetSupportedBprimTypes() const override;
 
     /// Return this delegate's render param, which provides top-level scene state.
     ///   \return An instance of HdEmbreeRenderParam.
-    virtual PXR_NS::HdRenderParam* GetRenderParam() const override;
+    virtual pxr::HdRenderParam* GetRenderParam() const override;
 
     /// Returns a list of user-configurable render settings, available in the UI.
-    virtual PXR_NS::HdRenderSettingDescriptorList GetRenderSettingDescriptors() const override;
+    virtual pxr::HdRenderSettingDescriptorList GetRenderSettingDescriptors() const override;
+
+    /// Get the resource registry.
+    virtual pxr::HdResourceRegistrySharedPtr GetResourceRegistry() const override;
+
+    /// Create render pass.
+    virtual pxr::HdRenderPassSharedPtr CreateRenderPass( pxr::HdRenderIndex*           io_index,
+                                                            const pxr::HdRprimCollection& i_collection ) override;
+
+    /// Create an instancer.
+    virtual pxr::HdInstancer* CreateInstancer( pxr::HdSceneDelegate* i_delegate,
+                                                  const pxr::SdfPath&   i_id,
+                                                  const pxr::SdfPath&   i_instancerId ) override;
+
+    /// Destroy an instancer.
+    virtual void DestroyInstancer( pxr::HdInstancer* o_instancer ) override;
+
+    /// Create a new Rprim.
+    virtual pxr::HdRprim* CreateRprim( const pxr::TfToken& i_typeId,
+                                          const pxr::SdfPath& i_rprimId,
+                                          const pxr::SdfPath& i_instancerId ) override;
+
+    virtual void DestroyRprim( pxr::HdRprim* i_rprim ) override;
+
+    /// Create a new Sprim.
+    virtual pxr::HdSprim* CreateSprim( const pxr::TfToken& i_typeId, const pxr::SdfPath& i_sprimId ) override;
+
+    /// TODO.
+    virtual pxr::HdSprim* CreateFallbackSprim( const pxr::TfToken& i_typeId ) override;
+
+    /// Destroy an existing Sprim.
+    virtual void DestroySprim( pxr::HdSprim* i_sprim ) override;
+
+    /// Create a new buffer prim.
+    virtual pxr::HdBprim* CreateBprim( const pxr::TfToken& i_typeId, const pxr::SdfPath& i_bprimId ) override;
+
+    /// Create a fallback buffer prim.
+    virtual pxr::HdBprim* CreateFallbackBprim( const pxr::TfToken& i_typeId ) override;
+
+    /// Destroy an existing Bprim.
+    virtual void DestroyBprim( pxr::HdBprim* bprim ) override;
+
+    /// Do work.
+    virtual void CommitResources( pxr::HdChangeTracker* tracker ) override;
 
 private:
-    static const PXR_NS::TfTokenVector s_supportedRprimTypes;
-    static const PXR_NS::TfTokenVector s_supportedSprimTypes;
-    static const PXR_NS::TfTokenVector s_supportedBprimTypes;
+    static const pxr::TfTokenVector s_supportedRprimTypes;
+    static const pxr::TfTokenVector s_supportedSprimTypes;
+    static const pxr::TfTokenVector s_supportedBprimTypes;
 
     std::unique_ptr< HdPbrtRenderParam >  m_renderParam;
-    PXR_NS::HdRenderSettingDescriptorList m_settingDescriptors;
-    PXR_NS::HdRenderThread                m_renderThread;
+    pxr::HdRenderSettingDescriptorList m_settingDescriptors;
+
+    pxr::HdResourceRegistrySharedPtr m_resourceRegistry;
 };
 
 } // namespace pbrt

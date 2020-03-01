@@ -1,9 +1,9 @@
 set(PACKAGE_NAME "hdPbrt")
 
 # Public headers
-file(GLOB PUBLIC_HEADERS *.h)
+file(GLOB HEADER_FILES *.h)
 file(
-    COPY ${PUBLIC_HEADERS} 
+    COPY ${HEADER_FILES} 
     DESTINATION ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}
 )
 
@@ -12,6 +12,7 @@ file(GLOB SRC_FILES *.cpp)
 add_library(${PACKAGE_NAME} SHARED ${SRC_FILES})
 set_target_properties(${PACKAGE_NAME} PROPERTIES PREFIX "")
 target_include_directories(${PACKAGE_NAME} 
+    SYSTEM
     PRIVATE
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
         ${USD_INCLUDE_DIR}
@@ -19,8 +20,15 @@ target_include_directories(${PACKAGE_NAME}
         ${Boost_INCLUDE_DIR}
         ${TBB_INCLUDE_DIRS}
 )
+target_link_libraries(${PACKAGE_NAME}
+    PRIVATE
+        -L${USD_LIBRARY_DIR}
+)
 target_link_libraries(${PACKAGE_NAME} 
-    PUBLIC 
+    PRIVATE 
+        ${PYTHON_LIBRARIES}
+        ${Boost_LIBRARIES}
+        ${TBB_tbb_LIBRARY}
         ar
         arch
         sdf
@@ -43,14 +51,7 @@ install(
 )
 
 install(TARGETS ${PACKAGE_NAME}
-    EXPORT ${PACKAGE_NAME}-targets
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
 )
 
-install(EXPORT ${PACKAGE_NAME}-targets
-    FILE
-        ${PACKAGE_NAME}Targets.cmake
-    DESTINATION
-        ${CMAKE_INSTALL_PREFIX}/cmake/${PACKAGE_NAME}
-)
