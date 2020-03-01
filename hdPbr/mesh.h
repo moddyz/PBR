@@ -2,20 +2,20 @@
 
 #include <pxr/imaging/hd/mesh.h>
 
-namespace pbrt
+namespace pbr
 {
-/// \class HdPbrtMesh
+/// \class HdPbrMesh
 ///
 /// Representation of a Hydra mesh rprim.
-class HdPbrtMesh final : public pxr::HdMesh
+class HdPbrMesh final : public pxr::HdMesh
 {
 public:
-    HdPbrtMesh( const pxr::SdfPath& id, const pxr::SdfPath& instancerId = pxr::SdfPath() );
-    virtual ~HdPbrtMesh() override = default;
+    HdPbrMesh( const pxr::SdfPath& id, const pxr::SdfPath& instancerId = pxr::SdfPath() );
+    virtual ~HdPbrMesh() override = default;
 
     /// This class does not support copying.
-    HdPbrtMesh( const HdPbrtMesh& ) = delete;
-    HdPbrtMesh& operator=( const HdPbrtMesh& ) = delete;
+    HdPbrMesh( const HdPbrMesh& ) = delete;
+    HdPbrMesh& operator=( const HdPbrMesh& ) = delete;
 
     /// The initial dirty bits
     virtual pxr::HdDirtyBits GetInitialDirtyBitsMask() const override;
@@ -35,4 +35,4 @@ protected:
     pxr::HdDirtyBits _PropagateDirtyBits( pxr::HdDirtyBits i_dirtyBits ) const override;
 };
 
-} // namespace pbrt
+} // namespace pbr

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 # Project Name
 project(
-    Pbrt VERSION 0.0
+    Pbr VERSION 0.0
     DESCRIPTION "Physically based rendering."
     LANGUAGES CXX
 )
@@ -30,5 +30,5 @@ add_compile_options(-g -O3 -Wno-deprecated -Werror)
 string(APPEND CMAKE_SHARED_LINKER_FLAGS " -Wl,--no-undefined")
 
 # Build targets.
-#add_subdirectory(pbrt)
-add_subdirectory(hdPbrt)
+#add_subdirectory(pbr)
+add_subdirectory(hdPbr)

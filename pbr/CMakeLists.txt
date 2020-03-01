@@ -1,4 +1,4 @@
-set(PACKAGE_NAME "pbrt")
+set(PACKAGE_NAME "pbr")
 
 # Public headers
 file(GLOB PUBLIC_HEADERS *.h)
@@ -15,26 +15,10 @@ install(
 file(GLOB SRC_FILES *.cpp)
 add_library(${PACKAGE_NAME} SHARED ${SRC_FILES})
 target_include_directories(${PACKAGE_NAME} 
-    PUBLIC 
+    INTERFACE 
         $<INSTALL_INTERFACE:/include>
+    PRIVATE
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
-        ${LLVM_INCLUDES}
-)
-target_link_libraries(${PACKAGE_NAME} 
-    PUBLIC 
-        ar
-        arch
-        sdf
-        trace
-        plug
-        tf
-        vt
-        gf
-        glf
-        work
-        hf
-        hd
-        hdx
 )
 
 install(TARGETS ${PACKAGE_NAME}

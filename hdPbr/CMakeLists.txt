@@ -1,4 +1,4 @@
-set(PACKAGE_NAME "hdPbrt")
+set(PACKAGE_NAME "hdPbr")
 
 # Public headers
 file(GLOB HEADER_FILES *.h)

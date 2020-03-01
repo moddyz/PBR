@@ -3,17 +3,17 @@
 #include <pxr/pxr.h>
 #include <pxr/imaging/hd/renderDelegate.h>
 
-namespace pbrt
+namespace pbr
 {
-/// \class HdPbrtRenderParam
+/// \class HdPbrRenderParam
 ///
 /// Object created by the render delegate to transport top-level scene state
 /// to each prim during Sync().
-class HdPbrtRenderParam final : public pxr::HdRenderParam
+class HdPbrRenderParam final : public pxr::HdRenderParam
 {
 public:
-    HdPbrtRenderParam();
-    virtual ~HdPbrtRenderParam() = default;
+    HdPbrRenderParam();
+    virtual ~HdPbrRenderParam() = default;
 };
 
-} // namespace pbrt
+} // namespace pbr

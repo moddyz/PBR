@@ -1,22 +1,22 @@
 #pragma once
 
-#include <hdPbrt/api.h>
+#include <hdPbr/api.h>
 
 #include <pxr/imaging/hd/renderDelegate.h>
 #include <pxr/imaging/hd/resourceRegistry.h>
 
-namespace pbrt
+namespace pbr
 {
-class HdPbrtRenderParam;
+class HdPbrRenderParam;
 
-class HdPbrtRenderDelegate final : public pxr::HdRenderDelegate
+class HdPbrRenderDelegate final : public pxr::HdRenderDelegate
 {
 public:
-    HdPbrtRenderDelegate();
-    ~HdPbrtRenderDelegate() override;
+    HdPbrRenderDelegate();
+    ~HdPbrRenderDelegate() override;
 
-    HdPbrtRenderDelegate( const HdPbrtRenderDelegate& ) = delete;
-    HdPbrtRenderDelegate& operator=( const HdPbrtRenderDelegate& ) = delete;
+    HdPbrRenderDelegate( const HdPbrRenderDelegate& ) = delete;
+    HdPbrRenderDelegate& operator=( const HdPbrRenderDelegate& ) = delete;
 
     /// Query supported hydra prim types.
     virtual const pxr::TfTokenVector& GetSupportedRprimTypes() const override;
@@ -78,10 +78,10 @@ private:
     static const pxr::TfTokenVector s_supportedSprimTypes;
     static const pxr::TfTokenVector s_supportedBprimTypes;
 
-    std::unique_ptr< HdPbrtRenderParam >  m_renderParam;
+    std::unique_ptr< HdPbrRenderParam >  m_renderParam;
     pxr::HdRenderSettingDescriptorList m_settingDescriptors;
 
     pxr::HdResourceRegistrySharedPtr m_resourceRegistry;
 };
 
-} // namespace pbrt
+} // namespace pbr

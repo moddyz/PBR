@@ -3,17 +3,17 @@
         {
             "Info": {
                 "Types": {
-                    "pbrt::HdPbrtRendererPlugin": {
+                    "pbr::HdPbrRendererPlugin": {
                         "bases": [
                             "HdRendererPlugin"
                         ],
-                        "displayName": "Pbrt",
+                        "displayName": "Pbr",
                         "priority": 99
                     }
                 }
             },
-            "LibraryPath": "../../hdPbrt.so",
-            "Name": "hdPbrt",
+            "LibraryPath": "../../hdPbr.so",
+            "Name": "hdPbr",
             "ResourcePath": "resources",
             "Root": "../",
             "Type": "library"

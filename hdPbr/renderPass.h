@@ -2,16 +2,16 @@
 
 #include <pxr/imaging/hd/renderPass.h>
 
-namespace pbrt
+namespace pbr
 {
-/// \class HdPbrtRenderPass
+/// \class HdPbrRenderPass
 ///
 /// Represents a single render iteration.
-class HdPbrtRenderPass final : public pxr::HdRenderPass
+class HdPbrRenderPass final : public pxr::HdRenderPass
 {
 public:
-    HdPbrtRenderPass( pxr::HdRenderIndex* io_index, const pxr::HdRprimCollection& i_collection );
-    virtual ~HdPbrtRenderPass();
+    HdPbrRenderPass( pxr::HdRenderIndex* io_index, const pxr::HdRprimCollection& i_collection );
+    virtual ~HdPbrRenderPass();
 
 protected:
     /// Draw the scene with the bound renderpass state.
@@ -22,4 +22,4 @@ protected:
                            const pxr::TfTokenVector&              i_renderTags ) override;
 };
 
-} // namespace pbrt
+} // namespace pbr
