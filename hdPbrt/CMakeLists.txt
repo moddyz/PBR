@@ -12,9 +12,12 @@ file(GLOB SRC_FILES *.cpp)
 add_library(${PACKAGE_NAME} SHARED ${SRC_FILES})
 set_target_properties(${PACKAGE_NAME} PROPERTIES PREFIX "")
 target_include_directories(${PACKAGE_NAME} 
-    PUBLIC 
+    PRIVATE
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
         ${USD_INCLUDE_DIR}
+        ${PYTHON_INCLUDE_DIR}
+        ${Boost_INCLUDE_DIR}
+        ${TBB_INCLUDE_DIRS}
 )
 target_link_libraries(${PACKAGE_NAME} 
     PUBLIC 

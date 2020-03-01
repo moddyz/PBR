@@ -16,10 +16,10 @@ public:
     HdPbrtRendererPlugin& operator=( const HdPbrtRendererPlugin& ) = delete;
 
     /// Create a new pbrt render delegate instance.
-    HdRenderDelegate* CreateRenderDelegate() override;
+    PXR_NS::HdRenderDelegate* CreateRenderDelegate() override;
 
     /// Delete a pbrt render delegate instance.
-    void DeleteRenderDelegate( HdRenderDelegate* renderDelegate ) override;
+    void DeleteRenderDelegate( PXR_NS::HdRenderDelegate* renderDelegate ) override;
 
     /// Is this plugin supported.
     bool IsSupported() const override

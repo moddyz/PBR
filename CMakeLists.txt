@@ -15,13 +15,18 @@ endif()
 # Find modules.
 list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake/modules")
 find_package(USD REQUIRED)
+find_package(OpenSubdiv REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(TBB REQUIRED)
+find_package(Boost REQUIRED)
+find_package(PythonLibs 2.7 REQUIRED)
 
 # Build with C++14
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Compiler options
-add_compile_options(-g -O3 -Werror)
+add_compile_options(-g -O3 -D_GLIBCXX_USE_CXX11_ABI=0)
 
 # Build targets.
 #add_subdirectory(pbrt)

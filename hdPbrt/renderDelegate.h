@@ -9,7 +9,7 @@ namespace pbrt
 {
 class HdPbrtRenderParam;
 
-class HdPbrtRenderDelegate final : public HdRenderDelegate
+class HdPbrtRenderDelegate final : public PXR_NS::HdRenderDelegate
 {
 public:
     HdPbrtRenderDelegate();
@@ -18,27 +18,25 @@ public:
     HdPbrtRenderDelegate( const HdPbrtRenderDelegate& ) = delete;
     HdPbrtRenderDelegate& operator=( const HdPbrtRenderDelegate& ) = delete;
 
-    const TfTokenVector& GetSupportedRprimTypes() const override;
-    const TfTokenVector& GetSupportedSprimTypes() const override;
-    const TfTokenVector& GetSupportedBprimTypes() const override;
+    virtual const PXR_NS::TfTokenVector& GetSupportedRprimTypes() const override;
+    virtual const PXR_NS::TfTokenVector& GetSupportedSprimTypes() const override;
+    virtual const PXR_NS::TfTokenVector& GetSupportedBprimTypes() const override;
 
     /// Return this delegate's render param, which provides top-level scene state.
     ///   \return An instance of HdEmbreeRenderParam.
-    virtual HdRenderParam* GetRenderParam() const override;
+    virtual PXR_NS::HdRenderParam* GetRenderParam() const override;
 
     /// Returns a list of user-configurable render settings, available in the UI.
-    virtual HdRenderSettingDescriptorList GetRenderSettingDescriptors() const override;
-
-
+    virtual PXR_NS::HdRenderSettingDescriptorList GetRenderSettingDescriptors() const override;
 
 private:
-    static const TfTokenVector s_supportedRprimTypes;
-    static const TfTokenVector s_supportedSprimTypes;
-    static const TfTokenVector s_supportedBprimTypes;
+    static const PXR_NS::TfTokenVector s_supportedRprimTypes;
+    static const PXR_NS::TfTokenVector s_supportedSprimTypes;
+    static const PXR_NS::TfTokenVector s_supportedBprimTypes;
 
     std::unique_ptr< HdPbrtRenderParam >  m_renderParam;
     PXR_NS::HdRenderSettingDescriptorList m_settingDescriptors;
-    HdRenderThread                        m_renderThread;
+    PXR_NS::HdRenderThread                m_renderThread;
 };
 
 } // namespace pbrt

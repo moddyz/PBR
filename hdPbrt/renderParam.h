@@ -9,7 +9,7 @@ namespace pbrt
 ///
 /// Object created by the render delegate to transport top-level scene state
 /// to each prim during Sync().
-class HdPbrtRenderParam final : public HdRenderParam
+class HdPbrtRenderParam final : public PXR_NS::HdRenderParam
 {
 public:
     HdPbrtRenderParam();

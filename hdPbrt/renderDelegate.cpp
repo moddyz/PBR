@@ -1,4 +1,7 @@
 #include <hdPbrt/renderDelegate.h>
+#include <hdPbrt/renderParam.h>
+
+PXR_NAMESPACE_USING_DIRECTIVE
 
 namespace pbrt
 {
