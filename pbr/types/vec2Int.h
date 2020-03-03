@@ -9,6 +9,16 @@ public:
     {
     }
 
+    Vec2Int& operator[]( size_t i_index )
+    {
+        return m_elements[ i_index ];
+    }
+
+    const Vec2Int& operator[]( size_t i_index ) const
+    {
+        return m_elements[ i_index ];
+    }
+
     Vec2Int operator+( const Vec2Int& i_vector )
     {
         return Vec2Int( m_elements[ 0 ] + i_vector.m_elements[ 0 ], m_elements[ 1 ] + i_vector.m_elements[ 1 ] );

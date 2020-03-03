@@ -12,6 +12,16 @@ public:
     {
     }
 
+    Vec4Float& operator[]( size_t i_index )
+    {
+        return m_elements[ i_index ];
+    }
+
+    const Vec4Float& operator[]( size_t i_index ) const
+    {
+        return m_elements[ i_index ];
+    }
+
     Vec4Float operator+( const Vec4Float& i_vector )
     {
         return Vec4Float( m_elements[ 0 ] + i_vector.m_elements[ 0 ],

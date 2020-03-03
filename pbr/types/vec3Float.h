@@ -9,6 +9,16 @@ public:
     {
     }
 
+    Vec3Float& operator[]( size_t i_index )
+    {
+        return m_elements[ i_index ];
+    }
+
+    const Vec3Float& operator[]( size_t i_index ) const
+    {
+        return m_elements[ i_index ];
+    }
+
     Vec3Float operator+( const Vec3Float& i_vector )
     {
         return Vec3Float( m_elements[ 0 ] + i_vector.m_elements[ 0 ],

@@ -9,6 +9,16 @@ public:
     {
     }
 
+    Vec2Float& operator[]( size_t i_index )
+    {
+        return m_elements[ i_index ];
+    }
+
+    const Vec2Float& operator[]( size_t i_index ) const
+    {
+        return m_elements[ i_index ];
+    }
+
     Vec2Float operator+( const Vec2Float& i_vector )
     {
         return Vec2Float( m_elements[ 0 ] + i_vector.m_elements[ 0 ], m_elements[ 1 ] + i_vector.m_elements[ 1 ] );

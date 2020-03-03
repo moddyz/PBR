@@ -8,6 +8,8 @@ __all__ = [
     "GenNamespaceEnd",
     "GenClassPublicQualifier",
     "GenClassPrivateQualifier",
+    "GenIndexArg",
+    "GenConstQualifier",
 ]
 
 
@@ -66,3 +68,23 @@ def GenClassPrivateQualifier():
         str: code.
     """
     return "private:\n"
+
+
+def GenIndexArg():
+    """
+    Generate index argument name.  Used in operator[] overload.
+
+    Returns:
+        str: code.
+    """
+    return "i_index"
+
+
+def GenConstQualifier():
+    """
+    Generate the const qualifier.
+
+    Returns:
+        str: code.
+    """
+    return "const"

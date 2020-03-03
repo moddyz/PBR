@@ -21,6 +21,8 @@ from cppLanguage import (
     GenNamespaceEnd,
     GenClassPublicQualifier,
     GenClassPrivateQualifier,
+    GenIndexArg,
+    GenConstQualifier,
 )
 
 VECTOR_DIMS = [2, 3, 4]
@@ -268,6 +270,31 @@ def GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator):
     code += "}\n"
     return code
 
+def GenVectorClassElementAccessOperator(vectorDim, scalarType, constQualified=False):
+    """
+    Generate square brackets [] element access operator overload method.
+
+    Args:
+        vectorDim (int): number of elements in the vector.
+        scalarType (str): scalar type of each element.
+        constQualified (bool): generate the const qualified variant?
+
+    Returns:
+        str: code.
+    """
+    code = "{constQualifier} {className}& operator[]( size_t {indexArg} ) {constQualifier}\n".format(
+        className=GenVectorClassName(vectorDim, scalarType),
+        indexArg=GenIndexArg(),
+        constQualifier=GenConstQualifier() if constQualified else ""
+    )
+    code += "{\n"
+    code += "return {elementMember}[{indexArg}];\n".format(
+        elementMember=GenVectorClassElementMember(),
+        indexArg=GenIndexArg(),
+    )
+    code += "}\n"
+    return code
+
 
 def GenVectorClassMembers(vectorDim, scalarType):
     """
@@ -306,8 +333,18 @@ def GenVectorClass(vectorDim, scalarType):
         str: code.
     """
     code = GenVectorClassBegin(vectorDim, scalarType)
+
+    #
+    # Public.
+    #
+
     code += GenClassPublicQualifier()
     code += GenVectorClassConstructor(vectorDim, scalarType)
+    code += "\n"
+
+    code += GenVectorClassElementAccessOperator(vectorDim, scalarType, constQualified=False)
+    code += "\n"
+    code += GenVectorClassElementAccessOperator(vectorDim, scalarType, constQualified=True)
     code += "\n"
 
     for operator in ARITHMETIC_OPERATORS:
@@ -316,9 +353,14 @@ def GenVectorClass(vectorDim, scalarType):
         code += GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator)
         code += "\n"
 
+    #
+    # Private.
+    #
+
     code += GenClassPrivateQualifier()
     code += GenVectorClassMembers(vectorDim, scalarType)
     code += GenVectorClassEnd()
+
     return code
 
 
