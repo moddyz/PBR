@@ -67,6 +67,11 @@ public:
         return *this;
     }
 
+    bool HasNans() const
+    {
+        std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] );
+    }
+
 private:
     float m_elements[ 2 ] = {0.0f, 0.0f};
 };

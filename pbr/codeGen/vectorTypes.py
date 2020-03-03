@@ -69,14 +69,20 @@ def GenVectorClassName(vectorDim, scalarType):
     return "Vec{vectorDim}{scalarType}".format(vectorDim=vectorDim, scalarType=scalarType.title())
 
 
-def GenVectorClassElementMember():
+def GenVectorClassElementMember(index=None):
     """
     Get the name of the vector class element member variable.
+
+    Keyword Args:
+        index (int): optional index into elements.
 
     Returns:
         str: argument name of a vector element argument.
     """
-    return "m_elements"
+    if index is not None:
+        return "m_elements[{index}]".format(index=index)
+    else:
+        return "m_elements"
 
 
 def GenVectorClassElementArg(index):
@@ -187,9 +193,9 @@ def GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index):
     if operator in ['*', '/']:
         rhs = GenScalarArg()
     else:
-        rhs = "{argName}.{elementMember}[{index}]".format(
+        rhs = "{argName}.{elementMember}".format(
             argName=GetVectorArg(),
-            elementMember=GenVectorClassElementMember(),
+            elementMember=GenVectorClassElementMember(index),
             index=index,
         )
     return rhs
@@ -223,9 +229,8 @@ def GenVectorClassArithmeticOperator(vectorDim, scalarType, operator):
     )
     for index in range(vectorDim):
         rhs = GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index)
-        code += "{elementMember}[{index}] {operator} {rhs}".format(
-            elementMember=GenVectorClassElementMember(),
-            index=index,
+        code += "{elementMember} {operator} {rhs}".format(
+            elementMember=GenVectorClassElementMember(index),
             operator=operator,
             rhs=rhs,
         )
@@ -260,9 +265,8 @@ def GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator):
 
     for index in range(vectorDim):
         rhs = GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index)
-        code += "{elementMember}[{index}] {operator}= {rhs};".format(
-            elementMember=GenVectorClassElementMember(),
-            index=index,
+        code += "{elementMember} {operator}= {rhs};".format(
+            elementMember=GenVectorClassElementMember(index),
             operator=operator,
             rhs=rhs
         )
@@ -288,12 +292,38 @@ def GenVectorClassElementAccessOperator(vectorDim, scalarType, constQualified=Fa
         constQualifier=GenConstQualifier() if constQualified else ""
     )
     code += "{\n"
-    code += "return {elementMember}[{indexArg}];\n".format(
-        elementMember=GenVectorClassElementMember(),
-        indexArg=GenIndexArg(),
+    code += "return {elementMember};\n".format(
+        elementMember=GenVectorClassElementMember(GenIndexArg()),
     )
     code += "}\n"
     return code
+
+
+def GenVectorClassHasNans(vectorDim, scalarType):
+    """
+    Generate HasNans method.
+
+    Args:
+        vectorDim (int): number of elements in the vector.
+        scalarType (str): scalar type of each element.
+
+    Returns:
+        str: code.
+    """
+    code = "bool HasNans() {constQualifier}\n".format(
+        constQualifier=GenConstQualifier()
+    )
+    code += "{\n"
+    for index in range(vectorDim):
+        code += "std::isnan({elementMember})".format(
+            elementMember=GenVectorClassElementMember(index)
+        )
+        if index < vectorDim - 1:
+            code += " || "
+    code += ";\n"
+    code += "}\n"
+    return code
+
 
 
 def GenVectorClassMembers(vectorDim, scalarType):
@@ -352,6 +382,9 @@ def GenVectorClass(vectorDim, scalarType):
         code += "\n"
         code += GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator)
         code += "\n"
+
+    code += GenVectorClassHasNans(vectorDim, scalarType)
+    code += "\n"
 
     #
     # Private.
