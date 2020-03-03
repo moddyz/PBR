@@ -6,6 +6,8 @@ pbr_library(${PACKAGE_NAME}
         ${CPPFILES}
     HEADERS
         ${HEADERS}
+    LIBRARIES
+        dl
 )
 
 add_subdirectory(tests)
