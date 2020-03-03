@@ -2,13 +2,13 @@
 
 /* clang-format off */
 #ifdef PBR_DEBUG
-#define ASSERT(expr)            \
+#define PBR_ASSERT(expr)        \
     if ( expr )                 \
     {                           \
         pbr::AssertHandler();   \
     }
 #else
-#define ASSERT(expr) void()
+#define PBR_ASSERT(expr) void()
 #endif
 /* clang-format on */
 

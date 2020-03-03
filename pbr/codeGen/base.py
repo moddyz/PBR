@@ -113,7 +113,7 @@ def GenIncludes(includePaths):
 
 
 def GenAssert(expression):
-    return "ASSERT({expression});\n".format(expression=expression)
+    return "PBR_ASSERT({expression});\n".format(expression=expression)
 
 
 

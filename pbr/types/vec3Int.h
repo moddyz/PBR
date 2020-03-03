@@ -11,7 +11,7 @@ public:
     explicit Vec3Int( const int& i_element0, const int& i_element1, const int& i_element2 )
         : m_elements{i_element0, i_element1, i_element2}
     {
-        ASSERT( !HasNans() );
+        PBR_ASSERT( !HasNans() );
     }
 
     int& operator[]( size_t i_index )

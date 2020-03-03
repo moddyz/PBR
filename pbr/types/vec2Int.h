@@ -11,7 +11,7 @@ public:
     explicit Vec2Int( const int& i_element0, const int& i_element1 )
         : m_elements{i_element0, i_element1}
     {
-        ASSERT( !HasNans() );
+        PBR_ASSERT( !HasNans() );
     }
 
     int& operator[]( size_t i_index )
