@@ -8,10 +8,10 @@
 
 /* clang-format off */
 #ifdef PBR_DEBUG
-#define PBR_ASSERT(expr)           \
-    if ( !expr )                   \
-    {                              \
-        pbr::AssertHandler(#expr); \
+#define PBR_ASSERT( expr )           \
+    if ( !expr )                     \
+    {                                \
+        pbr::AssertHandler( #expr ); \
     }
 #else
 #define PBR_ASSERT(expr) void()
