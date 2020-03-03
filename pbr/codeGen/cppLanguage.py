@@ -6,6 +6,8 @@ __all__ = [
     "GenPragmaOnce",
     "GenNamespaceBegin",
     "GenNamespaceEnd",
+    "GenClassPublicQualifier",
+    "GenClassPrivateQualifier",
 ]
 
 
@@ -46,3 +48,21 @@ def GenNamespaceEnd(namespace):
     return "} // namespace %s\n" % (namespace)
 
 
+def GenClassPublicQualifier():
+    """
+    Generate class public qualifier.
+
+    Returns:
+        str: code.
+    """
+    return "public:\n"
+
+
+def GenClassPrivateQualifier():
+    """
+    Generate class private qualifier.
+
+    Returns:
+        str: code.
+    """
+    return "private:\n"

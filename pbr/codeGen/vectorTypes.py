@@ -19,6 +19,8 @@ from cppLanguage import (
     GenPragmaOnce,
     GenNamespaceBegin,
     GenNamespaceEnd,
+    GenClassPublicQualifier,
+    GenClassPrivateQualifier,
 )
 
 VECTOR_DIMS = [2, 3, 4]
@@ -36,26 +38,6 @@ def GetVectorClassHeaderFileName(vectorDim, scalarType):
         str: source file name.
     """
     return "vec{vectorDim}{scalarType}.h".format(vectorDim=vectorDim, scalarType=scalarType.title())
-
-
-def GenClassPublicQualifier():
-    """
-    Generate class public qualifier.
-
-    Returns:
-        str: code.
-    """
-    return "public:\n"
-
-
-def GenClassPrivateQualifier():
-    """
-    Generate class private qualifier.
-
-    Returns:
-        str: code.
-    """
-    return "private:\n"
 
 
 def GenScalarDefaultValue(scalarType):
