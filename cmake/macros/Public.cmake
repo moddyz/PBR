@@ -37,10 +37,10 @@ function(pbr_library PACKAGE_NAME)
     add_library(${PACKAGE_TARGET} SHARED ${args_CPPFILES})
 
     target_include_directories(${PACKAGE_TARGET} 
-        INTERFACE 
+        PUBLIC 
             $<INSTALL_INTERFACE:/include>
-        PRIVATE
             $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
+        PRIVATE
             ${args_INCLUDE_PATHS}
     )
 
@@ -76,8 +76,12 @@ function(pbr_program PROGRAM_NAME)
         ${ARGN}
     )
 
+    add_executable(${PROGRAM_NAME} ${args_CPPFILES})
+
     target_include_directories(${PROGRAM_NAME}
-        PRIVATE ${CMAKE_BINARY_DIR}/include ${args_INCLUDE_PATHS}
+        PRIVATE
+            $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
+            ${args_INCLUDE_PATHS}
     )
 
     target_link_libraries(

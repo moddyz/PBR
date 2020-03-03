@@ -7,3 +7,5 @@ pbr_library(${PACKAGE_NAME}
     HEADERS
         ${HEADERS}
 )
+
+add_subdirectory(tests)
