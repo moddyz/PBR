@@ -47,11 +47,11 @@ target_link_libraries(${PACKAGE_NAME}
 # PlugInfo.
 install(
     FILES plugInfo.json
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/usd/${PACKAGE_NAME}/resources
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/plg/usd/${PACKAGE_NAME}/resources
 )
 
 install(TARGETS ${PACKAGE_NAME}
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION plg
+    ARCHIVE DESTINATION plg
 )
 
