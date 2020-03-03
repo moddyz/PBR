@@ -1,20 +1,21 @@
 #pragma once
+#include <cmath>
 namespace pbr
 {
 class Vec2Int
 {
 public:
     explicit Vec2Int( const int& i_element0, const int& i_element1 )
-        : m_elements( {i_element0, i_element1} )
+        : m_elements{i_element0, i_element1}
     {
     }
 
-    Vec2Int& operator[]( size_t i_index )
+    int& operator[]( size_t i_index )
     {
         return m_elements[ i_index ];
     }
 
-    const Vec2Int& operator[]( size_t i_index ) const
+    const int& operator[]( size_t i_index ) const
     {
         return m_elements[ i_index ];
     }

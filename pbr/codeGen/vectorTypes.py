@@ -23,6 +23,8 @@ from cppLanguage import (
     GenClassPrivateQualifier,
     GenIndexArg,
     GenConstQualifier,
+    GenInclude,
+    GenIncludes,
 )
 
 VECTOR_DIMS = [2, 3, 4]
@@ -163,7 +165,7 @@ def GenVectorClassConstructor(vectorDim, scalarType):
 
     # Initializer list.
     code += ": "
-    code += "{elementMember}(".format(
+    code += "{elementMember}".format(
         elementMember=GenVectorClassElementMember(),
     )
     code += "{"
@@ -171,8 +173,7 @@ def GenVectorClassConstructor(vectorDim, scalarType):
         code += GenVectorClassElementArg(index)
         if index < vectorDim - 1:
             code += ","
-    code += "}"
-    code += ")\n"
+    code += "}\n"
 
     code += "{\n"
     code += "}\n"
@@ -286,8 +287,8 @@ def GenVectorClassElementAccessOperator(vectorDim, scalarType, constQualified=Fa
     Returns:
         str: code.
     """
-    code = "{constQualifier} {className}& operator[]( size_t {indexArg} ) {constQualifier}\n".format(
-        className=GenVectorClassName(vectorDim, scalarType),
+    code = "{constQualifier} {scalarType}& operator[]( size_t {indexArg} ) {constQualifier}\n".format(
+        scalarType=scalarType,
         indexArg=GenIndexArg(),
         constQualifier=GenConstQualifier() if constQualified else ""
     )
@@ -397,7 +398,7 @@ def GenVectorClass(vectorDim, scalarType):
     return code
 
 
-def GenVectorType(vectorDim, scalarType):
+def GenVectorTypeHeader(vectorDim, scalarType):
     """
     Generate a single vector type as a header source.
 
@@ -409,9 +410,15 @@ def GenVectorType(vectorDim, scalarType):
         str: file name of generated vector class.
     """
     code = GenPragmaOnce()
+
+    # Includes
+    code += GenInclude("cmath")
+
+    # Body
     code += GenNamespaceBegin(NAMESPACE)
     code += GenVectorClass(vectorDim, scalarType)
     code += GenNamespaceEnd(NAMESPACE)
+
     return code
 
 
@@ -425,17 +432,28 @@ def GenVectorTypes(directoryPrefix):
     Returns:
         list: paths to generated source files.
     """
+    # Generate vector class headers.
     filePaths = []
+    fileNames = []
     for vectorDim in VECTOR_DIMS:
         for scalarType in SCALAR_TYPES:
-            code = GenVectorType(vectorDim, scalarType)
+            code = GenVectorTypeHeader(vectorDim, scalarType)
             fileName = GetVectorClassHeaderFileName(vectorDim, scalarType)
-            filePath = os.path.join(directoryPrefix, fileName)
+            filePath = os.path.join(os.path.abspath(directoryPrefix), fileName)
 
             PrintInfo("Generated {!r}:\n{}".format(filePath, code))
             with open(filePath, 'w') as f:
                 f.write(code)
 
             filePaths.append(filePath)
+            fileNames.append(fileName)
+
+    # Generate aggregation cpp source.
+    includePaths = [os.path.join(NAMESPACE, directoryPrefix, fileName) for fileName in fileNames]
+    code = GenIncludes(includePaths)
+    aggregateCppPath = os.path.join(directoryPrefix, "vectorTypes.cpp")
+    with open(aggregateCppPath, 'w') as f:
+        f.write(code)
+    filePaths.append(aggregateCppPath)
 
     return filePaths

@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 namespace pbr
 {
 class Vec4Float
@@ -8,16 +9,16 @@ public:
                         const float& i_element1,
                         const float& i_element2,
                         const float& i_element3 )
-        : m_elements( {i_element0, i_element1, i_element2, i_element3} )
+        : m_elements{i_element0, i_element1, i_element2, i_element3}
     {
     }
 
-    Vec4Float& operator[]( size_t i_index )
+    float& operator[]( size_t i_index )
     {
         return m_elements[ i_index ];
     }
 
-    const Vec4Float& operator[]( size_t i_index ) const
+    const float& operator[]( size_t i_index ) const
     {
         return m_elements[ i_index ];
     }

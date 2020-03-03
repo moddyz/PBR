@@ -10,6 +10,8 @@ __all__ = [
     "GenClassPrivateQualifier",
     "GenIndexArg",
     "GenConstQualifier",
+    "GenInclude",
+    "GenIncludes",
 ]
 
 
@@ -88,3 +90,24 @@ def GenConstQualifier():
         str: code.
     """
     return "const"
+
+
+def GenInclude(includePath):
+    """
+    Returns:
+        str: an include statement.
+    """
+    return "#include <{includePath}>\n".format(includePath=includePath)
+
+
+def GenIncludes(includePaths):
+    """
+    Returns:
+        str: multiple include statements.
+    """
+    code = ""
+    for includePath in includePaths:
+        code += GenInclude(includePath)
+    return code
+
+

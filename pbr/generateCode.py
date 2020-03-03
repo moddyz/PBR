@@ -19,7 +19,7 @@ def GenTypes():
     Returns:
         list: names of generated source files.
     """
-    fileNames = GenVectorTypes(os.path.abspath('types'))
+    fileNames = GenVectorTypes('types')
     #fileNames += GenMatrixTypes()
     return fileNames
 

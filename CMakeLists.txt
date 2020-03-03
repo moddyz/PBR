@@ -21,6 +21,9 @@ find_package(TBB REQUIRED)
 find_package(Boost REQUIRED)
 find_package(PythonLibs 2.7 REQUIRED)
 
+list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake/macros")
+include(Public)
+
 # Build with C++11
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -30,5 +33,5 @@ add_compile_options(-g -O3 -Wno-deprecated -Werror)
 string(APPEND CMAKE_SHARED_LINKER_FLAGS " -Wl,--no-undefined")
 
 # Build targets.
-#add_subdirectory(pbr)
+add_subdirectory(pbr)
 add_subdirectory(hdPbr)

@@ -1,20 +1,21 @@
 #pragma once
+#include <cmath>
 namespace pbr
 {
 class Vec3Int
 {
 public:
     explicit Vec3Int( const int& i_element0, const int& i_element1, const int& i_element2 )
-        : m_elements( {i_element0, i_element1, i_element2} )
+        : m_elements{i_element0, i_element1, i_element2}
     {
     }
 
-    Vec3Int& operator[]( size_t i_index )
+    int& operator[]( size_t i_index )
     {
         return m_elements[ i_index ];
     }
 
-    const Vec3Int& operator[]( size_t i_index ) const
+    const int& operator[]( size_t i_index ) const
     {
         return m_elements[ i_index ];
     }

@@ -1,20 +1,21 @@
 #pragma once
+#include <cmath>
 namespace pbr
 {
 class Vec3Float
 {
 public:
     explicit Vec3Float( const float& i_element0, const float& i_element1, const float& i_element2 )
-        : m_elements( {i_element0, i_element1, i_element2} )
+        : m_elements{i_element0, i_element1, i_element2}
     {
     }
 
-    Vec3Float& operator[]( size_t i_index )
+    float& operator[]( size_t i_index )
     {
         return m_elements[ i_index ];
     }
 
-    const Vec3Float& operator[]( size_t i_index ) const
+    const float& operator[]( size_t i_index ) const
     {
         return m_elements[ i_index ];
     }
