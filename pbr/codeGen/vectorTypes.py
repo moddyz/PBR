@@ -1,28 +1,8 @@
-#!/usr/bin/env python
-
 """
 Code generation for C++ vector, matrix, and array types (forget templates!)
 """
 
-import subprocess
-import shlex
-
-
-NAMESPACE = "pbr"
 VECTOR_DIMS = [2, 3, 4]
-SCALAR_TYPES = ['float', 'int']
-SCALAR_TYPE_DEFAULT_VALUE = {
-    'float': '0.0f',
-    'int': '0',
-}
-ARITHMETIC_OPERATORS = ['+', '-', '*', '/']
-
-
-def PrintInfo(message):
-    """
-    Logging utility.
-    """
-    print "[INFO] %s" % (message)
 
 
 def GetVectorClassHeaderFileName(vectorDim, scalarType):
@@ -37,42 +17,6 @@ def GetVectorClassHeaderFileName(vectorDim, scalarType):
         str: source file name.
     """
     return "vec{vectorDim}{scalarType}.h".format(vectorDim=vectorDim, scalarType=scalarType.title())
-
-
-def GenPragmaOnce():
-    """
-    Generate pragma once header guard directive.
-
-    Returns:
-        str: code.
-    """
-    return "#pragma once\n"
-
-
-def GenNamespaceBegin(namespace):
-    """
-    Generate the beginning of a namespace.
-
-    Args:
-        namespace (str): namespace name.
-
-    Returns:
-        str: code.
-    """
-    return "namespace %s\n{\n" % (namespace)
-
-
-def GenNamespaceEnd(namespace):
-    """
-    Generate the end of a namespace.
-
-    Args:
-        namespace (str): namespace name (encoded as a comment).
-
-    Returns:
-        str: code.
-    """
-    return "} // namespace %s\n" % (namespace)
 
 
 def GenClassPublicQualifier():
@@ -413,37 +357,3 @@ def GenVectorTypes():
         for scalarType in SCALAR_TYPES:
             fileNames.append(GenVectorType(vectorDim, scalarType))
     return fileNames
-
-
-def GenTypes():
-    """
-    Top-level entry point for generating all data type source files.
-    Vectors and matrices types will be generated.
-    Array types of scalar, vectors, and matrices will also be generated.
-
-    Returns:
-        list: names of generated source files.
-    """
-    fileNames = GenVectorTypes()
-    #fileNames += GenMatrixTypes()
-    return fileNames
-
-
-def FormatCode(fileNames):
-    """
-    Run clang-format over input files, formatting in-place.
-
-    Args:
-        fileNames (list): input files to automatically format.
-    """
-    command = "clang-format -i " + " ".join(fileNames)
-    PrintInfo("Running command {}".format(command))
-    process = subprocess.Popen(shlex.split(command))
-    process.wait()
-
-
-if __name__ == "__main__":
-    fileNames = GenTypes()
-    FormatCode(fileNames)
-
-
