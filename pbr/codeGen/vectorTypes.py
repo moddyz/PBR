@@ -2,6 +2,25 @@
 Code generation for C++ vector, matrix, and array types (forget templates!)
 """
 
+import os
+
+from constants import (
+    NAMESPACE,
+    SCALAR_TYPES,
+    SCALAR_TYPE_DEFAULT_VALUE,
+    ARITHMETIC_OPERATORS
+)
+
+from tools import (
+    PrintInfo
+)
+
+from cppLanguage import (
+    GenPragmaOnce,
+    GenNamespaceBegin,
+    GenNamespaceEnd,
+)
+
 VECTOR_DIMS = [2, 3, 4]
 
 
@@ -336,24 +355,30 @@ def GenVectorType(vectorDim, scalarType):
     code += GenNamespaceBegin(NAMESPACE)
     code += GenVectorClass(vectorDim, scalarType)
     code += GenNamespaceEnd(NAMESPACE)
-    fileName = GetVectorClassHeaderFileName(vectorDim, scalarType)
-
-    PrintInfo("Generated {!r}:\n{}".format(fileName, code))
-
-    with open(fileName, 'w') as f:
-        f.write(code)
-    return fileName
+    return code
 
 
-def GenVectorTypes():
+def GenVectorTypes(directoryPrefix):
     """
     Generate all vector type source files, across matrix VECTOR_DIM x SCALAR_TYPES.
 
+    Args:
+        directoryPrefix (str): directory prefix of generated files.
+
     Returns:
-        list: names of generated source files.
+        list: paths to generated source files.
     """
-    fileNames = []
+    filePaths = []
     for vectorDim in VECTOR_DIMS:
         for scalarType in SCALAR_TYPES:
-            fileNames.append(GenVectorType(vectorDim, scalarType))
-    return fileNames
+            code = GenVectorType(vectorDim, scalarType)
+            fileName = GetVectorClassHeaderFileName(vectorDim, scalarType)
+            filePath = os.path.join(directoryPrefix, fileName)
+
+            PrintInfo("Generated {!r}:\n{}".format(filePath, code))
+            with open(filePath, 'w') as f:
+                f.write(code)
+
+            filePaths.append(filePath)
+
+    return filePaths

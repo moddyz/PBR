@@ -4,6 +4,8 @@
 Executable python script for auto-generating code for components of this project.
 """
 
+import os
+
 from codeGen.tools import FormatCode
 from codeGen.vectorTypes import GenVectorTypes
 
@@ -17,7 +19,7 @@ def GenTypes():
     Returns:
         list: names of generated source files.
     """
-    fileNames = GenVectorTypes('types/')
+    fileNames = GenVectorTypes(os.path.abspath('types'))
     #fileNames += GenMatrixTypes()
     return fileNames
 
@@ -26,8 +28,8 @@ def GenerateCode():
     """
     Generate all code!
     """
-    fileNames = GenTypes()
-    FormatCode(fileNames)
+    filePaths = GenTypes()
+    FormatCode(filePaths)
 
 
 if __name__ == "__main__":
