@@ -6,7 +6,7 @@ Executable python script for auto-generating code for components of this project
 
 import os
 
-from codeGen.tools import FormatCode
+from codeGen.utils import FormatCode
 from codeGen.vectorTypes import GenVectorTypes
 
 

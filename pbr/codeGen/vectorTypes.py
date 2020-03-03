@@ -11,11 +11,11 @@ from constants import (
     ARITHMETIC_OPERATORS
 )
 
-from tools import (
+from utils import (
     PrintInfo
 )
 
-from cppLanguage import (
+from base import (
     GenPragmaOnce,
     GenNamespaceBegin,
     GenNamespaceEnd,
@@ -25,6 +25,7 @@ from cppLanguage import (
     GenConstQualifier,
     GenInclude,
     GenIncludes,
+    GenAssert,
 )
 
 VECTOR_DIMS = [2, 3, 4]
@@ -176,6 +177,7 @@ def GenVectorClassConstructor(vectorDim, scalarType):
     code += "}\n"
 
     code += "{\n"
+    code += GenAssert("!HasNans()")
     code += "}\n"
     return code
 
@@ -410,9 +412,12 @@ def GenVectorTypeHeader(vectorDim, scalarType):
         str: file name of generated vector class.
     """
     code = GenPragmaOnce()
+    code += "\n"
 
     # Includes
     code += GenInclude("cmath")
+    code += GenInclude("pbr/tools/assert.h")
+    code += "\n"
 
     # Body
     code += GenNamespaceBegin(NAMESPACE)

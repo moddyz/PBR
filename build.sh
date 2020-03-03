@@ -9,7 +9,8 @@ CMAKE_ARGS=\
 \ -DOPENSUBDIV_ROOT_DIR="/apps/opensubdiv/3.1.1"\
 \ -DTBB_ROOT_DIR="/apps/tbb/4.4.6"\
 \ -DBOOST_ROOT="/apps/boost/1.61.0"\
-\ -DGLEW_LOCATION="/apps/glew/2.0.0"
+\ -DGLEW_LOCATION="/apps/glew/2.0.0"\
+\ -DCMAKE_BUILD_TYPE="Debug"
 
 # Only build if installation path not specified.
 if [ $# -eq 0 ]

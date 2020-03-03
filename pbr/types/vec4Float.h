@@ -1,5 +1,8 @@
 #pragma once
+
 #include <cmath>
+#include <pbr/tools/assert.h>
+
 namespace pbr
 {
 class Vec4Float
@@ -11,6 +14,7 @@ public:
                         const float& i_element3 )
         : m_elements{i_element0, i_element1, i_element2, i_element3}
     {
+        ASSERT( !HasNans() );
     }
 
     float& operator[]( size_t i_index )

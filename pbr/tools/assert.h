@@ -1,14 +1,14 @@
 #pragma once
 
 /* clang-format off */
-#ifdef NDEBUG
+#ifdef PBR_DEBUG
 #define ASSERT(expr)            \
     if ( expr )                 \
     {                           \
         pbr::AssertHandler();   \
     }
 #else
-#define void()
+#define ASSERT(expr) void()
 #endif
 /* clang-format on */
 

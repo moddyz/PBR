@@ -1,5 +1,5 @@
 """
-Common code generation logic for the C++ language.
+Common code generation logic for pbr.
 """
 
 __all__ = [
@@ -12,6 +12,7 @@ __all__ = [
     "GenConstQualifier",
     "GenInclude",
     "GenIncludes",
+    "GenAssert",
 ]
 
 
@@ -109,5 +110,10 @@ def GenIncludes(includePaths):
     for includePath in includePaths:
         code += GenInclude(includePath)
     return code
+
+
+def GenAssert(expression):
+    return "ASSERT({expression});\n".format(expression=expression)
+
 
 
