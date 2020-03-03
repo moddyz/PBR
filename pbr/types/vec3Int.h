@@ -1,22 +1,22 @@
 #pragma once
 namespace pbr
 {
-class Double3
+class Vec3Int
 {
 public:
-    explicit Double3( const double& i_element0, const double& i_element1, const double& i_element2 )
+    explicit Vec3Int( const int& i_element0, const int& i_element1, const int& i_element2 )
         : m_elements( {i_element0, i_element1, i_element2} )
     {
     }
 
-    Double3 operator+( const Double3& i_vector )
+    Vec3Int operator+( const Vec3Int& i_vector )
     {
-        return Double3( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
+        return Vec3Int( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
                         m_elements[ 1 ] + i_vector.m_elements[ 1 ],
                         m_elements[ 2 ] + i_vector.m_elements[ 2 ] );
     }
 
-    Double3& operator+=( const Double3& i_vector )
+    Vec3Int& operator+=( const Vec3Int& i_vector )
     {
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
         m_elements[ 1 ] += i_vector.m_elements[ 1 ];
@@ -24,14 +24,14 @@ public:
         return *this;
     }
 
-    Double3 operator-( const Double3& i_vector )
+    Vec3Int operator-( const Vec3Int& i_vector )
     {
-        return Double3( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
+        return Vec3Int( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
                         m_elements[ 1 ] - i_vector.m_elements[ 1 ],
                         m_elements[ 2 ] - i_vector.m_elements[ 2 ] );
     }
 
-    Double3& operator-=( const Double3& i_vector )
+    Vec3Int& operator-=( const Vec3Int& i_vector )
     {
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
         m_elements[ 1 ] -= i_vector.m_elements[ 1 ];
@@ -39,12 +39,12 @@ public:
         return *this;
     }
 
-    Double3 operator*( const double& i_scalar )
+    Vec3Int operator*( const int& i_scalar )
     {
-        return Double3( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar, m_elements[ 2 ] * i_scalar );
+        return Vec3Int( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar, m_elements[ 2 ] * i_scalar );
     }
 
-    Double3& operator*=( const double& i_scalar )
+    Vec3Int& operator*=( const int& i_scalar )
     {
         m_elements[ 0 ] *= i_scalar;
         m_elements[ 1 ] *= i_scalar;
@@ -52,12 +52,12 @@ public:
         return *this;
     }
 
-    Double3 operator/( const double& i_scalar )
+    Vec3Int operator/( const int& i_scalar )
     {
-        return Double3( m_elements[ 0 ] / i_scalar, m_elements[ 1 ] / i_scalar, m_elements[ 2 ] / i_scalar );
+        return Vec3Int( m_elements[ 0 ] / i_scalar, m_elements[ 1 ] / i_scalar, m_elements[ 2 ] / i_scalar );
     }
 
-    Double3& operator/=( const double& i_scalar )
+    Vec3Int& operator/=( const int& i_scalar )
     {
         m_elements[ 0 ] /= i_scalar;
         m_elements[ 1 ] /= i_scalar;
@@ -66,6 +66,6 @@ public:
     }
 
 private:
-    double m_elements[ 3 ] = {0.0, 0.0, 0.0};
+    int m_elements[ 3 ] = {0, 0, 0};
 };
 } // namespace pbr

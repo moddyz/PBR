@@ -10,10 +10,9 @@ import shlex
 
 NAMESPACE = "pbr"
 VECTOR_DIMS = [2, 3, 4]
-SCALAR_TYPES = ['float', 'int', 'double']
+SCALAR_TYPES = ['float', 'int']
 SCALAR_TYPE_DEFAULT_VALUE = {
     'float': '0.0f',
-    'double': '0.0',
     'int': '0',
 }
 ARITHMETIC_OPERATORS = ['+', '-', '*', '/']
@@ -24,6 +23,20 @@ def PrintInfo(message):
     Logging utility.
     """
     print "[INFO] %s" % (message)
+
+
+def GetVectorClassHeaderFileName(vectorDim, scalarType):
+    """
+    Get the name of the source file to author the code into.
+
+    Args:
+        vectorDim (int): number of elements in the vector.
+        scalarType (str): scalar type of each element.
+
+    Returns:
+        str: source file name.
+    """
+    return "vec{vectorDim}{scalarType}.h".format(vectorDim=vectorDim, scalarType=scalarType.title())
 
 
 def GenPragmaOnce():
@@ -82,7 +95,7 @@ def GenClassPrivateQualifier():
     return "private:\n"
 
 
-def GetScalarDefaultValue(scalarType):
+def GenScalarDefaultValue(scalarType):
     """
     Generate the default value for a scalar type.
 
@@ -95,21 +108,7 @@ def GetScalarDefaultValue(scalarType):
     return SCALAR_TYPE_DEFAULT_VALUE[scalarType]
 
 
-def GetVectorFileName(vectorDim, scalarType):
-    """
-    Get the name of the source file to author the code into.
-
-    Args:
-        vectorDim (int): number of elements in the vector.
-        scalarType (str): scalar type of each element.
-
-    Returns:
-        str: source file name.
-    """
-    return "{scalarType}{vectorDim}.h".format(scalarType=scalarType, vectorDim=vectorDim)
-
-
-def GetVectorClassName(vectorDim, scalarType):
+def GenVectorClassName(vectorDim, scalarType):
     """
     Get the name of the vector class.
 
@@ -120,20 +119,39 @@ def GetVectorClassName(vectorDim, scalarType):
     Returns:
         str: class name.
     """
-    return "{scalarType}{vectorDim}".format(scalarType=scalarType.title(), vectorDim=vectorDim)
+    return "Vec{vectorDim}{scalarType}".format(vectorDim=vectorDim, scalarType=scalarType.title())
 
 
-def GetVectorElementMember():
+def GenVectorClassElementMember():
+    """
+    Get the name of the vector class element member variable.
+
+    Returns:
+        str: argument name of a vector element argument.
+    """
     return "m_elements"
 
 
-def GetVectorElementArg(index):
+def GenVectorClassElementArg(index):
+    """
+    Get the name of a vector element argument.
+
+    Examples:
+        i_element0
+        i_element2
+
+    Returns:
+        str: argument name of a vector element argument.
+    """
     return "i_element{index}".format(index=index)
 
 
-def GetVectorArg(vectorDim, scalarType):
+def GetVectorArg():
     """
     Get the name of a vector value argument.
+
+    Examples:
+        i_vector
 
     Returns:
         str: argument name of a vector.
@@ -141,7 +159,7 @@ def GetVectorArg(vectorDim, scalarType):
     return "i_vector"
 
 
-def GetScalarArg():
+def GenScalarArg():
     """
     Get the name of a scalar value argument.
 
@@ -162,7 +180,7 @@ def GenVectorClassBegin(vectorDim, scalarType):
     Returns:
         str: argument name of a scalar.
     """
-    code = "class {className}\n".format(className=GetVectorClassName(vectorDim, scalarType))
+    code = "class {className}\n".format(className=GenVectorClassName(vectorDim, scalarType))
     code += "{\n"
     return code
 
@@ -179,12 +197,12 @@ def GenVectorClassEnd():
 
 def GenVectorClassConstructor(vectorDim, scalarType):
     # Constructor arguments.
-    code = "explicit {className}".format(className=GetVectorClassName(vectorDim, scalarType))
+    code = "explicit {className}".format(className=GenVectorClassName(vectorDim, scalarType))
     code += "("
     for index in range(vectorDim):
         code += "const {scalarType}& {elementArg}".format(
             scalarType=scalarType,
-            elementArg=GetVectorElementArg(index)
+            elementArg=GenVectorClassElementArg(index)
         )
         if index < vectorDim - 1:
             code += ","
@@ -193,11 +211,11 @@ def GenVectorClassConstructor(vectorDim, scalarType):
     # Initializer list.
     code += ": "
     code += "{elementMember}(".format(
-        elementMember=GetVectorElementMember(),
+        elementMember=GenVectorClassElementMember(),
     )
     code += "{"
     for index in range(vectorDim):
-        code += GetVectorElementArg(index)
+        code += GenVectorClassElementArg(index)
         if index < vectorDim - 1:
             code += ","
     code += "}"
@@ -211,20 +229,20 @@ def GenVectorClassConstructor(vectorDim, scalarType):
 def GetVectorClassArithmeticOperatorArgTypeAndName(vectorDim, scalarType, operator):
     if operator in ['*', '/']:
         argType = scalarType
-        argName = GetScalarArg()
+        argName = GenScalarArg()
     else:
-        argType = GetVectorClassName(vectorDim, scalarType)
+        argType = GenVectorClassName(vectorDim, scalarType)
         argName = GetVectorArg()
     return argType, argName
 
 
-def GetVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index):
+def GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index):
     if operator in ['*', '/']:
-        rhs = GetScalarArg()
+        rhs = GenScalarArg()
     else:
         rhs = "{argName}.{elementMember}[{index}]".format(
             argName=GetVectorArg(),
-            elementMember=GetVectorElementMember(),
+            elementMember=GenVectorClassElementMember(),
             index=index,
         )
     return rhs
@@ -246,7 +264,7 @@ def GenVectorClassArithmeticOperator(vectorDim, scalarType, operator):
 
     argType, argName = GetVectorClassArithmeticOperatorArgTypeAndName(vectorDim, scalarType, operator)
     code = "{className} operator{operator}( const {argType}& {argName} )\n".format(
-        className=GetVectorClassName(vectorDim, scalarType),
+        className=GenVectorClassName(vectorDim, scalarType),
         operator=operator,
         argType=argType,
         argName=argName,
@@ -254,12 +272,12 @@ def GenVectorClassArithmeticOperator(vectorDim, scalarType, operator):
     code += "{\n"
 
     code += "return {className}(".format(
-        className=GetVectorClassName(vectorDim, scalarType)
+        className=GenVectorClassName(vectorDim, scalarType)
     )
     for index in range(vectorDim):
-        rhs = GetVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index)
+        rhs = GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index)
         code += "{elementMember}[{index}] {operator} {rhs}".format(
-            elementMember=GetVectorElementMember(),
+            elementMember=GenVectorClassElementMember(),
             index=index,
             operator=operator,
             rhs=rhs,
@@ -286,7 +304,7 @@ def GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator):
     """
     argType, argName = GetVectorClassArithmeticOperatorArgTypeAndName(vectorDim, scalarType, operator)
     code = "{className}& operator{operator}=( const {argType}& {argName} )\n".format(
-        className=GetVectorClassName(vectorDim, scalarType),
+        className=GenVectorClassName(vectorDim, scalarType),
         operator=operator,
         argType=argType,
         argName=argName,
@@ -294,9 +312,9 @@ def GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator):
     code += "{\n"
 
     for index in range(vectorDim):
-        rhs = GetVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index)
+        rhs = GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index)
         code += "{elementMember}[{index}] {operator}= {rhs};".format(
-            elementMember=GetVectorElementMember(),
+            elementMember=GenVectorClassElementMember(),
             index=index,
             operator=operator,
             rhs=rhs
@@ -319,12 +337,12 @@ def GenVectorClassMembers(vectorDim, scalarType):
     """
     code = "{scalarType} {elementMember}[{vectorDim}] =".format(
         scalarType=scalarType,
-        elementMember=GetVectorElementMember(),
+        elementMember=GenVectorClassElementMember(),
         vectorDim=vectorDim,
     )
     code += "{\n"
     for index in range(vectorDim):
-        code += GetScalarDefaultValue(scalarType)
+        code += GenScalarDefaultValue(scalarType)
         if index < vectorDim - 1:
             code += ",\n"
     code += "};\n"
@@ -374,7 +392,7 @@ def GenVectorType(vectorDim, scalarType):
     code += GenNamespaceBegin(NAMESPACE)
     code += GenVectorClass(vectorDim, scalarType)
     code += GenNamespaceEnd(NAMESPACE)
-    fileName = GetVectorFileName(vectorDim, scalarType)
+    fileName = GetVectorClassHeaderFileName(vectorDim, scalarType)
 
     PrintInfo("Generated {!r}:\n{}".format(fileName, code))
 
