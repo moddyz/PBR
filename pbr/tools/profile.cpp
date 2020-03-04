@@ -7,6 +7,7 @@ namespace
 /// Thread-local global for tracking profile stack .
 static thread_local uint32_t c_profileStack = 0;
 
+/// Compute the duration between \ref i_start and \ref i_stop.
 timespec computeDuration( const timespec& i_start, const timespec& i_stop )
 {
     timespec duration;
