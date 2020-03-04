@@ -13,8 +13,6 @@
 /// specify an arbiturary string to publish in the record.
 
 /* clang-format off */
-#define _PBR_CONCAT(A, B) A B
-
 #define _PBR_SCOPED_PROFILE( file, line, string ) \
     pbr::ScopedProfile profile##line( file, line, string );
 
