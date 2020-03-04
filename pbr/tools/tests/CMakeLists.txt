@@ -1,8 +1,13 @@
-set(PROGRAM_NAME "toolsTest")
-file(GLOB CPPFILES *.cpp)
-pbr_program(${PROGRAM_NAME}
+pbr_program(testAssert
     CPPFILES
-        ${CPPFILES}
+        testAssert.cpp
+    LIBRARIES
+        pbr_tools
+)
+
+pbr_program(testProfile
+    CPPFILES
+        testProfile.cpp
     LIBRARIES
         pbr_tools
 )
