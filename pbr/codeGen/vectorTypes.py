@@ -317,6 +317,7 @@ def GenVectorClassHasNans(vectorDim, scalarType):
         constQualifier=GenConstQualifier()
     )
     code += "{\n"
+    code += "return "
     for index in range(vectorDim):
         code += "std::isnan({elementMember})".format(
             elementMember=GenVectorClassElementMember(index)

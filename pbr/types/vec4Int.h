@@ -94,8 +94,8 @@ public:
 
     bool HasNans() const
     {
-        std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] ) ||
-            std::isnan( m_elements[ 3 ] );
+        return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] ) ||
+               std::isnan( m_elements[ 3 ] );
     }
 
 private:
