@@ -10,4 +10,5 @@ pbr_program(testProfile
         testProfile.cpp
     LIBRARIES
         pbr_tools
+        pthread
 )

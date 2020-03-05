@@ -3,7 +3,10 @@
 #include <stdint.h>
 #include <time.h>
 
-/// \brief Performance profiling tools.
+/// \brief Light-weight, thread-safe performance profiling tools.
+///
+/// SetupProfiling() will need to be explicitly called to allocate memory for storing profile records.
+/// TeardownProfiling() can be called to de-allocate memory used to store profile records.
 ///
 /// \usage
 /// PBR_PROFILE_FUNCTION() will profile the execution time from when the macro was defined to when it is
@@ -25,9 +28,12 @@
 
 namespace pbr
 {
-/// Profile:
-/// - records the timing on Start() and Stop().
-/// - on Stop(), both timings are published.
+
+/// Fwd declaration.
+class ProfileRecord;
+
+/// Profile records the timing on Start() and Stop().
+/// It also includes metadata about the location in the source code and a user supplied string.
 class Profile
 {
 public:
@@ -44,19 +50,11 @@ public:
     /// Record the ending time.  Publish both the starting and ending time.
     void Stop();
 
-    /// Print formatted timing information.
-    void Print();
-
 private:
-    const char* m_file   = nullptr; // 8 bytes
-    const char* m_string = nullptr; // 16 bytes
-    timespec    m_start  = {0, 0};  // 32 bytes
-    timespec    m_stop   = {0, 0};  // 48 bytes
-    uint32_t    m_line   = 0;       // 52 bytes
-    uint32_t    m_stack  = 0;       // 56 bytes
+    /// The profile record to author timings and metadata into.
+    /// This memory is not owned by the Profile instance itself, but by the internal global record store.
+    ProfileRecord* m_profileRecord = nullptr;
 };
-
-static_assert( sizeof( Profile ) == 56 );
 
 /// Similar to the Profile, but does require explicit Start() and Stop() for timings.
 /// Instead, the lifetime of a ScopedProfile object determines the timings.
@@ -72,6 +70,16 @@ public:
     ScopedProfile& operator=( const ScopedProfile& i_profile ) = delete;
 };
 
-void PrintProfile();
+/// Allocate memory used for profiling.
+///
+/// \param i_capacity total number of records to allocate.  If the number of profile instances exceed this number,
+/// it will loop back to the initial record (oldest records will begin to be overwritten).
+void SetupProfiling( size_t i_capacity );
+
+/// Deallocate memory used for profiling.
+void TeardownProfiling();
+
+/// Print all profiling records.
+void PrintProfiling();
 
 } // namespace pbr

@@ -1,49 +1,65 @@
 #include <stddef.h>
 #include <stdio.h>
+#include <thread>
+#include <vector>
 
 #include <pbr/tools/profile.h>
 
-void testProfileFunction( int foo = 0 )
+void testProfileFunction()
 {
     PBR_PROFILE_FUNCTION();
     size_t k = 0;
-    for ( size_t i = 0; i < 1000000000; ++i )
+    for ( size_t i = 0; i < 1e5; ++i )
     {
         k += i;
-    }
-
-    printf( "%lu\n", k );
-    {
-        PBR_PROFILE_FUNCTION();
-    }
-
-    {
-        PBR_PROFILE_FUNCTION();
     }
 }
 
 void testProfile()
 {
-    PBR_PROFILE( "profile" );
+    PBR_PROFILE( "customString" );
     size_t k = 0;
-    for ( size_t i = 0; i < 1000000; ++i )
+    for ( size_t i = 0; i < 1e5; ++i )
     {
         k += i;
     }
 }
 
-void foo()
+void testThreading()
 {
-    size_t k = 0;
-    for ( size_t i = 0; i < 1000000; ++i )
+    PBR_PROFILE_FUNCTION();
+
+    std::vector< std::thread > threads;
+    for ( int i = 0; i < 100; ++i )
     {
+        threads.emplace_back( testProfile );
+    }
+
+    for ( std::thread& thread : threads )
+    {
+        thread.join();
+    }
+}
+
+void testNestedProfile()
+{
+    PBR_PROFILE( "parent" );
+
+    size_t k = 0;
+    for ( size_t i = 0; i < 10; ++i )
+    {
+        PBR_PROFILE( "innerLoop" );
         k += i;
     }
 }
 
 int main()
 {
-    foo();
+    pbr::SetupProfiling( 1000000 );
     testProfileFunction();
     testProfile();
+    testThreading();
+    testNestedProfile();
+    pbr::PrintProfiling();
+    pbr::TeardownProfiling();
 }

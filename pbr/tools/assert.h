@@ -9,7 +9,7 @@
 /* clang-format off */
 #ifdef PBR_DEBUG
 #define PBR_ASSERT( expr )           \
-    if ( !expr )                     \
+    if ( !( expr ) )                 \
     {                                \
         pbr::AssertHandler( #expr ); \
     }
