@@ -175,7 +175,6 @@ void PrintProfiling()
     }
 
     size_t                       recordsSize = g_profileRecordStore->GetRecordsSize();
-    printf( "Got records size: %lu\n", recordsSize );
     std::vector< ProfileRecord > records     = g_profileRecordStore->GetRecords();
     std::sort( records.begin(), records.begin() + recordsSize, []( const ProfileRecord& a, const ProfileRecord& b ) {
         if ( a.m_start.tv_sec == b.m_start.tv_sec )
