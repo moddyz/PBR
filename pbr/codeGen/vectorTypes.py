@@ -26,9 +26,35 @@ from base import (
     GenInclude,
     GenIncludes,
     GenAssert,
+    GenAggregateCpp,
 )
 
-VECTOR_DIMS = [2, 3, 4]
+VECTOR_DIMS = [
+    (2,),
+    (3,),
+    (4,),
+    (3, 3),
+    (4, 4),
+]
+
+
+def GetVectorElementCount(vectorDim):
+    """
+    Returns:
+        int: the number of elements in a vector.
+    """
+    product = 1
+    for dim in vectorDim:
+        product *= dim
+    return product
+
+
+def GetVectorDimString(vectorDim):
+    """
+    Returns:
+        str: string representation of a vector dimension.
+    """
+    return "".join([str(dim) for dim in vectorDim])
 
 
 def GetVectorClassHeaderFileName(vectorDim, scalarType):
@@ -42,7 +68,16 @@ def GetVectorClassHeaderFileName(vectorDim, scalarType):
     Returns:
         str: source file name.
     """
-    return "vec{vectorDim}{scalarType}.h".format(vectorDim=vectorDim, scalarType=scalarType.title())
+    if len(vectorDim) == 2:
+        prefix = "mat"
+    else:
+        prefix = "vec"
+
+    return "{prefix}{vectorDim}{scalarType}.h".format(
+        prefix=prefix,
+        vectorDim=GetVectorDimString(vectorDim),
+        scalarType=scalarType.title()
+    )
 
 
 def GenScalarDefaultValue(scalarType):
@@ -52,7 +87,7 @@ def GenScalarDefaultValue(scalarType):
     Args:
         scalarType (str): name of the scalar type.
 
-    Returns:
+    Returnscols=:
         str: code.
     """
     return SCALAR_TYPE_DEFAULT_VALUE[scalarType]
@@ -69,7 +104,16 @@ def GenVectorClassName(vectorDim, scalarType):
     Returns:
         str: class name.
     """
-    return "Vec{vectorDim}{scalarType}".format(vectorDim=vectorDim, scalarType=scalarType.title())
+    if len(vectorDim) == 2:
+        prefix = "Mat"
+    else:
+        prefix = "Vec"
+
+    return "{prefix}{vectorDim}{scalarType}".format(
+        prefix=prefix,
+        vectorDim=GetVectorDimString(vectorDim),
+        scalarType=scalarType.title()
+    )
 
 
 def GenVectorClassElementMember(index=None):
@@ -102,17 +146,22 @@ def GenVectorClassElementArg(index):
     return "i_element{index}".format(index=index)
 
 
-def GetVectorArg():
+def GetVectorArg(vectorDim):
     """
     Get the name of a vector value argument.
 
-    Examples:
-        i_vector
+    Args:
+        vectorDim (object): vector dimension.
 
     Returns:
         str: argument name of a vector.
     """
-    return "i_vector"
+    if len(vectorDim) == 2:
+        return "i_matrix"
+    elif len(vectorDim) == 1:
+        return "i_vector"
+    else:
+        raise ValueError("Unsupported vector dimension: {}".format(vectorDim))
 
 
 def GenScalarArg():
@@ -125,42 +174,18 @@ def GenScalarArg():
     return "i_scalar"
 
 
-def GenVectorClassBegin(vectorDim, scalarType):
-    """
-    Generate the beginning of a class.
-
-    Args:
-        vectorDim (int): number of elements in the vector.
-        scalarType (str): scalar type of each element.
-
-    Returns:
-        str: argument name of a scalar.
-    """
-    code = "class {className}\n".format(className=GenVectorClassName(vectorDim, scalarType))
-    code += "{\n"
-    return code
-
-
-def GenVectorClassEnd():
-    """
-    Generate the end of a class.
-
-    Returns:
-        str: argument name of a scalar.
-    """
-    return "};\n"
-
-
 def GenVectorClassConstructor(vectorDim, scalarType):
     # Constructor arguments.
     code = "explicit {className}".format(className=GenVectorClassName(vectorDim, scalarType))
     code += "("
-    for index in range(vectorDim):
+
+    elementCount = GetVectorElementCount(vectorDim)
+    for index in range(elementCount):
         code += "const {scalarType}& {elementArg}".format(
             scalarType=scalarType,
             elementArg=GenVectorClassElementArg(index)
         )
-        if index < vectorDim - 1:
+        if index < elementCount - 1:
             code += ","
     code += ")\n"
 
@@ -170,9 +195,9 @@ def GenVectorClassConstructor(vectorDim, scalarType):
         elementMember=GenVectorClassElementMember(),
     )
     code += "{"
-    for index in range(vectorDim):
+    for index in range(elementCount):
         code += GenVectorClassElementArg(index)
-        if index < vectorDim - 1:
+        if index < elementCount - 1:
             code += ","
     code += "}\n"
 
@@ -188,7 +213,7 @@ def GetVectorClassArithmeticOperatorArgTypeAndName(vectorDim, scalarType, operat
         argName = GenScalarArg()
     else:
         argType = GenVectorClassName(vectorDim, scalarType)
-        argName = GetVectorArg()
+        argName = GetVectorArg(vectorDim)
     return argType, argName
 
 
@@ -197,7 +222,7 @@ def GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index):
         rhs = GenScalarArg()
     else:
         rhs = "{argName}.{elementMember}".format(
-            argName=GetVectorArg(),
+            argName=GetVectorArg(vectorDim),
             elementMember=GenVectorClassElementMember(index),
             index=index,
         )
@@ -230,14 +255,16 @@ def GenVectorClassArithmeticOperator(vectorDim, scalarType, operator):
     code += "return {className}(".format(
         className=GenVectorClassName(vectorDim, scalarType)
     )
-    for index in range(vectorDim):
+
+    elementCount = GetVectorElementCount(vectorDim)
+    for index in range(elementCount):
         rhs = GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index)
         code += "{elementMember} {operator} {rhs}".format(
             elementMember=GenVectorClassElementMember(index),
             operator=operator,
             rhs=rhs,
         )
-        if index < vectorDim - 1:
+        if index < elementCount - 1:
             code += ",\n"
 
     code += ");\n"
@@ -266,7 +293,8 @@ def GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator):
     )
     code += "{\n"
 
-    for index in range(vectorDim):
+    elementCount = GetVectorElementCount(vectorDim)
+    for index in range(elementCount):
         rhs = GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index)
         code += "{elementMember} {operator}= {rhs};".format(
             elementMember=GenVectorClassElementMember(index),
@@ -276,6 +304,7 @@ def GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator):
     code += "return *this;\n"
     code += "}\n"
     return code
+
 
 def GenVectorClassElementAccessOperator(vectorDim, scalarType, constQualified=False):
     """
@@ -318,16 +347,17 @@ def GenVectorClassHasNans(vectorDim, scalarType):
     )
     code += "{\n"
     code += "return "
-    for index in range(vectorDim):
+
+    elementCount = GetVectorElementCount(vectorDim)
+    for index in range(elementCount):
         code += "std::isnan({elementMember})".format(
             elementMember=GenVectorClassElementMember(index)
         )
-        if index < vectorDim - 1:
+        if index < elementCount - 1:
             code += " || "
     code += ";\n"
     code += "}\n"
     return code
-
 
 
 def GenVectorClassMembers(vectorDim, scalarType):
@@ -344,12 +374,14 @@ def GenVectorClassMembers(vectorDim, scalarType):
     code = "{scalarType} {elementMember}[{vectorDim}] =".format(
         scalarType=scalarType,
         elementMember=GenVectorClassElementMember(),
-        vectorDim=vectorDim,
+        vectorDim=GetVectorElementCount(vectorDim),
     )
     code += "{\n"
-    for index in range(vectorDim):
+
+    elementCount = GetVectorElementCount(vectorDim)
+    for index in range(elementCount):
         code += GenScalarDefaultValue(scalarType)
-        if index < vectorDim - 1:
+        if index < elementCount - 1:
             code += ",\n"
     code += "};\n"
     return code
@@ -366,7 +398,8 @@ def GenVectorClass(vectorDim, scalarType):
     Returns:
         str: code.
     """
-    code = GenVectorClassBegin(vectorDim, scalarType)
+    code = "class {className}\n".format(className=GenVectorClassName(vectorDim, scalarType))
+    code += "{\n"
 
     #
     # Public.
@@ -396,7 +429,7 @@ def GenVectorClass(vectorDim, scalarType):
 
     code += GenClassPrivateQualifier()
     code += GenVectorClassMembers(vectorDim, scalarType)
-    code += GenVectorClassEnd()
+    code += "};";
 
     return code
 
@@ -440,7 +473,7 @@ def GenVectorTypes(directoryPrefix):
     """
     # Generate vector class headers.
     filePaths = []
-    fileNames = []
+    headerFileNames = []
     for vectorDim in VECTOR_DIMS:
         for scalarType in SCALAR_TYPES:
             code = GenVectorTypeHeader(vectorDim, scalarType)
@@ -452,14 +485,10 @@ def GenVectorTypes(directoryPrefix):
                 f.write(code)
 
             filePaths.append(filePath)
-            fileNames.append(fileName)
+            headerFileNames.append(fileName)
 
     # Generate aggregation cpp source.
-    includePaths = [os.path.join(NAMESPACE, directoryPrefix, fileName) for fileName in fileNames]
-    code = GenIncludes(includePaths)
-    aggregateCppPath = os.path.join(directoryPrefix, "vectorTypes.cpp")
-    with open(aggregateCppPath, 'w') as f:
-        f.write(code)
+    aggregateCppPath = GenAggregateCpp(directoryPrefix, headerFileNames)
     filePaths.append(aggregateCppPath)
 
     return filePaths

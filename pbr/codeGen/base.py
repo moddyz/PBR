@@ -2,6 +2,10 @@
 Common code generation logic for pbr.
 """
 
+import os
+
+from constants import NAMESPACE
+
 __all__ = [
     "GenPragmaOnce",
     "GenNamespaceBegin",
@@ -13,8 +17,8 @@ __all__ = [
     "GenInclude",
     "GenIncludes",
     "GenAssert",
+    "GenAggregateCpp",
 ]
-
 
 
 def GenPragmaOnce():
@@ -113,7 +117,29 @@ def GenIncludes(includePaths):
 
 
 def GenAssert(expression):
+    """
+    Generate a PBR_ASSERT for an expression.
+    """
     return "PBR_ASSERT({expression});\n".format(expression=expression)
+
+
+def GenAggregateCpp(directoryPrefix, headerFileNames):
+    """
+    Generate an aggregating cpp which includes multiple header files.
+
+    Args:
+        directoryPrefix (str): directory prefix which contain the header files.
+        headerFileNames (list): header files to include in the aggregating cpp.
+
+    Returns:
+        str: file path to the aggregated cpp written to disk.
+    """
+    includePaths = [os.path.join(NAMESPACE, directoryPrefix, fileName) for fileName in headerFileNames]
+    code = GenIncludes(includePaths)
+    aggregateCppPath = os.path.join(directoryPrefix, "vectorTypes.cpp")
+    with open(aggregateCppPath, 'w') as f:
+        f.write(code)
+    return aggregateCppPath
 
 
 

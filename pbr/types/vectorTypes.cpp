@@ -1,3 +1,7 @@
+#include <pbr/types/mat33Float.h>
+#include <pbr/types/mat33Int.h>
+#include <pbr/types/mat44Float.h>
+#include <pbr/types/mat44Int.h>
 #include <pbr/types/vec2Float.h>
 #include <pbr/types/vec2Int.h>
 #include <pbr/types/vec3Float.h>
