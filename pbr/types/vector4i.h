@@ -5,10 +5,10 @@
 
 namespace pbr
 {
-class Vec4Int
+class Vector4i
 {
 public:
-    explicit Vec4Int( const int& i_element0, const int& i_element1, const int& i_element2, const int& i_element3 )
+    explicit Vector4i( const int& i_element0, const int& i_element1, const int& i_element2, const int& i_element3 )
         : m_elements{i_element0, i_element1, i_element2, i_element3}
     {
         PBR_ASSERT( !HasNans() );
@@ -24,15 +24,15 @@ public:
         return m_elements[ i_index ];
     }
 
-    Vec4Int operator+( const Vec4Int& i_vector )
+    Vector4i operator+( const Vector4i& i_vector )
     {
-        return Vec4Int( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
-                        m_elements[ 1 ] + i_vector.m_elements[ 1 ],
-                        m_elements[ 2 ] + i_vector.m_elements[ 2 ],
-                        m_elements[ 3 ] + i_vector.m_elements[ 3 ] );
+        return Vector4i( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
+                         m_elements[ 1 ] + i_vector.m_elements[ 1 ],
+                         m_elements[ 2 ] + i_vector.m_elements[ 2 ],
+                         m_elements[ 3 ] + i_vector.m_elements[ 3 ] );
     }
 
-    Vec4Int& operator+=( const Vec4Int& i_vector )
+    Vector4i& operator+=( const Vector4i& i_vector )
     {
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
         m_elements[ 1 ] += i_vector.m_elements[ 1 ];
@@ -41,15 +41,15 @@ public:
         return *this;
     }
 
-    Vec4Int operator-( const Vec4Int& i_vector )
+    Vector4i operator-( const Vector4i& i_vector )
     {
-        return Vec4Int( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
-                        m_elements[ 1 ] - i_vector.m_elements[ 1 ],
-                        m_elements[ 2 ] - i_vector.m_elements[ 2 ],
-                        m_elements[ 3 ] - i_vector.m_elements[ 3 ] );
+        return Vector4i( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
+                         m_elements[ 1 ] - i_vector.m_elements[ 1 ],
+                         m_elements[ 2 ] - i_vector.m_elements[ 2 ],
+                         m_elements[ 3 ] - i_vector.m_elements[ 3 ] );
     }
 
-    Vec4Int& operator-=( const Vec4Int& i_vector )
+    Vector4i& operator-=( const Vector4i& i_vector )
     {
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
         m_elements[ 1 ] -= i_vector.m_elements[ 1 ];
@@ -58,15 +58,15 @@ public:
         return *this;
     }
 
-    Vec4Int operator*( const int& i_scalar )
+    Vector4i operator*( const int& i_scalar )
     {
-        return Vec4Int( m_elements[ 0 ] * i_scalar,
-                        m_elements[ 1 ] * i_scalar,
-                        m_elements[ 2 ] * i_scalar,
-                        m_elements[ 3 ] * i_scalar );
+        return Vector4i( m_elements[ 0 ] * i_scalar,
+                         m_elements[ 1 ] * i_scalar,
+                         m_elements[ 2 ] * i_scalar,
+                         m_elements[ 3 ] * i_scalar );
     }
 
-    Vec4Int& operator*=( const int& i_scalar )
+    Vector4i& operator*=( const int& i_scalar )
     {
         m_elements[ 0 ] *= i_scalar;
         m_elements[ 1 ] *= i_scalar;
@@ -75,15 +75,15 @@ public:
         return *this;
     }
 
-    Vec4Int operator/( const int& i_scalar )
+    Vector4i operator/( const int& i_scalar )
     {
-        return Vec4Int( m_elements[ 0 ] / i_scalar,
-                        m_elements[ 1 ] / i_scalar,
-                        m_elements[ 2 ] / i_scalar,
-                        m_elements[ 3 ] / i_scalar );
+        return Vector4i( m_elements[ 0 ] / i_scalar,
+                         m_elements[ 1 ] / i_scalar,
+                         m_elements[ 2 ] / i_scalar,
+                         m_elements[ 3 ] / i_scalar );
     }
 
-    Vec4Int& operator/=( const int& i_scalar )
+    Vector4i& operator/=( const int& i_scalar )
     {
         m_elements[ 0 ] /= i_scalar;
         m_elements[ 1 ] /= i_scalar;

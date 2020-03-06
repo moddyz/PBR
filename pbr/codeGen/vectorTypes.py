@@ -54,7 +54,7 @@ def GetVectorDimString(vectorDim):
     Returns:
         str: string representation of a vector dimension.
     """
-    return "".join([str(dim) for dim in vectorDim])
+    return str(vectorDim[0])
 
 
 def GetVectorClassHeaderFileName(vectorDim, scalarType):
@@ -69,14 +69,14 @@ def GetVectorClassHeaderFileName(vectorDim, scalarType):
         str: source file name.
     """
     if len(vectorDim) == 2:
-        prefix = "mat"
+        prefix = "matrix"
     else:
-        prefix = "vec"
+        prefix = "vector"
 
     return "{prefix}{vectorDim}{scalarType}.h".format(
         prefix=prefix,
         vectorDim=GetVectorDimString(vectorDim),
-        scalarType=scalarType.title()
+        scalarType=scalarType[0]
     )
 
 
@@ -105,14 +105,14 @@ def GenVectorClassName(vectorDim, scalarType):
         str: class name.
     """
     if len(vectorDim) == 2:
-        prefix = "Mat"
+        prefix = "Matrix"
     else:
-        prefix = "Vec"
+        prefix = "Vector"
 
     return "{prefix}{vectorDim}{scalarType}".format(
         prefix=prefix,
         vectorDim=GetVectorDimString(vectorDim),
-        scalarType=scalarType.title()
+        scalarType=scalarType[0]
     )
 
 

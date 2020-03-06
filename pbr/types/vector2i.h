@@ -5,10 +5,10 @@
 
 namespace pbr
 {
-class Vec2Int
+class Vector2i
 {
 public:
-    explicit Vec2Int( const int& i_element0, const int& i_element1 )
+    explicit Vector2i( const int& i_element0, const int& i_element1 )
         : m_elements{i_element0, i_element1}
     {
         PBR_ASSERT( !HasNans() );
@@ -24,48 +24,48 @@ public:
         return m_elements[ i_index ];
     }
 
-    Vec2Int operator+( const Vec2Int& i_vector )
+    Vector2i operator+( const Vector2i& i_vector )
     {
-        return Vec2Int( m_elements[ 0 ] + i_vector.m_elements[ 0 ], m_elements[ 1 ] + i_vector.m_elements[ 1 ] );
+        return Vector2i( m_elements[ 0 ] + i_vector.m_elements[ 0 ], m_elements[ 1 ] + i_vector.m_elements[ 1 ] );
     }
 
-    Vec2Int& operator+=( const Vec2Int& i_vector )
+    Vector2i& operator+=( const Vector2i& i_vector )
     {
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
         m_elements[ 1 ] += i_vector.m_elements[ 1 ];
         return *this;
     }
 
-    Vec2Int operator-( const Vec2Int& i_vector )
+    Vector2i operator-( const Vector2i& i_vector )
     {
-        return Vec2Int( m_elements[ 0 ] - i_vector.m_elements[ 0 ], m_elements[ 1 ] - i_vector.m_elements[ 1 ] );
+        return Vector2i( m_elements[ 0 ] - i_vector.m_elements[ 0 ], m_elements[ 1 ] - i_vector.m_elements[ 1 ] );
     }
 
-    Vec2Int& operator-=( const Vec2Int& i_vector )
+    Vector2i& operator-=( const Vector2i& i_vector )
     {
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
         m_elements[ 1 ] -= i_vector.m_elements[ 1 ];
         return *this;
     }
 
-    Vec2Int operator*( const int& i_scalar )
+    Vector2i operator*( const int& i_scalar )
     {
-        return Vec2Int( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar );
+        return Vector2i( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar );
     }
 
-    Vec2Int& operator*=( const int& i_scalar )
+    Vector2i& operator*=( const int& i_scalar )
     {
         m_elements[ 0 ] *= i_scalar;
         m_elements[ 1 ] *= i_scalar;
         return *this;
     }
 
-    Vec2Int operator/( const int& i_scalar )
+    Vector2i operator/( const int& i_scalar )
     {
-        return Vec2Int( m_elements[ 0 ] / i_scalar, m_elements[ 1 ] / i_scalar );
+        return Vector2i( m_elements[ 0 ] / i_scalar, m_elements[ 1 ] / i_scalar );
     }
 
-    Vec2Int& operator/=( const int& i_scalar )
+    Vector2i& operator/=( const int& i_scalar )
     {
         m_elements[ 0 ] /= i_scalar;
         m_elements[ 1 ] /= i_scalar;

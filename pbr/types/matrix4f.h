@@ -5,25 +5,25 @@
 
 namespace pbr
 {
-class Mat44Int
+class Matrix4f
 {
 public:
-    explicit Mat44Int( const int& i_element0,
-                       const int& i_element1,
-                       const int& i_element2,
-                       const int& i_element3,
-                       const int& i_element4,
-                       const int& i_element5,
-                       const int& i_element6,
-                       const int& i_element7,
-                       const int& i_element8,
-                       const int& i_element9,
-                       const int& i_element10,
-                       const int& i_element11,
-                       const int& i_element12,
-                       const int& i_element13,
-                       const int& i_element14,
-                       const int& i_element15 )
+    explicit Matrix4f( const float& i_element0,
+                       const float& i_element1,
+                       const float& i_element2,
+                       const float& i_element3,
+                       const float& i_element4,
+                       const float& i_element5,
+                       const float& i_element6,
+                       const float& i_element7,
+                       const float& i_element8,
+                       const float& i_element9,
+                       const float& i_element10,
+                       const float& i_element11,
+                       const float& i_element12,
+                       const float& i_element13,
+                       const float& i_element14,
+                       const float& i_element15 )
         : m_elements{i_element0,
                      i_element1,
                      i_element2,
@@ -44,12 +44,12 @@ public:
         PBR_ASSERT( !HasNans() );
     }
 
-    int& operator[]( size_t i_index )
+    float& operator[]( size_t i_index )
     {
         return m_elements[ i_index ];
     }
 
-    const int& operator[]( size_t i_index ) const
+    const float& operator[]( size_t i_index ) const
     {
         return m_elements[ i_index ];
     }
@@ -65,6 +65,7 @@ public:
     }
 
 private:
-    int m_elements[ 16 ] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    float m_elements[ 16 ] =
+        {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 };
 } // namespace pbr

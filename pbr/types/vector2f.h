@@ -5,10 +5,10 @@
 
 namespace pbr
 {
-class Vec2Float
+class Vector2f
 {
 public:
-    explicit Vec2Float( const float& i_element0, const float& i_element1 )
+    explicit Vector2f( const float& i_element0, const float& i_element1 )
         : m_elements{i_element0, i_element1}
     {
         PBR_ASSERT( !HasNans() );
@@ -24,48 +24,48 @@ public:
         return m_elements[ i_index ];
     }
 
-    Vec2Float operator+( const Vec2Float& i_vector )
+    Vector2f operator+( const Vector2f& i_vector )
     {
-        return Vec2Float( m_elements[ 0 ] + i_vector.m_elements[ 0 ], m_elements[ 1 ] + i_vector.m_elements[ 1 ] );
+        return Vector2f( m_elements[ 0 ] + i_vector.m_elements[ 0 ], m_elements[ 1 ] + i_vector.m_elements[ 1 ] );
     }
 
-    Vec2Float& operator+=( const Vec2Float& i_vector )
+    Vector2f& operator+=( const Vector2f& i_vector )
     {
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
         m_elements[ 1 ] += i_vector.m_elements[ 1 ];
         return *this;
     }
 
-    Vec2Float operator-( const Vec2Float& i_vector )
+    Vector2f operator-( const Vector2f& i_vector )
     {
-        return Vec2Float( m_elements[ 0 ] - i_vector.m_elements[ 0 ], m_elements[ 1 ] - i_vector.m_elements[ 1 ] );
+        return Vector2f( m_elements[ 0 ] - i_vector.m_elements[ 0 ], m_elements[ 1 ] - i_vector.m_elements[ 1 ] );
     }
 
-    Vec2Float& operator-=( const Vec2Float& i_vector )
+    Vector2f& operator-=( const Vector2f& i_vector )
     {
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
         m_elements[ 1 ] -= i_vector.m_elements[ 1 ];
         return *this;
     }
 
-    Vec2Float operator*( const float& i_scalar )
+    Vector2f operator*( const float& i_scalar )
     {
-        return Vec2Float( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar );
+        return Vector2f( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar );
     }
 
-    Vec2Float& operator*=( const float& i_scalar )
+    Vector2f& operator*=( const float& i_scalar )
     {
         m_elements[ 0 ] *= i_scalar;
         m_elements[ 1 ] *= i_scalar;
         return *this;
     }
 
-    Vec2Float operator/( const float& i_scalar )
+    Vector2f operator/( const float& i_scalar )
     {
-        return Vec2Float( m_elements[ 0 ] / i_scalar, m_elements[ 1 ] / i_scalar );
+        return Vector2f( m_elements[ 0 ] / i_scalar, m_elements[ 1 ] / i_scalar );
     }
 
-    Vec2Float& operator/=( const float& i_scalar )
+    Vector2f& operator/=( const float& i_scalar )
     {
         m_elements[ 0 ] /= i_scalar;
         m_elements[ 1 ] /= i_scalar;

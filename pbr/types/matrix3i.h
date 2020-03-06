@@ -5,18 +5,18 @@
 
 namespace pbr
 {
-class Mat33Float
+class Matrix3i
 {
 public:
-    explicit Mat33Float( const float& i_element0,
-                         const float& i_element1,
-                         const float& i_element2,
-                         const float& i_element3,
-                         const float& i_element4,
-                         const float& i_element5,
-                         const float& i_element6,
-                         const float& i_element7,
-                         const float& i_element8 )
+    explicit Matrix3i( const int& i_element0,
+                       const int& i_element1,
+                       const int& i_element2,
+                       const int& i_element3,
+                       const int& i_element4,
+                       const int& i_element5,
+                       const int& i_element6,
+                       const int& i_element7,
+                       const int& i_element8 )
         : m_elements{i_element0,
                      i_element1,
                      i_element2,
@@ -30,12 +30,12 @@ public:
         PBR_ASSERT( !HasNans() );
     }
 
-    float& operator[]( size_t i_index )
+    int& operator[]( size_t i_index )
     {
         return m_elements[ i_index ];
     }
 
-    const float& operator[]( size_t i_index ) const
+    const int& operator[]( size_t i_index ) const
     {
         return m_elements[ i_index ];
     }
@@ -48,6 +48,6 @@ public:
     }
 
 private:
-    float m_elements[ 9 ] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+    int m_elements[ 9 ] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 };
 } // namespace pbr

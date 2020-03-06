@@ -5,10 +5,10 @@
 
 namespace pbr
 {
-class Vec3Int
+class Vector3i
 {
 public:
-    explicit Vec3Int( const int& i_element0, const int& i_element1, const int& i_element2 )
+    explicit Vector3i( const int& i_element0, const int& i_element1, const int& i_element2 )
         : m_elements{i_element0, i_element1, i_element2}
     {
         PBR_ASSERT( !HasNans() );
@@ -24,14 +24,14 @@ public:
         return m_elements[ i_index ];
     }
 
-    Vec3Int operator+( const Vec3Int& i_vector )
+    Vector3i operator+( const Vector3i& i_vector )
     {
-        return Vec3Int( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
-                        m_elements[ 1 ] + i_vector.m_elements[ 1 ],
-                        m_elements[ 2 ] + i_vector.m_elements[ 2 ] );
+        return Vector3i( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
+                         m_elements[ 1 ] + i_vector.m_elements[ 1 ],
+                         m_elements[ 2 ] + i_vector.m_elements[ 2 ] );
     }
 
-    Vec3Int& operator+=( const Vec3Int& i_vector )
+    Vector3i& operator+=( const Vector3i& i_vector )
     {
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
         m_elements[ 1 ] += i_vector.m_elements[ 1 ];
@@ -39,14 +39,14 @@ public:
         return *this;
     }
 
-    Vec3Int operator-( const Vec3Int& i_vector )
+    Vector3i operator-( const Vector3i& i_vector )
     {
-        return Vec3Int( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
-                        m_elements[ 1 ] - i_vector.m_elements[ 1 ],
-                        m_elements[ 2 ] - i_vector.m_elements[ 2 ] );
+        return Vector3i( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
+                         m_elements[ 1 ] - i_vector.m_elements[ 1 ],
+                         m_elements[ 2 ] - i_vector.m_elements[ 2 ] );
     }
 
-    Vec3Int& operator-=( const Vec3Int& i_vector )
+    Vector3i& operator-=( const Vector3i& i_vector )
     {
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
         m_elements[ 1 ] -= i_vector.m_elements[ 1 ];
@@ -54,12 +54,12 @@ public:
         return *this;
     }
 
-    Vec3Int operator*( const int& i_scalar )
+    Vector3i operator*( const int& i_scalar )
     {
-        return Vec3Int( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar, m_elements[ 2 ] * i_scalar );
+        return Vector3i( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar, m_elements[ 2 ] * i_scalar );
     }
 
-    Vec3Int& operator*=( const int& i_scalar )
+    Vector3i& operator*=( const int& i_scalar )
     {
         m_elements[ 0 ] *= i_scalar;
         m_elements[ 1 ] *= i_scalar;
@@ -67,12 +67,12 @@ public:
         return *this;
     }
 
-    Vec3Int operator/( const int& i_scalar )
+    Vector3i operator/( const int& i_scalar )
     {
-        return Vec3Int( m_elements[ 0 ] / i_scalar, m_elements[ 1 ] / i_scalar, m_elements[ 2 ] / i_scalar );
+        return Vector3i( m_elements[ 0 ] / i_scalar, m_elements[ 1 ] / i_scalar, m_elements[ 2 ] / i_scalar );
     }
 
-    Vec3Int& operator/=( const int& i_scalar )
+    Vector3i& operator/=( const int& i_scalar )
     {
         m_elements[ 0 ] /= i_scalar;
         m_elements[ 1 ] /= i_scalar;
