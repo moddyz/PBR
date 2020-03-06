@@ -414,11 +414,13 @@ def GenVectorClass(vectorDim, scalarType):
     code += GenVectorClassElementAccessOperator(vectorDim, scalarType, constQualified=True)
     code += "\n"
 
-    for operator in ARITHMETIC_OPERATORS:
-        code += GenVectorClassArithmeticOperator(vectorDim, scalarType, operator)
-        code += "\n"
-        code += GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator)
-        code += "\n"
+    # Only generate arithmetic operator overloading for single-index vector dim.
+    if len(vectorDim) == 1:
+        for operator in ARITHMETIC_OPERATORS:
+            code += GenVectorClassArithmeticOperator(vectorDim, scalarType, operator)
+            code += "\n"
+            code += GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator)
+            code += "\n"
 
     code += GenVectorClassHasNans(vectorDim, scalarType)
     code += "\n"
