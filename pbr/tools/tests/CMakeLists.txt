@@ -12,3 +12,10 @@ pbr_program(testProfile
         pbr_tools
         pthread
 )
+
+pbr_program(testLog
+    CPPFILES
+        testLog.cpp
+    LIBRARIES
+        pbr_tools
+)
