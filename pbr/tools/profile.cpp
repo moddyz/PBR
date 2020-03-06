@@ -90,12 +90,14 @@ public:
         {
             m_recordsLoopAround = true;
 
-            // We only want one thread to perform the reset of m_recordIndex back to 0.
-            // Until this exchange succeeds, profiles will end up entering this clause.
-            int expected = index + 1;
-            m_recordIndex.compare_exchange_strong( expected, 0 );
+            // Only one of the threads should be resetting the index back to 0, unless enough threads accumulate
+            // and loop around twice!
+            if ( index == m_records.size() )
+            {
+                m_recordIndex.store( 0 );
+            }
 
-            // Make sure we don't step out of bounds for all profiles which enter this clause.
+            // Make sure we don't step out of bounds for all profiles which enter this if clause.
             index = index % m_records.size();
         }
 
