@@ -15,20 +15,12 @@
 /// PBR_PROFILE( "SomeString" ) is the same thing as PBR_PROFILE_FUNC, except it allows the developer to
 /// specify an arbiturary string to publish in the record.
 
-/* clang-format off */
-#define _PBR_SCOPED_PROFILE( file, line, string ) \
-    pbr::ScopedProfile profile##line( file, line, string );
-
-#define PBR_PROFILE( string ) \
-    _PBR_SCOPED_PROFILE( __FILE__, __LINE__, string )
-
-#define PBR_PROFILE_FUNCTION() \
-    _PBR_SCOPED_PROFILE( __FILE__, __LINE__, __PRETTY_FUNCTION__ )
-/* clang-format on */
+#define _PBR_SCOPED_PROFILE( file, line, string ) pbr::ScopedProfile profile##line( file, line, string );
+#define PBR_PROFILE( string ) _PBR_SCOPED_PROFILE( __FILE__, __LINE__, string )
+#define PBR_PROFILE_FUNCTION() _PBR_SCOPED_PROFILE( __FILE__, __LINE__, __PRETTY_FUNCTION__ )
 
 namespace pbr
 {
-
 /// Fwd declaration.
 class ProfileRecord;
 
