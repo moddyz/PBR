@@ -5,7 +5,7 @@
 
 #define BACKWARD_HAS_DW 1
 
-#include "thirdparty/backward.hpp"
+#include <backward/backward.hpp>
 
 namespace pbr
 {

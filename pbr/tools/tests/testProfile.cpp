@@ -1,3 +1,6 @@
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
+
 #include <stddef.h>
 #include <stdio.h>
 #include <thread>
@@ -53,7 +56,7 @@ void testNestedProfile()
     }
 }
 
-int main()
+TEST_CASE( "Profile" )
 {
     pbr::SetupProfiling( 1000000 );
     testProfileFunction();

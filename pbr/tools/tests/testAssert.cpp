@@ -1,6 +1,9 @@
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
+
 #include <pbr/tools/assert.h>
 
-int main()
+TEST_CASE( "Assert", "Assert" )
 {
     PBR_ASSERT( false );
     PBR_ASSERT_MSG( false, "Failure!!!!%s", "HAHA" );
