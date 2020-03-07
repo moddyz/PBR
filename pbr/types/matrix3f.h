@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <cstring>
 #include <pbr/tools/assert.h>
 
 namespace pbr
@@ -28,6 +29,19 @@ public:
                      i_element8}
     {
         PBR_ASSERT( !HasNans() );
+    }
+
+    Matrix3f( const Matrix3f& i_matrix )
+    {
+        PBR_ASSERT( !HasNans() );
+        std::memcpy( ( void* ) m_elements, ( const void* ) i_matrix.m_elements, sizeof( m_elements ) );
+    }
+
+    Matrix3f& operator=( const Matrix3f& i_matrix )
+    {
+        PBR_ASSERT( !HasNans() );
+        std::memcpy( ( void* ) m_elements, ( const void* ) i_matrix.m_elements, sizeof( m_elements ) );
+        return *this;
     }
 
     float& operator[]( size_t i_index )

@@ -204,6 +204,49 @@ def GenVectorClassConstructor(vectorDim, scalarType):
     return code
 
 
+def GenVectorClassCopyMembers(vectorDim):
+    """
+    Generate code for copying members from a vector class to another.
+    Used in copy constructor and copy assignment operator, so the source vector variable name is implied to be GetVectorArg().
+
+    Returns:
+        str: generated code.
+    """
+    return "std::memcpy((void*) {elementMember}, (const void*){vectorArg}.{elementMember}, sizeof({elementMember}) );".format(
+        vectorArg=GetVectorArg(vectorDim),
+        elementMember=GenVectorClassElementMember()
+    )
+
+
+def GenVectorClassCopyConstructor(vectorDim, scalarType):
+    code = "{className} ( const {className}& {vectorArg} )\n".format(
+        className=GenVectorClassName(vectorDim, scalarType),
+        vectorArg=GetVectorArg(vectorDim)
+    )
+
+    # Copy element member.
+    code += "{"
+    code += GenAssert("!HasNans()")
+    code += GenVectorClassCopyMembers(vectorDim)
+    code += "}\n"
+    return code
+
+
+def GenVectorClassCopyAssignmentOperator(vectorDim, scalarType):
+    code = "{className}& operator=( const {className}& {vectorArg} )\n".format(
+        className=GenVectorClassName(vectorDim, scalarType),
+        vectorArg=GetVectorArg(vectorDim)
+    )
+
+    # Copy element member.
+    code += "{"
+    code += GenAssert("!HasNans()")
+    code += GenVectorClassCopyMembers(vectorDim)
+    code += "return *this;"
+    code += "}\n"
+    return code
+
+
 def GetVectorClassArithmeticOperatorArgTypeAndName(vectorDim, scalarType, operator):
     if operator in ['*', '/']:
         argType = scalarType
@@ -445,7 +488,12 @@ def GenVectorClass(vectorDim, scalarType):
     #
 
     code += GenClassPublicAccessSpecifier()
+
     code += GenVectorClassConstructor(vectorDim, scalarType)
+    code += "\n"
+    code += GenVectorClassCopyConstructor(vectorDim, scalarType)
+    code += "\n"
+    code += GenVectorClassCopyAssignmentOperator(vectorDim, scalarType)
     code += "\n"
 
     code += GenVectorClassSquareBracketOperator(vectorDim, scalarType, constQualified=False)
@@ -498,6 +546,7 @@ def GenVectorTypeHeader(vectorDim, scalarType):
 
     # Includes
     code += GenInclude("cmath")
+    code += GenInclude("cstring")
     code += GenInclude("pbr/tools/assert.h")
     code += "\n"
 
