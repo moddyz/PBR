@@ -20,7 +20,6 @@ def GenTypes():
         list: names of generated source files.
     """
     fileNames = GenVectorTypes('types')
-    #fileNames += GenMatrixTypes()
     return fileNames
 
 

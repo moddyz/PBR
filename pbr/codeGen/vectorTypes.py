@@ -1,15 +1,27 @@
 """
-Code generation for C++ vector, matrix, and array types (forget templates!)
+Code generation for C++ vector types.
 """
 
+__all__ = [
+    "VectorType"
+    "VECTOR_TYPES",
+    "GenVectorTypes"
+]
+
 import os
+import functools
 
 from constants import (
     NAMESPACE,
+    ARITHMETIC_OPERATORS,
+)
+
+from scalarTypes import (
     SCALAR_TYPES,
     SCALAR_TYPE_DEFAULT_VALUE,
-    ARITHMETIC_OPERATORS
+    GenScalarDefaultValue,
 )
+
 
 from utils import (
     PrintInfo
@@ -21,9 +33,6 @@ from base import (
     GenNamespaceEnd,
     GenClassPublicAccessSpecifier,
     GenClassPrivateAccessSpecifier,
-    GenIndexArg,
-    GenRowIndexArg,
-    GenColumnIndexArg,
     GenConstQualifier,
     GenInclude,
     GenIncludes,
@@ -31,536 +40,517 @@ from base import (
     GenAggregateCpp,
 )
 
-VECTOR_DIMS = [
+
+class VectorType(object):
+    """
+    Code generation for an C++ vector type.
+    """
+
+    def __init__(self, dims, scalarType):
+        assert(isinstance(dims, tuple))
+        assert(isinstance(scalarType, str))
+        self.dims = dims
+        self.scalarType = scalarType
+
+    def GenCode(self):
+        """
+        Generate a single vector type as a header source.
+
+        Args:
+            self.dims (int): number of elements in the vector.
+            scalarType (str): scalar type of each element.
+
+        Returns:
+            str: file name of generated vector class.
+        """
+        code = GenPragmaOnce()
+        code += "\n"
+
+        # Includes
+        code += GenInclude("cmath")
+        code += GenInclude("cstring")
+        code += GenInclude("pbr/tools/assert.h")
+        code += "\n"
+
+        # Body
+        code += GenNamespaceBegin(NAMESPACE)
+        code += self.GenClass()
+        code += GenNamespaceEnd(NAMESPACE)
+
+        return code
+
+    def GenClass(self):
+        """
+        Generate a single vector type class definition.
+
+        Returns:
+            str: code.
+        """
+        code = "class {className}\n".format(className=self.GetClassName())
+        code += "{\n"
+
+        #
+        # Public.
+        #
+
+        code += GenClassPublicAccessSpecifier()
+
+        code += self.GenClassConstructor()
+        code += "\n"
+        code += self.GenClassCopyConstructor()
+        code += "\n"
+        code += self.GenClassCopyAssignmentOperator()
+        code += "\n"
+
+        code += self.GenClassSquareBracketOperator(constQualified=False)
+        code += "\n"
+        code += self.GenClassSquareBracketOperator(constQualified=True)
+        code += "\n"
+
+        # Only generate arithmetic operator overloading for single-index vector dim.
+        if len(self.dims) == 1:
+            for operator in ARITHMETIC_OPERATORS:
+                code += self.GenClassArithmeticOperator(operator)
+                code += "\n"
+                code += self.GenClassArithmeticAssignmentOperator(operator)
+                code += "\n"
+
+        # Generate round bracket operator for matrix classes.
+        if len(self.dims) == 2:
+            code += self.GenClassRoundBracketOperator(constQualified=False)
+            code += "\n"
+            code += self.GenClassRoundBracketOperator(constQualified=True)
+            code += "\n"
+
+        code += self.GenClassHasNans()
+        code += "\n"
+
+        #
+        # Private.
+        #
+
+        code += GenClassPrivateAccessSpecifier()
+        code += self.GenClassMembers()
+        code += "};";
+
+        return code
+
+    def GetElementCount(self):
+        """
+        Returns:
+            int: the number of elements in a vector.
+        """
+        return functools.reduce(lambda x, y: x * y, self.dims)
+
+    def GetHeaderFileName(self):
+        """
+        Get the name of the header file to author the code into.
+
+        Returns:
+            str: header file name.
+        """
+        if len(self.dims) == 2:
+            prefix = "matrix"
+        else:
+            prefix = "vector"
+
+        return "{prefix}{dims}{scalarType}.h".format(
+            prefix=prefix,
+            dims=str(self.dims[0]),
+            scalarType=self.scalarType[0]
+        )
+
+    def GetClassName(self):
+        """
+        Get the name of the vector class.
+
+        Returns:
+            str: class name.
+        """
+        if len(self.dims) == 2:
+            prefix = "Matrix"
+        else:
+            prefix = "Vector"
+
+        return "{prefix}{dims}{scalarType}".format(
+            prefix=prefix,
+            dims=str(self.dims[0]),
+            scalarType=self.scalarType[0]
+        )
+
+    @staticmethod
+    def GetClassElementMember():
+        """
+        Returns:
+            str: member name of vector class' elements.
+        """
+        return "m_elements"
+
+    @staticmethod
+    def GetElementArg(index):
+        """
+        Get the name of a vector element argument.
+
+        Examples:
+            i_element0
+            i_element2
+
+        Returns:
+            str: argument name of a vector element argument.
+        """
+        return "i_element{index}".format(index=index)
+
+    def GetVectorArg(self):
+        """
+        Get the name of a vector value argument.
+
+        Returns:
+            str: argument name of a vector.
+        """
+        if len(self.dims) == 2:
+            return "i_matrix"
+        elif len(self.dims) == 1:
+            return "i_vector"
+        else:
+            raise ValueError("Unsupported vector dimension: {}".format(self.dims))
+
+    @staticmethod
+    def GetScalarArg():
+        """
+        Get the name of a scalar value argument.
+
+        Returns:
+            str: argument name of a scalar.
+        """
+        return "i_scalar"
+
+    def GenClassConstructor(self):
+        """
+        Generate the class constructor.
+        """
+        # Constructor arguments.
+        code = "explicit {className}".format(className=self.GetClassName())
+        code += "("
+
+        elementCount = self.GetElementCount()
+        for index in range(elementCount):
+            code += "const {scalarType}& {elementArg}".format(
+                scalarType=self.scalarType,
+                elementArg=self.GetElementArg(index)
+            )
+            if index < elementCount - 1:
+                code += ","
+        code += ")\n"
+
+        # Initializer list.
+        code += ": "
+        code += "{elementMember}".format(
+            elementMember=self.GetClassElementMember(),
+        )
+        code += "{"
+        for index in range(elementCount):
+            code += self.GetElementArg(index)
+            if index < elementCount - 1:
+                code += ","
+        code += "}\n"
+
+        code += "{\n"
+        code += GenAssert("!HasNans()")
+        code += "}\n"
+        return code
+
+    def GenClassMemberCopy(self):
+        """
+        Generate code for copying members from a vector class to another.
+        Used in copy constructor and copy assignment operator, so the source vector variable name is implied to be GetVectorArg().
+
+        Returns:
+            str: generated code.
+        """
+        return "std::memcpy((void*) {elementMember}, (const void*){vectorArg}.{elementMember}, sizeof({elementMember}) );".format(
+            vectorArg=self.GetVectorArg(),
+            elementMember=self.GetClassElementMember()
+        )
+
+    def GenClassCopyConstructor(self):
+        """
+        Returns:
+            str: code for vector class copy constructor.
+        """
+        code = "{className} ( const {className}& {vectorArg} )\n".format(
+            className=self.GetClassName(),
+            vectorArg=self.GetVectorArg()
+        )
+
+        # Copy element member.
+        code += "{"
+        code += GenAssert("!HasNans()")
+        code += self.GenClassMemberCopy()
+        code += "}\n"
+        return code
+
+    def GenClassCopyAssignmentOperator(self):
+        """
+        Returns:
+            str: code for vector class copy assignment operator.
+        """
+        code = "{className}& operator=( const {className}& {vectorArg} )\n".format(
+            className=self.GetClassName(),
+            vectorArg=self.GetVectorArg()
+        )
+
+        # Copy element member.
+        code += "{"
+        code += GenAssert("!HasNans()")
+        code += self.GenClassMemberCopy()
+        code += "return *this;"
+        code += "}\n"
+        return code
+
+    def GenClassArithmeticOperatorArgTypeAndName(self, operator):
+        if operator in ['*', '/']:
+            argType = self.scalarType
+            argName = self.GetScalarArg()
+        else:
+            argType = self.GetClassName()
+            argName = self.GetVectorArg()
+        return argType, argName
+
+    def GenClassArithmeticOperatorRHS(self, operator, index):
+        if operator in ['*', '/']:
+            rhs = self.GetScalarArg()
+        else:
+            rhs = "{argName}.{elementMember}[{index}]".format(
+                argName=self.GetVectorArg(),
+                elementMember=self.GetClassElementMember(),
+                index=index,
+            )
+        return rhs
+
+    def GenClassArithmeticOperator(self, operator):
+        """
+        Generate arithmetic arithmetic operator overload.
+
+        Args:
+            operator (str): type of arithmetic operator.
+
+        Returns:
+            str: code.
+        """
+        assert(operator in ARITHMETIC_OPERATORS)
+
+        argType, argName = self.GenClassArithmeticOperatorArgTypeAndName(operator)
+        code = "{className} operator{operator}( const {argType}& {argName} )\n".format(
+            className=self.GetClassName(),
+            operator=operator,
+            argType=argType,
+            argName=argName,
+        )
+        code += "{\n"
+        code += GenAssert("!HasNans()")
+        code += "return {className}(".format(
+            className=self.GetClassName()
+        )
+
+        elementCount = self.GetElementCount()
+        for index in range(elementCount):
+            rhs = self.GenClassArithmeticOperatorRHS(operator, index)
+            code += "{elementMember}[{index}] {operator} {rhs}".format(
+                elementMember=self.GetClassElementMember(),
+                index=index,
+                operator=operator,
+                rhs=rhs,
+            )
+            if index < elementCount - 1:
+                code += ",\n"
+
+        code += ");\n"
+        code += "}\n"
+        return code
+
+    def GenClassArithmeticAssignmentOperator(self, operator):
+        """
+        Generate arithmetic arithmetic assignment operator overload.
+
+        Args:
+            operator (str): type of arithmetic operator.
+
+        Returns:
+            str: code.
+        """
+        argType, argName = self.GenClassArithmeticOperatorArgTypeAndName(operator)
+        code = "{className}& operator{operator}=( const {argType}& {argName} )\n".format(
+            className=self.GetClassName(),
+            operator=operator,
+            argType=argType,
+            argName=argName,
+        )
+        code += "{\n"
+
+        code += GenAssert("!HasNans()")
+        elementCount = self.GetElementCount()
+        for index in range(elementCount):
+            rhs = self.GenClassArithmeticOperatorRHS(operator, index)
+            code += "{elementMember}[{index}] {operator}= {rhs};".format(
+                elementMember=self.GetClassElementMember(),
+                index=index,
+                operator=operator,
+                rhs=rhs
+            )
+        code += "return *this;\n"
+        code += "}\n"
+        return code
+
+    def GenClassSquareBracketOperator(self, constQualified=False):
+        """
+        Generate square brackets [] element access operator overload method.
+
+        Args:
+            constQualified (bool): generate the const qualified variant?
+
+        Returns:
+            str: code.
+        """
+        code = "{constQualifier} {scalarType}& operator[]( size_t {indexArg} ) {constQualifier}\n".format(
+            scalarType=self.scalarType,
+            indexArg=self.GenIndexArg(),
+            constQualifier=GenConstQualifier() if constQualified else ""
+        )
+        code += "{\n"
+        code += GenAssert("!HasNans()")
+        code += "return {elementMember}[{index}];\n".format(
+            elementMember=self.GetClassElementMember(),
+            index=self.GenIndexArg(),
+        )
+        code += "}\n"
+        return code
+
+    def GenClassRoundBracketOperator(self, constQualified=False):
+        """
+        Generate round brackets () element access operator overload method.
+        Exclusively for matrix classes.
+
+        Args:
+            constQualified (bool): generate the const qualified variant?
+
+        Returns:
+            str: code.
+        """
+        code = "{constQualifier} {scalarType}& operator()( size_t {rowIndexArg}, size_t {columnIndexArg} ) {constQualifier}\n".format(
+            scalarType=self.scalarType,
+            rowIndexArg=self.GenRowIndexArg(),
+            columnIndexArg=self.GenColumnIndexArg(),
+            constQualifier=GenConstQualifier() if constQualified else ""
+        )
+        code += "{\n"
+
+        elementIndexExpression = "( {rowIndexArg} * {vectorColumnDim} ) + {columnIndexArg}".format(
+            rowIndexArg=self.GenRowIndexArg(),
+            vectorColumnDim=self.dims[1],
+            columnIndexArg=self.GenColumnIndexArg()
+        )
+
+        code += GenAssert("!HasNans()")
+        code += "return {elementMember}[{index}];\n".format(
+            elementMember=self.GetClassElementMember(),
+            index=elementIndexExpression,
+        )
+        code += "}\n"
+
+        return code
+
+    def GenClassHasNans(self):
+        """
+        Generate HasNans method.
+
+        Returns:
+            str: code.
+        """
+        code = "bool HasNans() {constQualifier}\n".format(
+            constQualifier=GenConstQualifier()
+        )
+        code += "{\n"
+        code += GenAssert("!HasNans()")
+        code += "return "
+        elementCount = self.GetElementCount()
+        for index in range(elementCount):
+            code += "std::isnan({elementMember}[{index}])".format(
+                elementMember=self.GetClassElementMember(),
+                index=index
+            )
+            if index < elementCount - 1:
+                code += " || "
+        code += ";\n"
+        code += "}\n"
+        return code
+
+
+    def GenClassMembers(self):
+        """
+        Generate members for a vector class.
+
+        Returns:
+            str: code.
+        """
+        code = "{scalarType} {elementMember}[{elementCount}] =".format(
+            scalarType=self.scalarType,
+            elementMember=self.GetClassElementMember(),
+            elementCount=self.GetElementCount(),
+        )
+        code += "{\n"
+        elementCount = self.GetElementCount()
+        for index in range(elementCount):
+            code += GenScalarDefaultValue(self.scalarType)
+            if index < elementCount - 1:
+                code += ",\n"
+        code += "};\n"
+        return code
+
+    @staticmethod
+    def GenIndexArg():
+        """
+        Returns:
+            str: index argument.
+        """
+        return "i_index"
+
+    @staticmethod
+    def GenRowIndexArg():
+        """
+        Returns:
+            str: row index argument name.  Used in operator() overload.
+        """
+        return "i_row"
+
+    @staticmethod
+    def GenColumnIndexArg():
+        """
+        Returns:
+            str: column index argument name.  Used in operator() overload.
+        """
+        return "i_column"
+
+
+
+
+VECTOR_TYPES = [
     # Single-index vector types.
-    (2,),
-    (3,),
-    (4,),
+    VectorType((2,), "int"),
+    VectorType((3,), "int"),
+    VectorType((4,), "int"),
+    VectorType((2,), "float"),
+    VectorType((3,), "float"),
+    VectorType((4,), "float"),
 
-    # Matrix vector types.
-    (3, 3),
-    (4, 4),
+    # Matrix ve
+    VectorType((3,3), "float"),
+    VectorType((4,4), "float"),
 ]
-
-
-def GetVectorElementCount(vectorDim):
-    """
-    Returns:
-        int: the number of elements in a vector.
-    """
-    product = 1
-    for dim in vectorDim:
-        product *= dim
-    return product
-
-
-def GetVectorDimString(vectorDim):
-    """
-    Returns:
-        str: string representation of a vector dimension.
-    """
-    return str(vectorDim[0])
-
-
-def GetVectorClassHeaderFileName(vectorDim, scalarType):
-    """
-    Get the name of the source file to author the code into.
-
-    Args:
-        vectorDim (int): number of elements in the vector.
-        scalarType (str): scalar type of each element.
-
-    Returns:
-        str: source file name.
-    """
-    if len(vectorDim) == 2:
-        prefix = "matrix"
-    else:
-        prefix = "vector"
-
-    return "{prefix}{vectorDim}{scalarType}.h".format(
-        prefix=prefix,
-        vectorDim=GetVectorDimString(vectorDim),
-        scalarType=scalarType[0]
-    )
-
-
-def GenScalarDefaultValue(scalarType):
-    """
-    Generate the default value for a scalar type.
-
-    Args:
-        scalarType (str): name of the scalar type.
-
-    Returnscols=:
-        str: code.
-    """
-    return SCALAR_TYPE_DEFAULT_VALUE[scalarType]
-
-
-def GenVectorClassName(vectorDim, scalarType):
-    """
-    Get the name of the vector class.
-
-    Args:
-        vectorDim (int): number of elements in the vector.
-        scalarType (str): scalar type of each element.
-
-    Returns:
-        str: class name.
-    """
-    if len(vectorDim) == 2:
-        prefix = "Matrix"
-    else:
-        prefix = "Vector"
-
-    return "{prefix}{vectorDim}{scalarType}".format(
-        prefix=prefix,
-        vectorDim=GetVectorDimString(vectorDim),
-        scalarType=scalarType[0]
-    )
-
-
-def GenVectorClassElementMember():
-    """
-    Returns:
-        str: member name of vector class' elements.
-    """
-    return "m_elements"
-
-
-def GenVectorClassElementArg(index):
-    """
-    Get the name of a vector element argument.
-
-    Examples:
-        i_element0
-        i_element2
-
-    Returns:
-        str: argument name of a vector element argument.
-    """
-    return "i_element{index}".format(index=index)
-
-
-def GetVectorArg(vectorDim):
-    """
-    Get the name of a vector value argument.
-
-    Args:
-        vectorDim (object): vector dimension.
-
-    Returns:
-        str: argument name of a vector.
-    """
-    if len(vectorDim) == 2:
-        return "i_matrix"
-    elif len(vectorDim) == 1:
-        return "i_vector"
-    else:
-        raise ValueError("Unsupported vector dimension: {}".format(vectorDim))
-
-
-def GenScalarArg():
-    """
-    Get the name of a scalar value argument.
-
-    Returns:
-        str: argument name of a scalar.
-    """
-    return "i_scalar"
-
-
-def GenVectorClassConstructor(vectorDim, scalarType):
-    # Constructor arguments.
-    code = "explicit {className}".format(className=GenVectorClassName(vectorDim, scalarType))
-    code += "("
-
-    elementCount = GetVectorElementCount(vectorDim)
-    for index in range(elementCount):
-        code += "const {scalarType}& {elementArg}".format(
-            scalarType=scalarType,
-            elementArg=GenVectorClassElementArg(index)
-        )
-        if index < elementCount - 1:
-            code += ","
-    code += ")\n"
-
-    # Initializer list.
-    code += ": "
-    code += "{elementMember}".format(
-        elementMember=GenVectorClassElementMember(),
-    )
-    code += "{"
-    for index in range(elementCount):
-        code += GenVectorClassElementArg(index)
-        if index < elementCount - 1:
-            code += ","
-    code += "}\n"
-
-    code += "{\n"
-    code += GenAssert("!HasNans()")
-    code += "}\n"
-    return code
-
-
-def GenVectorClassCopyMembers(vectorDim):
-    """
-    Generate code for copying members from a vector class to another.
-    Used in copy constructor and copy assignment operator, so the source vector variable name is implied to be GetVectorArg().
-
-    Returns:
-        str: generated code.
-    """
-    return "std::memcpy((void*) {elementMember}, (const void*){vectorArg}.{elementMember}, sizeof({elementMember}) );".format(
-        vectorArg=GetVectorArg(vectorDim),
-        elementMember=GenVectorClassElementMember()
-    )
-
-
-def GenVectorClassCopyConstructor(vectorDim, scalarType):
-    code = "{className} ( const {className}& {vectorArg} )\n".format(
-        className=GenVectorClassName(vectorDim, scalarType),
-        vectorArg=GetVectorArg(vectorDim)
-    )
-
-    # Copy element member.
-    code += "{"
-    code += GenAssert("!HasNans()")
-    code += GenVectorClassCopyMembers(vectorDim)
-    code += "}\n"
-    return code
-
-
-def GenVectorClassCopyAssignmentOperator(vectorDim, scalarType):
-    code = "{className}& operator=( const {className}& {vectorArg} )\n".format(
-        className=GenVectorClassName(vectorDim, scalarType),
-        vectorArg=GetVectorArg(vectorDim)
-    )
-
-    # Copy element member.
-    code += "{"
-    code += GenAssert("!HasNans()")
-    code += GenVectorClassCopyMembers(vectorDim)
-    code += "return *this;"
-    code += "}\n"
-    return code
-
-
-def GetVectorClassArithmeticOperatorArgTypeAndName(vectorDim, scalarType, operator):
-    if operator in ['*', '/']:
-        argType = scalarType
-        argName = GenScalarArg()
-    else:
-        argType = GenVectorClassName(vectorDim, scalarType)
-        argName = GetVectorArg(vectorDim)
-    return argType, argName
-
-
-def GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index):
-    if operator in ['*', '/']:
-        rhs = GenScalarArg()
-    else:
-        rhs = "{argName}.{elementMember}[{index}]".format(
-            argName=GetVectorArg(vectorDim),
-            elementMember=GenVectorClassElementMember(),
-            index=index,
-        )
-    return rhs
-
-
-def GenVectorClassArithmeticOperator(vectorDim, scalarType, operator):
-    """
-    Generate arithmetic arithmetic operator overload.
-
-    Args:
-        vectorDim (int): number of elements in the vector.
-        scalarType (str): scalar type of each element.
-        operator (str): type of arithmetic operator.
-
-    Returns:
-        str: code.
-    """
-    assert(operator in ARITHMETIC_OPERATORS)
-
-    argType, argName = GetVectorClassArithmeticOperatorArgTypeAndName(vectorDim, scalarType, operator)
-    code = "{className} operator{operator}( const {argType}& {argName} )\n".format(
-        className=GenVectorClassName(vectorDim, scalarType),
-        operator=operator,
-        argType=argType,
-        argName=argName,
-    )
-    code += "{\n"
-    code += GenAssert("!HasNans()")
-    code += "return {className}(".format(
-        className=GenVectorClassName(vectorDim, scalarType)
-    )
-
-    elementCount = GetVectorElementCount(vectorDim)
-    for index in range(elementCount):
-        rhs = GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index)
-        code += "{elementMember}[{index}] {operator} {rhs}".format(
-            elementMember=GenVectorClassElementMember(),
-            index=index,
-            operator=operator,
-            rhs=rhs,
-        )
-        if index < elementCount - 1:
-            code += ",\n"
-
-    code += ");\n"
-    code += "}\n"
-    return code
-
-
-def GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator):
-    """
-    Generate arithmetic arithmetic assignment operator overload.
-
-    Args:
-        vectorDim (int): number of elements in the vector.
-        scalarType (str): scalar type of each element.
-        operator (str): type of arithmetic operator.
-
-    Returns:
-        str: code.
-    """
-    argType, argName = GetVectorClassArithmeticOperatorArgTypeAndName(vectorDim, scalarType, operator)
-    code = "{className}& operator{operator}=( const {argType}& {argName} )\n".format(
-        className=GenVectorClassName(vectorDim, scalarType),
-        operator=operator,
-        argType=argType,
-        argName=argName,
-    )
-    code += "{\n"
-
-    code += GenAssert("!HasNans()")
-    elementCount = GetVectorElementCount(vectorDim)
-    for index in range(elementCount):
-        rhs = GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index)
-        code += "{elementMember}[{index}] {operator}= {rhs};".format(
-            elementMember=GenVectorClassElementMember(),
-            index=index,
-            operator=operator,
-            rhs=rhs
-        )
-    code += "return *this;\n"
-    code += "}\n"
-    return code
-
-
-def GenVectorClassSquareBracketOperator(vectorDim, scalarType, constQualified=False):
-    """
-    Generate square brackets [] element access operator overload method.
-
-    Args:
-        vectorDim (int): number of elements in the vector.
-        scalarType (str): scalar type of each element.
-        constQualified (bool): generate the const qualified variant?
-
-    Returns:
-        str: code.
-    """
-    code = "{constQualifier} {scalarType}& operator[]( size_t {indexArg} ) {constQualifier}\n".format(
-        scalarType=scalarType,
-        indexArg=GenIndexArg(),
-        constQualifier=GenConstQualifier() if constQualified else ""
-    )
-    code += "{\n"
-    code += GenAssert("!HasNans()")
-    code += "return {elementMember}[{index}];\n".format(
-        elementMember=GenVectorClassElementMember(),
-        index=GenIndexArg(),
-    )
-    code += "}\n"
-    return code
-
-
-def GenVectorClassRoundBracketOperator(vectorDim, scalarType, constQualified=False):
-    """
-    Generate round brackets () element access operator overload method.
-    Exclusively for matrix classes.
-
-    Args:
-        vectorDim (int): number of elements in the vector.
-        scalarType (str): scalar type of each element.
-        constQualified (bool): generate the const qualified variant?
-
-    Returns:
-        str: code.
-    """
-    code = "{constQualifier} {scalarType}& operator()( size_t {rowIndexArg}, size_t {columnIndexArg} ) {constQualifier}\n".format(
-        scalarType=scalarType,
-        rowIndexArg=GenRowIndexArg(),
-        columnIndexArg=GenColumnIndexArg(),
-        constQualifier=GenConstQualifier() if constQualified else ""
-    )
-    code += "{\n"
-
-    elementIndexExpression = "( {rowIndexArg} * {vectorColumnDim} ) + {columnIndexArg}".format(
-        rowIndexArg=GenRowIndexArg(),
-        vectorColumnDim=vectorDim[1],
-        columnIndexArg=GenColumnIndexArg()
-    )
-
-    code += GenAssert("!HasNans()")
-    code += "return {elementMember}[{index}];\n".format(
-        elementMember=GenVectorClassElementMember(),
-        index=elementIndexExpression,
-    )
-    code += "}\n"
-
-    return code
-
-
-def GenVectorClassHasNans(vectorDim, scalarType):
-    """
-    Generate HasNans method.
-
-    Args:
-        vectorDim (int): number of elements in the vector.
-        scalarType (str): scalar type of each element.
-
-    Returns:
-        str: code.
-    """
-    code = "bool HasNans() {constQualifier}\n".format(
-        constQualifier=GenConstQualifier()
-    )
-    code += "{\n"
-    code += GenAssert("!HasNans()")
-    code += "return "
-    elementCount = GetVectorElementCount(vectorDim)
-    for index in range(elementCount):
-        code += "std::isnan({elementMember}[{index}])".format(
-            elementMember=GenVectorClassElementMember(),
-            index=index
-        )
-        if index < elementCount - 1:
-            code += " || "
-    code += ";\n"
-    code += "}\n"
-    return code
-
-
-def GenVectorClassMembers(vectorDim, scalarType):
-    """
-    Generate members for a vector class.
-
-    Args:
-        vectorDim (int): number of elements in the vector.
-        scalarType (str): scalar type of each element.
-
-    Returns:
-        str: code.
-    """
-    code = "{scalarType} {elementMember}[{vectorDim}] =".format(
-        scalarType=scalarType,
-        elementMember=GenVectorClassElementMember(),
-        vectorDim=GetVectorElementCount(vectorDim),
-    )
-    code += "{\n"
-    elementCount = GetVectorElementCount(vectorDim)
-    for index in range(elementCount):
-        code += GenScalarDefaultValue(scalarType)
-        if index < elementCount - 1:
-            code += ",\n"
-    code += "};\n"
-    return code
-
-
-def GenVectorClass(vectorDim, scalarType):
-    """
-    Generate a single vector type class definition.
-
-    Args:
-        vectorDim (int): number of elements in the vector.
-        scalarType (str): scalar type of each element.
-
-    Returns:
-        str: code.
-    """
-    code = "class {className}\n".format(className=GenVectorClassName(vectorDim, scalarType))
-    code += "{\n"
-
-    #
-    # Public.
-    #
-
-    code += GenClassPublicAccessSpecifier()
-
-    code += GenVectorClassConstructor(vectorDim, scalarType)
-    code += "\n"
-    code += GenVectorClassCopyConstructor(vectorDim, scalarType)
-    code += "\n"
-    code += GenVectorClassCopyAssignmentOperator(vectorDim, scalarType)
-    code += "\n"
-
-    code += GenVectorClassSquareBracketOperator(vectorDim, scalarType, constQualified=False)
-    code += "\n"
-    code += GenVectorClassSquareBracketOperator(vectorDim, scalarType, constQualified=True)
-    code += "\n"
-
-    # Only generate arithmetic operator overloading for single-index vector dim.
-    if len(vectorDim) == 1:
-        for operator in ARITHMETIC_OPERATORS:
-            code += GenVectorClassArithmeticOperator(vectorDim, scalarType, operator)
-            code += "\n"
-            code += GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator)
-            code += "\n"
-
-    # Generate round bracket operator for matrix classes.
-    if len(vectorDim) == 2:
-        code += GenVectorClassRoundBracketOperator(vectorDim, scalarType, constQualified=False)
-        code += "\n"
-        code += GenVectorClassRoundBracketOperator(vectorDim, scalarType, constQualified=True)
-        code += "\n"
-
-    code += GenVectorClassHasNans(vectorDim, scalarType)
-    code += "\n"
-
-    #
-    # Private.
-    #
-
-    code += GenClassPrivateAccessSpecifier()
-    code += GenVectorClassMembers(vectorDim, scalarType)
-    code += "};";
-
-    return code
-
-
-def GenVectorTypeHeader(vectorDim, scalarType):
-    """
-    Generate a single vector type as a header source.
-
-    Args:
-        vectorDim (int): number of elements in the vector.
-        scalarType (str): scalar type of each element.
-
-    Returns:
-        str: file name of generated vector class.
-    """
-    code = GenPragmaOnce()
-    code += "\n"
-
-    # Includes
-    code += GenInclude("cmath")
-    code += GenInclude("cstring")
-    code += GenInclude("pbr/tools/assert.h")
-    code += "\n"
-
-    # Body
-    code += GenNamespaceBegin(NAMESPACE)
-    code += GenVectorClass(vectorDim, scalarType)
-    code += GenNamespaceEnd(NAMESPACE)
-
-    return code
 
 
 def GenVectorTypes(directoryPrefix):
     """
-    Generate all vector type source files, across matrix VECTOR_DIM x SCALAR_TYPES.
+    Generate all vector type source files.
 
     Args:
         directoryPrefix (str): directory prefix of generated files.
@@ -571,23 +561,21 @@ def GenVectorTypes(directoryPrefix):
     # Generate vector class headers.
     filePaths = []
     headerFileNames = []
-    for vectorDim in VECTOR_DIMS:
-        for scalarType in SCALAR_TYPES:
+    for vectorType in VECTOR_TYPES:
 
-            # Don't generate matrices with integer elements.
-            if scalarType == "int" and len(vectorDim) == 2:
-                continue
+        # Don't generate matrices with integer elements.
+        if vectorType.scalarType == "int" and len(vectorType.dims) == 2:
+            continue
 
-            code = GenVectorTypeHeader(vectorDim, scalarType)
-            fileName = GetVectorClassHeaderFileName(vectorDim, scalarType)
-            filePath = os.path.join(os.path.abspath(directoryPrefix), fileName)
+        fileName = vectorType.GetHeaderFileName()
+        filePath = os.path.join(os.path.abspath(directoryPrefix), fileName)
+        code = vectorType.GenCode()
+        PrintInfo("Generated {!r}:\n{}".format(filePath, code))
+        with open(filePath, 'w') as f:
+            f.write(code)
 
-            PrintInfo("Generated {!r}:\n{}".format(filePath, code))
-            with open(filePath, 'w') as f:
-                f.write(code)
-
-            filePaths.append(filePath)
-            headerFileNames.append(fileName)
+        filePaths.append(filePath)
+        headerFileNames.append(fileName)
 
     # Generate aggregation cpp source.
     aggregateCppPath = GenAggregateCpp(directoryPrefix, headerFileNames)

@@ -12,9 +12,6 @@ __all__ = [
     "GenNamespaceEnd",
     "GenClassPublicAccessSpecifier",
     "GenClassPrivateAccessSpecifier",
-    "GenIndexArg",
-    "GenRowIndexArg",
-    "GenColumnIndexArg",
     "GenConstQualifier",
     "GenInclude",
     "GenIncludes",
@@ -77,32 +74,6 @@ def GenClassPrivateAccessSpecifier():
         str: code.
     """
     return "private:\n"
-
-
-def GenIndexArg():
-    """
-    Generate index argument name.  Used in operator[] overload.
-
-    Returns:
-        str: code.
-    """
-    return "i_index"
-
-
-def GenRowIndexArg():
-    """
-    Returns:
-        str: row index argument name.  Used in operator() overload.
-    """
-    return "i_row"
-
-
-def GenColumnIndexArg():
-    """
-    Returns:
-        str: column index argument name.  Used in operator() overload.
-    """
-    return "i_column"
 
 
 def GenConstQualifier():
