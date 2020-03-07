@@ -124,4 +124,39 @@ function(pbr_program PROGRAM_NAME)
 
 endfunction() # pbr_program
 
+function(pbr_test_program PROGRAM_NAME)
 
+    set(options
+    )
+
+    set(oneValueArgs
+    )
+
+    set(multiValueArgs
+        CPPFILES
+        INCLUDE_PATHS
+        LIBRARIES
+    )
+
+    cmake_parse_arguments(args
+        "${options}"
+        "${oneValueArgs}"
+        "${multiValueArgs}"
+        ${ARGN}
+    )
+
+    pbr_program(${PROGRAM_NAME}
+        CPPFILES
+            ${args_CPPFILES}
+        INCLUDE_PATHS
+            ${args_INCLUDE_PATHS}
+        LIBRARIES
+            ${args_LIBRARIES}
+    )
+
+    add_test(
+        NAME ${PROGRAM_NAME}
+        COMMAND $<TARGET_FILE:${PROGRAM_NAME}>
+    )
+
+endfunction() # pbr_test_program

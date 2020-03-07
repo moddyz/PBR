@@ -10,13 +10,14 @@ CMAKE_ARGS=\
 \ -DTBB_ROOT_DIR="/apps/tbb/4.4.6"\
 \ -DBOOST_ROOT="/apps/boost/1.61.0"\
 \ -DGLEW_LOCATION="/apps/glew/2.0.0"\
+\ -DBUILD_TESTING="ON"\
 \ -DCMAKE_BUILD_TYPE="Debug"
 
 # Only build if installation path not specified.
 if [ $# -eq 0 ]
 then
     cmake $CMAKE_ARGS ..
-    cmake --build . -- -j 8
+    cmake --build . -- test -j 8
 else
     cmake $CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=$1 ..
     cmake --build . --target install -- -j 8

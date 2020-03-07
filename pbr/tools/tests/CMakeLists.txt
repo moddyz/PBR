@@ -1,11 +1,11 @@
-pbr_program(testAssert
+pbr_test_program(testAssert
     CPPFILES
         testAssert.cpp
     LIBRARIES
         pbr_tools
 )
 
-pbr_program(testProfile
+pbr_test_program(testProfile
     CPPFILES
         testProfile.cpp
     LIBRARIES
@@ -13,7 +13,7 @@ pbr_program(testProfile
         pthread
 )
 
-pbr_program(testLog
+pbr_test_program(testLog
     CPPFILES
         testLog.cpp
     LIBRARIES

@@ -28,6 +28,10 @@ include(Public)
 string(APPEND CMAKE_SHARED_LINKER_FLAGS " -Wl,--no-undefined")
 set(CMAKE_CXX_FLAGS_DEBUG "-DPBR_DEBUG")
 
+if(BUILD_TESTING)
+    enable_testing()
+endif()
+
 # Build targets.
 add_subdirectory(pbr)
 add_subdirectory(hdPbr)
