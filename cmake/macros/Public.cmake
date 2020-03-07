@@ -2,7 +2,7 @@ function(pbr_library PACKAGE_NAME)
 
     set(options
     )
-    
+
     set(oneValueArgs
     )
 
@@ -25,26 +25,31 @@ function(pbr_library PACKAGE_NAME)
 
     # Public headers
     file(
-        COPY ${args_HEADERS} 
+        COPY ${args_HEADERS}
         DESTINATION ${CMAKE_BINARY_DIR}/include/${PACKAGE_PATH}
     )
     install(
-        FILES ${args_HEADERS}    
+        FILES ${args_HEADERS}
         DESTINATION ${CMAKE_INSTALL_PREFIX}/include/${PACKAGE_PATH}
     )
 
     # Library.
     add_library(${PACKAGE_TARGET} SHARED ${args_CPPFILES})
 
-    target_include_directories(${PACKAGE_TARGET} 
-        PUBLIC 
+    target_compile_options(${PACKAGE_TARGET}
+        PRIVATE
+            -g -O3 -Wno-deprecated -Werror
+    )
+
+    target_include_directories(${PACKAGE_TARGET}
+        PUBLIC
             $<INSTALL_INTERFACE:/include>
             $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
         PRIVATE
             ${args_INCLUDE_PATHS}
     )
 
-    target_link_libraries(${PACKAGE_TARGET} 
+    target_link_libraries(${PACKAGE_TARGET}
         PRIVATE ${args_LIBRARIES}
     )
 
@@ -77,6 +82,11 @@ function(pbr_program PROGRAM_NAME)
     )
 
     add_executable(${PROGRAM_NAME} ${args_CPPFILES})
+
+    target_compile_options(${PROGRAM_NAME}
+        PRIVATE
+            -g -O3 -Wno-deprecated -Werror
+    )
 
     target_include_directories(${PROGRAM_NAME}
         PRIVATE

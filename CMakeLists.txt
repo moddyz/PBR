@@ -29,7 +29,6 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Compiler options
-add_compile_options(-g -O3 -Wno-deprecated -Werror)
 string(APPEND CMAKE_SHARED_LINKER_FLAGS " -Wl,--no-undefined")
 set(CMAKE_CXX_FLAGS_DEBUG "-DPBR_DEBUG")
 

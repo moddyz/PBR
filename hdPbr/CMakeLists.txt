@@ -3,15 +3,19 @@ set(PACKAGE_NAME "hdPbr")
 # Public headers
 file(GLOB HEADER_FILES *.h)
 file(
-    COPY ${HEADER_FILES} 
+    COPY ${HEADER_FILES}
     DESTINATION ${CMAKE_BINARY_DIR}/include/${PACKAGE_NAME}
 )
 
 # Library.
 file(GLOB SRC_FILES *.cpp)
 add_library(${PACKAGE_NAME} SHARED ${SRC_FILES})
+target_compile_options(${PACKAGE_NAME}
+    PRIVATE
+        -g -O3 -Wno-deprecated -Werror
+)
 set_target_properties(${PACKAGE_NAME} PROPERTIES PREFIX "")
-target_include_directories(${PACKAGE_NAME} 
+target_include_directories(${PACKAGE_NAME}
     SYSTEM
     PRIVATE
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
@@ -24,8 +28,8 @@ target_link_libraries(${PACKAGE_NAME}
     PRIVATE
         -L${USD_LIBRARY_DIR}
 )
-target_link_libraries(${PACKAGE_NAME} 
-    PRIVATE 
+target_link_libraries(${PACKAGE_NAME}
+    PRIVATE
         ${PYTHON_LIBRARIES}
         ${Boost_LIBRARIES}
         ${TBB_tbb_LIBRARY}
