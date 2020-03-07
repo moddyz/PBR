@@ -19,6 +19,7 @@
     }
 #else
 #define PBR_ASSERT( expr, ... ) void()
+#define PBR_ASSERT_MSG( expr, format, ... ) void()
 #endif
 /* clang-format on */
 
