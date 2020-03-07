@@ -56,10 +56,6 @@ class VectorType(object):
         """
         Generate a single vector type as a header source.
 
-        Args:
-            self.dims (int): number of elements in the vector.
-            scalarType (str): scalar type of each element.
-
         Returns:
             str: file name of generated vector class.
         """
