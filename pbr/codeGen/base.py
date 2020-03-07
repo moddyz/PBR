@@ -13,6 +13,7 @@ __all__ = [
     "GenClassPublicAccessSpecifier",
     "GenClassPrivateAccessSpecifier",
     "GenConstQualifier",
+    "GenUsing",
     "GenInclude",
     "GenIncludes",
     "GenAssert",
@@ -88,10 +89,25 @@ def GenConstQualifier():
 
 def GenInclude(includePath):
     """
+    Args:
+        includePath (str): path to include.
+
     Returns:
         str: an include statement.
     """
     return "#include <{includePath}>\n".format(includePath=includePath)
+
+
+def GenUsing(alias, specification):
+    """
+    Args:
+        alias (str): new type definition to introduce.
+        specification (str): actual type specification which the new definition aliases.
+
+    Returns:
+        str: a using typedef.
+    """
+    return "using {alias} = {specification};\n".format(alias=alias, specification=specification)
 
 
 def GenIncludes(includePaths):

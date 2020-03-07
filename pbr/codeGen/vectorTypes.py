@@ -64,13 +64,13 @@ class VectorType(object):
             str: file name of generated vector class.
         """
         code = GenPragmaOnce()
-        code += "\n"
+        code += os.linesep
 
         # Includes
         code += GenInclude("cmath")
         code += GenInclude("cstring")
         code += GenInclude("pbr/tools/assert.h")
-        code += "\n"
+        code += os.linesep
 
         # Body
         code += GenNamespaceBegin(NAMESPACE)
@@ -96,34 +96,34 @@ class VectorType(object):
         code += GenClassPublicAccessSpecifier()
 
         code += self.GenClassConstructor()
-        code += "\n"
+        code += os.linesep
         code += self.GenClassCopyConstructor()
-        code += "\n"
+        code += os.linesep
         code += self.GenClassCopyAssignmentOperator()
-        code += "\n"
+        code += os.linesep
 
         code += self.GenClassSquareBracketOperator(constQualified=False)
-        code += "\n"
+        code += os.linesep
         code += self.GenClassSquareBracketOperator(constQualified=True)
-        code += "\n"
+        code += os.linesep
 
         # Only generate arithmetic operator overloading for single-index vector dim.
         if len(self.dims) == 1:
             for operator in ARITHMETIC_OPERATORS:
                 code += self.GenClassArithmeticOperator(operator)
-                code += "\n"
+                code += os.linesep
                 code += self.GenClassArithmeticAssignmentOperator(operator)
-                code += "\n"
+                code += os.linesep
 
         # Generate round bracket operator for matrix classes.
         if len(self.dims) == 2:
             code += self.GenClassRoundBracketOperator(constQualified=False)
-            code += "\n"
+            code += os.linesep
             code += self.GenClassRoundBracketOperator(constQualified=True)
-            code += "\n"
+            code += os.linesep
 
         code += self.GenClassHasNans()
-        code += "\n"
+        code += os.linesep
 
         #
         # Private.
@@ -531,8 +531,6 @@ class VectorType(object):
         return "i_column"
 
 
-
-
 VECTOR_TYPES = [
     # Single-index vector types.
     VectorType((2,), "int"),
@@ -562,10 +560,6 @@ def GenVectorTypes(directoryPrefix):
     filePaths = []
     headerFileNames = []
     for vectorType in VECTOR_TYPES:
-
-        # Don't generate matrices with integer elements.
-        if vectorType.scalarType == "int" and len(vectorType.dims) == 2:
-            continue
 
         fileName = vectorType.GetHeaderFileName()
         filePath = os.path.join(os.path.abspath(directoryPrefix), fileName)

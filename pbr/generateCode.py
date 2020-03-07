@@ -8,6 +8,7 @@ import os
 
 from codeGen.utils import FormatCode
 from codeGen.vectorTypes import GenVectorTypes
+from codeGen.arrayTypes import GenArrayTypes
 
 
 def GenTypes():
@@ -19,7 +20,8 @@ def GenTypes():
     Returns:
         list: names of generated source files.
     """
-    fileNames = GenVectorTypes('types')
+    fileNames = GenVectorTypes("types")
+    fileNames += GenArrayTypes("types")
     return fileNames
 
 
