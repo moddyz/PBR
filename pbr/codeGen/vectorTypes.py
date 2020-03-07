@@ -179,52 +179,6 @@ class VectorType(object):
             scalarType=self.scalarType.title()
         )
 
-    @staticmethod
-    def GetClassElementMember():
-        """
-        Returns:
-            str: member name of vector class' elements.
-        """
-        return "m_elements"
-
-    @staticmethod
-    def GetElementArg(index):
-        """
-        Get the name of a vector element argument.
-
-        Examples:
-            i_element0
-            i_element2
-
-        Returns:
-            str: argument name of a vector element argument.
-        """
-        return "i_element{index}".format(index=index)
-
-    def GetVectorArg(self):
-        """
-        Get the name of a vector value argument.
-
-        Returns:
-            str: argument name of a vector.
-        """
-        if len(self.dims) == 2:
-            return "i_matrix"
-        elif len(self.dims) == 1:
-            return "i_vector"
-        else:
-            raise ValueError("Unsupported vector dimension: {}".format(self.dims))
-
-    @staticmethod
-    def GetScalarArg():
-        """
-        Get the name of a scalar value argument.
-
-        Returns:
-            str: argument name of a scalar.
-        """
-        return "i_scalar"
-
     def GenClassElementWiseConstructor(self):
         """
         Generate the class constructor.
@@ -505,6 +459,52 @@ class VectorType(object):
                 code += ",\n"
         code += "};\n"
         return code
+
+    def GetVectorArg(self):
+        """
+        Get the name of a vector value argument.
+
+        Returns:
+            str: argument name of a vector.
+        """
+        if len(self.dims) == 2:
+            return "i_matrix"
+        elif len(self.dims) == 1:
+            return "i_vector"
+        else:
+            raise ValueError("Unsupported vector dimension: {}".format(self.dims))
+
+    @staticmethod
+    def GetScalarArg():
+        """
+        Get the name of a scalar value argument.
+
+        Returns:
+            str: argument name of a scalar.
+        """
+        return "i_scalar"
+
+    @staticmethod
+    def GetClassElementMember():
+        """
+        Returns:
+            str: member name of vector class' elements.
+        """
+        return "m_elements"
+
+    @staticmethod
+    def GetElementArg(index):
+        """
+        Get the name of a vector element argument.
+
+        Examples:
+            i_element0
+            i_element2
+
+        Returns:
+            str: argument name of a vector element argument.
+        """
+        return "i_element{index}".format(index=index)
 
     @staticmethod
     def GenIndexArg():
