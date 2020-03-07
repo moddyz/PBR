@@ -16,21 +16,25 @@ public:
 
     float& operator[]( size_t i_index )
     {
+        PBR_ASSERT( !HasNans() );
         return m_elements[ i_index ];
     }
 
     const float& operator[]( size_t i_index ) const
     {
+        PBR_ASSERT( !HasNans() );
         return m_elements[ i_index ];
     }
 
     Vector2f operator+( const Vector2f& i_vector )
     {
+        PBR_ASSERT( !HasNans() );
         return Vector2f( m_elements[ 0 ] + i_vector.m_elements[ 0 ], m_elements[ 1 ] + i_vector.m_elements[ 1 ] );
     }
 
     Vector2f& operator+=( const Vector2f& i_vector )
     {
+        PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
         m_elements[ 1 ] += i_vector.m_elements[ 1 ];
         return *this;
@@ -38,11 +42,13 @@ public:
 
     Vector2f operator-( const Vector2f& i_vector )
     {
+        PBR_ASSERT( !HasNans() );
         return Vector2f( m_elements[ 0 ] - i_vector.m_elements[ 0 ], m_elements[ 1 ] - i_vector.m_elements[ 1 ] );
     }
 
     Vector2f& operator-=( const Vector2f& i_vector )
     {
+        PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
         m_elements[ 1 ] -= i_vector.m_elements[ 1 ];
         return *this;
@@ -50,11 +56,13 @@ public:
 
     Vector2f operator*( const float& i_scalar )
     {
+        PBR_ASSERT( !HasNans() );
         return Vector2f( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar );
     }
 
     Vector2f& operator*=( const float& i_scalar )
     {
+        PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] *= i_scalar;
         m_elements[ 1 ] *= i_scalar;
         return *this;
@@ -62,11 +70,13 @@ public:
 
     Vector2f operator/( const float& i_scalar )
     {
+        PBR_ASSERT( !HasNans() );
         return Vector2f( m_elements[ 0 ] / i_scalar, m_elements[ 1 ] / i_scalar );
     }
 
     Vector2f& operator/=( const float& i_scalar )
     {
+        PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] /= i_scalar;
         m_elements[ 1 ] /= i_scalar;
         return *this;
@@ -74,6 +84,7 @@ public:
 
     bool HasNans() const
     {
+        PBR_ASSERT( !HasNans() );
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] );
     }
 

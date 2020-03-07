@@ -248,7 +248,7 @@ def GenVectorClassArithmeticOperator(vectorDim, scalarType, operator):
         argName=argName,
     )
     code += "{\n"
-
+    code += GenAssert("!HasNans()")
     code += "return {className}(".format(
         className=GenVectorClassName(vectorDim, scalarType)
     )
@@ -291,6 +291,7 @@ def GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator):
     )
     code += "{\n"
 
+    code += GenAssert("!HasNans()")
     elementCount = GetVectorElementCount(vectorDim)
     for index in range(elementCount):
         rhs = GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index)
@@ -323,6 +324,7 @@ def GenVectorClassSquareBracketOperator(vectorDim, scalarType, constQualified=Fa
         constQualifier=GenConstQualifier() if constQualified else ""
     )
     code += "{\n"
+    code += GenAssert("!HasNans()")
     code += "return {elementMember}[{index}];\n".format(
         elementMember=GenVectorClassElementMember(),
         index=GenIndexArg(),
@@ -358,6 +360,7 @@ def GenVectorClassRoundBracketOperator(vectorDim, scalarType, constQualified=Fal
         columnIndexArg=GenColumnIndexArg()
     )
 
+    code += GenAssert("!HasNans()")
     code += "return {elementMember}[{index}];\n".format(
         elementMember=GenVectorClassElementMember(),
         index=elementIndexExpression,
@@ -382,8 +385,8 @@ def GenVectorClassHasNans(vectorDim, scalarType):
         constQualifier=GenConstQualifier()
     )
     code += "{\n"
+    code += GenAssert("!HasNans()")
     code += "return "
-
     elementCount = GetVectorElementCount(vectorDim)
     for index in range(elementCount):
         code += "std::isnan({elementMember}[{index}])".format(
@@ -414,7 +417,6 @@ def GenVectorClassMembers(vectorDim, scalarType):
         vectorDim=GetVectorElementCount(vectorDim),
     )
     code += "{\n"
-
     elementCount = GetVectorElementCount(vectorDim)
     for index in range(elementCount):
         code += GenScalarDefaultValue(scalarType)

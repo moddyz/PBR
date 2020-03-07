@@ -32,26 +32,31 @@ public:
 
     float& operator[]( size_t i_index )
     {
+        PBR_ASSERT( !HasNans() );
         return m_elements[ i_index ];
     }
 
     const float& operator[]( size_t i_index ) const
     {
+        PBR_ASSERT( !HasNans() );
         return m_elements[ i_index ];
     }
 
     float& operator()( size_t i_row, size_t i_column )
     {
+        PBR_ASSERT( !HasNans() );
         return m_elements[ ( i_row * 3 ) + i_column ];
     }
 
     const float& operator()( size_t i_row, size_t i_column ) const
     {
+        PBR_ASSERT( !HasNans() );
         return m_elements[ ( i_row * 3 ) + i_column ];
     }
 
     bool HasNans() const
     {
+        PBR_ASSERT( !HasNans() );
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] ) ||
                std::isnan( m_elements[ 3 ] ) || std::isnan( m_elements[ 4 ] ) || std::isnan( m_elements[ 5 ] ) ||
                std::isnan( m_elements[ 6 ] ) || std::isnan( m_elements[ 7 ] ) || std::isnan( m_elements[ 8 ] );

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 # Project Name
 project(
-    Pbr VERSION 0.0
+    PBR VERSION 0.0
     DESCRIPTION "Physically based rendering."
     LANGUAGES CXX
 )

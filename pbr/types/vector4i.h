@@ -16,16 +16,19 @@ public:
 
     int& operator[]( size_t i_index )
     {
+        PBR_ASSERT( !HasNans() );
         return m_elements[ i_index ];
     }
 
     const int& operator[]( size_t i_index ) const
     {
+        PBR_ASSERT( !HasNans() );
         return m_elements[ i_index ];
     }
 
     Vector4i operator+( const Vector4i& i_vector )
     {
+        PBR_ASSERT( !HasNans() );
         return Vector4i( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
                          m_elements[ 1 ] + i_vector.m_elements[ 1 ],
                          m_elements[ 2 ] + i_vector.m_elements[ 2 ],
@@ -34,6 +37,7 @@ public:
 
     Vector4i& operator+=( const Vector4i& i_vector )
     {
+        PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
         m_elements[ 1 ] += i_vector.m_elements[ 1 ];
         m_elements[ 2 ] += i_vector.m_elements[ 2 ];
@@ -43,6 +47,7 @@ public:
 
     Vector4i operator-( const Vector4i& i_vector )
     {
+        PBR_ASSERT( !HasNans() );
         return Vector4i( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
                          m_elements[ 1 ] - i_vector.m_elements[ 1 ],
                          m_elements[ 2 ] - i_vector.m_elements[ 2 ],
@@ -51,6 +56,7 @@ public:
 
     Vector4i& operator-=( const Vector4i& i_vector )
     {
+        PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
         m_elements[ 1 ] -= i_vector.m_elements[ 1 ];
         m_elements[ 2 ] -= i_vector.m_elements[ 2 ];
@@ -60,6 +66,7 @@ public:
 
     Vector4i operator*( const int& i_scalar )
     {
+        PBR_ASSERT( !HasNans() );
         return Vector4i( m_elements[ 0 ] * i_scalar,
                          m_elements[ 1 ] * i_scalar,
                          m_elements[ 2 ] * i_scalar,
@@ -68,6 +75,7 @@ public:
 
     Vector4i& operator*=( const int& i_scalar )
     {
+        PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] *= i_scalar;
         m_elements[ 1 ] *= i_scalar;
         m_elements[ 2 ] *= i_scalar;
@@ -77,6 +85,7 @@ public:
 
     Vector4i operator/( const int& i_scalar )
     {
+        PBR_ASSERT( !HasNans() );
         return Vector4i( m_elements[ 0 ] / i_scalar,
                          m_elements[ 1 ] / i_scalar,
                          m_elements[ 2 ] / i_scalar,
@@ -85,6 +94,7 @@ public:
 
     Vector4i& operator/=( const int& i_scalar )
     {
+        PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] /= i_scalar;
         m_elements[ 1 ] /= i_scalar;
         m_elements[ 2 ] /= i_scalar;
@@ -94,6 +104,7 @@ public:
 
     bool HasNans() const
     {
+        PBR_ASSERT( !HasNans() );
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] ) ||
                std::isnan( m_elements[ 3 ] );
     }
