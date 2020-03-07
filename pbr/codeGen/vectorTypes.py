@@ -146,14 +146,14 @@ class VectorType(object):
             str: header file name.
         """
         if len(self.dims) == 2:
-            prefix = "matrix"
+            prefix = "mat"
         else:
-            prefix = "vector"
+            prefix = "vec"
 
         return "{prefix}{dims}{scalarType}.h".format(
             prefix=prefix,
             dims=str(self.dims[0]),
-            scalarType=self.scalarType[0]
+            scalarType=self.scalarType.title()
         )
 
     def GetClassName(self):
@@ -164,14 +164,14 @@ class VectorType(object):
             str: class name.
         """
         if len(self.dims) == 2:
-            prefix = "Matrix"
+            prefix = "Mat"
         else:
-            prefix = "Vector"
+            prefix = "Vec"
 
         return "{prefix}{dims}{scalarType}".format(
             prefix=prefix,
             dims=str(self.dims[0]),
-            scalarType=self.scalarType[0]
+            scalarType=self.scalarType.title()
         )
 
     @staticmethod

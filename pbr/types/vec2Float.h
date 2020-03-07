@@ -6,22 +6,22 @@
 
 namespace pbr
 {
-class Vector3f
+class Vec2Float
 {
 public:
-    explicit Vector3f( const float& i_element0, const float& i_element1, const float& i_element2 )
-        : m_elements{i_element0, i_element1, i_element2}
+    explicit Vec2Float( const float& i_element0, const float& i_element1 )
+        : m_elements{i_element0, i_element1}
     {
         PBR_ASSERT( !HasNans() );
     }
 
-    Vector3f( const Vector3f& i_vector )
+    Vec2Float( const Vec2Float& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( m_elements ) );
     }
 
-    Vector3f& operator=( const Vector3f& i_vector )
+    Vec2Float& operator=( const Vec2Float& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( m_elements ) );
@@ -40,77 +40,69 @@ public:
         return m_elements[ i_index ];
     }
 
-    Vector3f operator+( const Vector3f& i_vector )
+    Vec2Float operator+( const Vec2Float& i_vector )
     {
         PBR_ASSERT( !HasNans() );
-        return Vector3f( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
-                         m_elements[ 1 ] + i_vector.m_elements[ 1 ],
-                         m_elements[ 2 ] + i_vector.m_elements[ 2 ] );
+        return Vec2Float( m_elements[ 0 ] + i_vector.m_elements[ 0 ], m_elements[ 1 ] + i_vector.m_elements[ 1 ] );
     }
 
-    Vector3f& operator+=( const Vector3f& i_vector )
+    Vec2Float& operator+=( const Vec2Float& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
         m_elements[ 1 ] += i_vector.m_elements[ 1 ];
-        m_elements[ 2 ] += i_vector.m_elements[ 2 ];
         return *this;
     }
 
-    Vector3f operator-( const Vector3f& i_vector )
+    Vec2Float operator-( const Vec2Float& i_vector )
     {
         PBR_ASSERT( !HasNans() );
-        return Vector3f( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
-                         m_elements[ 1 ] - i_vector.m_elements[ 1 ],
-                         m_elements[ 2 ] - i_vector.m_elements[ 2 ] );
+        return Vec2Float( m_elements[ 0 ] - i_vector.m_elements[ 0 ], m_elements[ 1 ] - i_vector.m_elements[ 1 ] );
     }
 
-    Vector3f& operator-=( const Vector3f& i_vector )
+    Vec2Float& operator-=( const Vec2Float& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
         m_elements[ 1 ] -= i_vector.m_elements[ 1 ];
-        m_elements[ 2 ] -= i_vector.m_elements[ 2 ];
         return *this;
     }
 
-    Vector3f operator*( const float& i_scalar )
+    Vec2Float operator*( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
-        return Vector3f( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar, m_elements[ 2 ] * i_scalar );
+        return Vec2Float( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar );
     }
 
-    Vector3f& operator*=( const float& i_scalar )
+    Vec2Float& operator*=( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] *= i_scalar;
         m_elements[ 1 ] *= i_scalar;
-        m_elements[ 2 ] *= i_scalar;
         return *this;
     }
 
-    Vector3f operator/( const float& i_scalar )
+    Vec2Float operator/( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
-        return Vector3f( m_elements[ 0 ] / i_scalar, m_elements[ 1 ] / i_scalar, m_elements[ 2 ] / i_scalar );
+        return Vec2Float( m_elements[ 0 ] / i_scalar, m_elements[ 1 ] / i_scalar );
     }
 
-    Vector3f& operator/=( const float& i_scalar )
+    Vec2Float& operator/=( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] /= i_scalar;
         m_elements[ 1 ] /= i_scalar;
-        m_elements[ 2 ] /= i_scalar;
         return *this;
     }
 
     bool HasNans() const
     {
         PBR_ASSERT( !HasNans() );
-        return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] );
+        return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] );
     }
 
 private:
-    float m_elements[ 3 ] = {0.0f, 0.0f, 0.0f};
+    float m_elements[ 2 ] = {0.0f, 0.0f};
 };
 } // namespace pbr

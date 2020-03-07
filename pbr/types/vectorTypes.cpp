@@ -1,8 +1,8 @@
-#include <pbr/types/matrix3f.h>
-#include <pbr/types/matrix4f.h>
-#include <pbr/types/vector2f.h>
-#include <pbr/types/vector2i.h>
-#include <pbr/types/vector3f.h>
-#include <pbr/types/vector3i.h>
-#include <pbr/types/vector4f.h>
-#include <pbr/types/vector4i.h>
+#include <pbr/types/mat3Float.h>
+#include <pbr/types/mat4Float.h>
+#include <pbr/types/vec2Float.h>
+#include <pbr/types/vec2Int.h>
+#include <pbr/types/vec3Float.h>
+#include <pbr/types/vec3Int.h>
+#include <pbr/types/vec4Float.h>
+#include <pbr/types/vec4Int.h>

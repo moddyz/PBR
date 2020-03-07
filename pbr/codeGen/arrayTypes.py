@@ -73,7 +73,7 @@ class ArrayType:
             str: header file name.
         """
         return "{elementTypeName}Array.h".format(
-            elementTypeName=self.elementTypeName.lower()
+            elementTypeName=self.elementTypeName[0].lower() + self.elementTypeName[1:]
         )
 
 

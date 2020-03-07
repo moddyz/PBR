@@ -6,18 +6,18 @@
 
 namespace pbr
 {
-class Matrix3f
+class Mat3Float
 {
 public:
-    explicit Matrix3f( const float& i_element0,
-                       const float& i_element1,
-                       const float& i_element2,
-                       const float& i_element3,
-                       const float& i_element4,
-                       const float& i_element5,
-                       const float& i_element6,
-                       const float& i_element7,
-                       const float& i_element8 )
+    explicit Mat3Float( const float& i_element0,
+                        const float& i_element1,
+                        const float& i_element2,
+                        const float& i_element3,
+                        const float& i_element4,
+                        const float& i_element5,
+                        const float& i_element6,
+                        const float& i_element7,
+                        const float& i_element8 )
         : m_elements{i_element0,
                      i_element1,
                      i_element2,
@@ -31,13 +31,13 @@ public:
         PBR_ASSERT( !HasNans() );
     }
 
-    Matrix3f( const Matrix3f& i_matrix )
+    Mat3Float( const Mat3Float& i_matrix )
     {
         PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_matrix.m_elements, sizeof( m_elements ) );
     }
 
-    Matrix3f& operator=( const Matrix3f& i_matrix )
+    Mat3Float& operator=( const Mat3Float& i_matrix )
     {
         PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_matrix.m_elements, sizeof( m_elements ) );

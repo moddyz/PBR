@@ -6,25 +6,25 @@
 
 namespace pbr
 {
-class Matrix4f
+class Mat4Float
 {
 public:
-    explicit Matrix4f( const float& i_element0,
-                       const float& i_element1,
-                       const float& i_element2,
-                       const float& i_element3,
-                       const float& i_element4,
-                       const float& i_element5,
-                       const float& i_element6,
-                       const float& i_element7,
-                       const float& i_element8,
-                       const float& i_element9,
-                       const float& i_element10,
-                       const float& i_element11,
-                       const float& i_element12,
-                       const float& i_element13,
-                       const float& i_element14,
-                       const float& i_element15 )
+    explicit Mat4Float( const float& i_element0,
+                        const float& i_element1,
+                        const float& i_element2,
+                        const float& i_element3,
+                        const float& i_element4,
+                        const float& i_element5,
+                        const float& i_element6,
+                        const float& i_element7,
+                        const float& i_element8,
+                        const float& i_element9,
+                        const float& i_element10,
+                        const float& i_element11,
+                        const float& i_element12,
+                        const float& i_element13,
+                        const float& i_element14,
+                        const float& i_element15 )
         : m_elements{i_element0,
                      i_element1,
                      i_element2,
@@ -45,13 +45,13 @@ public:
         PBR_ASSERT( !HasNans() );
     }
 
-    Matrix4f( const Matrix4f& i_matrix )
+    Mat4Float( const Mat4Float& i_matrix )
     {
         PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_matrix.m_elements, sizeof( m_elements ) );
     }
 
-    Matrix4f& operator=( const Matrix4f& i_matrix )
+    Mat4Float& operator=( const Mat4Float& i_matrix )
     {
         PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_matrix.m_elements, sizeof( m_elements ) );
