@@ -10,9 +10,11 @@ __all__ = [
     "GenPragmaOnce",
     "GenNamespaceBegin",
     "GenNamespaceEnd",
-    "GenClassPublicQualifier",
-    "GenClassPrivateQualifier",
+    "GenClassPublicAccessSpecifier",
+    "GenClassPrivateAccessSpecifier",
     "GenIndexArg",
+    "GenRowIndexArg",
+    "GenColumnIndexArg",
     "GenConstQualifier",
     "GenInclude",
     "GenIncludes",
@@ -57,7 +59,7 @@ def GenNamespaceEnd(namespace):
     return "} // namespace %s\n" % (namespace)
 
 
-def GenClassPublicQualifier():
+def GenClassPublicAccessSpecifier():
     """
     Generate class public qualifier.
 
@@ -67,7 +69,7 @@ def GenClassPublicQualifier():
     return "public:\n"
 
 
-def GenClassPrivateQualifier():
+def GenClassPrivateAccessSpecifier():
     """
     Generate class private qualifier.
 
@@ -85,6 +87,22 @@ def GenIndexArg():
         str: code.
     """
     return "i_index"
+
+
+def GenRowIndexArg():
+    """
+    Returns:
+        str: row index argument name.  Used in operator() overload.
+    """
+    return "i_row"
+
+
+def GenColumnIndexArg():
+    """
+    Returns:
+        str: column index argument name.  Used in operator() overload.
+    """
+    return "i_column"
 
 
 def GenConstQualifier():

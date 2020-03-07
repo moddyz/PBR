@@ -19,9 +19,11 @@ from base import (
     GenPragmaOnce,
     GenNamespaceBegin,
     GenNamespaceEnd,
-    GenClassPublicQualifier,
-    GenClassPrivateQualifier,
+    GenClassPublicAccessSpecifier,
+    GenClassPrivateAccessSpecifier,
     GenIndexArg,
+    GenRowIndexArg,
+    GenColumnIndexArg,
     GenConstQualifier,
     GenInclude,
     GenIncludes,
@@ -30,9 +32,12 @@ from base import (
 )
 
 VECTOR_DIMS = [
+    # Single-index vector types.
     (2,),
     (3,),
     (4,),
+
+    # Matrix vector types.
     (3, 3),
     (4, 4),
 ]
@@ -116,20 +121,12 @@ def GenVectorClassName(vectorDim, scalarType):
     )
 
 
-def GenVectorClassElementMember(index=None):
+def GenVectorClassElementMember():
     """
-    Get the name of the vector class element member variable.
-
-    Keyword Args:
-        index (int): optional index into elements.
-
     Returns:
-        str: argument name of a vector element argument.
+        str: member name of vector class' elements.
     """
-    if index is not None:
-        return "m_elements[{index}]".format(index=index)
-    else:
-        return "m_elements"
+    return "m_elements"
 
 
 def GenVectorClassElementArg(index):
@@ -221,9 +218,9 @@ def GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index):
     if operator in ['*', '/']:
         rhs = GenScalarArg()
     else:
-        rhs = "{argName}.{elementMember}".format(
+        rhs = "{argName}.{elementMember}[{index}]".format(
             argName=GetVectorArg(vectorDim),
-            elementMember=GenVectorClassElementMember(index),
+            elementMember=GenVectorClassElementMember(),
             index=index,
         )
     return rhs
@@ -259,8 +256,9 @@ def GenVectorClassArithmeticOperator(vectorDim, scalarType, operator):
     elementCount = GetVectorElementCount(vectorDim)
     for index in range(elementCount):
         rhs = GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index)
-        code += "{elementMember} {operator} {rhs}".format(
-            elementMember=GenVectorClassElementMember(index),
+        code += "{elementMember}[{index}] {operator} {rhs}".format(
+            elementMember=GenVectorClassElementMember(),
+            index=index,
             operator=operator,
             rhs=rhs,
         )
@@ -296,8 +294,9 @@ def GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator):
     elementCount = GetVectorElementCount(vectorDim)
     for index in range(elementCount):
         rhs = GenVectorClassArithmeticOperatorRHS(vectorDim, scalarType, operator, index)
-        code += "{elementMember} {operator}= {rhs};".format(
-            elementMember=GenVectorClassElementMember(index),
+        code += "{elementMember}[{index}] {operator}= {rhs};".format(
+            elementMember=GenVectorClassElementMember(),
+            index=index,
             operator=operator,
             rhs=rhs
         )
@@ -306,7 +305,7 @@ def GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator):
     return code
 
 
-def GenVectorClassElementAccessOperator(vectorDim, scalarType, constQualified=False):
+def GenVectorClassSquareBracketOperator(vectorDim, scalarType, constQualified=False):
     """
     Generate square brackets [] element access operator overload method.
 
@@ -324,10 +323,47 @@ def GenVectorClassElementAccessOperator(vectorDim, scalarType, constQualified=Fa
         constQualifier=GenConstQualifier() if constQualified else ""
     )
     code += "{\n"
-    code += "return {elementMember};\n".format(
-        elementMember=GenVectorClassElementMember(GenIndexArg()),
+    code += "return {elementMember}[{index}];\n".format(
+        elementMember=GenVectorClassElementMember(),
+        index=GenIndexArg(),
     )
     code += "}\n"
+    return code
+
+
+def GenVectorClassRoundBracketOperator(vectorDim, scalarType, constQualified=False):
+    """
+    Generate round brackets () element access operator overload method.
+    Exclusively for matrix classes.
+
+    Args:
+        vectorDim (int): number of elements in the vector.
+        scalarType (str): scalar type of each element.
+        constQualified (bool): generate the const qualified variant?
+
+    Returns:
+        str: code.
+    """
+    code = "{constQualifier} {scalarType}& operator()( size_t {rowIndexArg}, size_t {columnIndexArg} ) {constQualifier}\n".format(
+        scalarType=scalarType,
+        rowIndexArg=GenRowIndexArg(),
+        columnIndexArg=GenColumnIndexArg(),
+        constQualifier=GenConstQualifier() if constQualified else ""
+    )
+    code += "{\n"
+
+    elementIndexExpression = "( {rowIndexArg} * {vectorColumnDim} ) + {columnIndexArg}".format(
+        rowIndexArg=GenRowIndexArg(),
+        vectorColumnDim=vectorDim[1],
+        columnIndexArg=GenColumnIndexArg()
+    )
+
+    code += "return {elementMember}[{index}];\n".format(
+        elementMember=GenVectorClassElementMember(),
+        index=elementIndexExpression,
+    )
+    code += "}\n"
+
     return code
 
 
@@ -350,8 +386,9 @@ def GenVectorClassHasNans(vectorDim, scalarType):
 
     elementCount = GetVectorElementCount(vectorDim)
     for index in range(elementCount):
-        code += "std::isnan({elementMember})".format(
-            elementMember=GenVectorClassElementMember(index)
+        code += "std::isnan({elementMember}[{index}])".format(
+            elementMember=GenVectorClassElementMember(),
+            index=index
         )
         if index < elementCount - 1:
             code += " || "
@@ -405,13 +442,13 @@ def GenVectorClass(vectorDim, scalarType):
     # Public.
     #
 
-    code += GenClassPublicQualifier()
+    code += GenClassPublicAccessSpecifier()
     code += GenVectorClassConstructor(vectorDim, scalarType)
     code += "\n"
 
-    code += GenVectorClassElementAccessOperator(vectorDim, scalarType, constQualified=False)
+    code += GenVectorClassSquareBracketOperator(vectorDim, scalarType, constQualified=False)
     code += "\n"
-    code += GenVectorClassElementAccessOperator(vectorDim, scalarType, constQualified=True)
+    code += GenVectorClassSquareBracketOperator(vectorDim, scalarType, constQualified=True)
     code += "\n"
 
     # Only generate arithmetic operator overloading for single-index vector dim.
@@ -422,6 +459,13 @@ def GenVectorClass(vectorDim, scalarType):
             code += GenVectorClassArithmeticAssignmentOperator(vectorDim, scalarType, operator)
             code += "\n"
 
+    # Generate round bracket operator for matrix classes.
+    if len(vectorDim) == 2:
+        code += GenVectorClassRoundBracketOperator(vectorDim, scalarType, constQualified=False)
+        code += "\n"
+        code += GenVectorClassRoundBracketOperator(vectorDim, scalarType, constQualified=True)
+        code += "\n"
+
     code += GenVectorClassHasNans(vectorDim, scalarType)
     code += "\n"
 
@@ -429,7 +473,7 @@ def GenVectorClass(vectorDim, scalarType):
     # Private.
     #
 
-    code += GenClassPrivateQualifier()
+    code += GenClassPrivateAccessSpecifier()
     code += GenVectorClassMembers(vectorDim, scalarType)
     code += "};";
 

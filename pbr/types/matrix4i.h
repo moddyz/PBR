@@ -54,6 +54,16 @@ public:
         return m_elements[ i_index ];
     }
 
+    int& operator()( size_t i_row, size_t i_column )
+    {
+        return m_elements[ ( i_row * 4 ) + i_column ];
+    }
+
+    const int& operator()( size_t i_row, size_t i_column ) const
+    {
+        return m_elements[ ( i_row * 4 ) + i_column ];
+    }
+
     bool HasNans() const
     {
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] ) ||
