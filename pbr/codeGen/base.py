@@ -10,6 +10,8 @@ __all__ = [
     "GenPragmaOnce",
     "GenNamespaceBegin",
     "GenNamespaceEnd",
+    "GenClassDefaultConstructor",
+    "GenClassDefaultDestructor",
     "GenClassPublicAccessSpecifier",
     "GenClassPrivateAccessSpecifier",
     "GenConstQualifier",
@@ -55,6 +57,36 @@ def GenNamespaceEnd(namespace):
         str: code.
     """
     return "} // namespace %s\n" % (namespace)
+
+
+def GenClassDefaultConstructor(className):
+    """
+    Generate class default constructor.
+
+    Args:
+        className (str)
+
+    Returns:
+        str: code.
+    """
+    return "{className}() = default;\n".format(
+        className=className
+    )
+
+
+def GenClassDefaultDestructor(className):
+    """
+    Generate class default destructor.
+
+    Args:
+        className (str)
+
+    Returns:
+        str: code.
+    """
+    return "~{className}() = default;\n".format(
+        className=className
+    )
 
 
 def GenClassPublicAccessSpecifier():

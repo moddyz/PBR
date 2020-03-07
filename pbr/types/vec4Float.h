@@ -6,9 +6,12 @@
 
 namespace pbr
 {
-class Vec4Float
+class Vec4Float final
 {
 public:
+    Vec4Float()  = default;
+    ~Vec4Float() = default;
+
     explicit Vec4Float( const float& i_element0,
                         const float& i_element1,
                         const float& i_element2,

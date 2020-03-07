@@ -31,6 +31,8 @@ from base import (
     GenPragmaOnce,
     GenNamespaceBegin,
     GenNamespaceEnd,
+    GenClassDefaultConstructor,
+    GenClassDefaultDestructor,
     GenClassPublicAccessSpecifier,
     GenClassPrivateAccessSpecifier,
     GenConstQualifier,
@@ -82,7 +84,7 @@ class VectorType(object):
         Returns:
             str: code.
         """
-        code = "class {className}\n".format(className=self.GetClassName())
+        code = "class {className} final\n".format(className=self.GetClassName())
         code += "{\n"
 
         #
@@ -91,7 +93,10 @@ class VectorType(object):
 
         code += GenClassPublicAccessSpecifier()
 
-        code += self.GenClassConstructor()
+        code += GenClassDefaultConstructor(self.GetClassName())
+        code += GenClassDefaultDestructor(self.GetClassName())
+        code += os.linesep
+        code += self.GenClassElementWiseConstructor()
         code += os.linesep
         code += self.GenClassCopyConstructor()
         code += os.linesep
@@ -220,7 +225,7 @@ class VectorType(object):
         """
         return "i_scalar"
 
-    def GenClassConstructor(self):
+    def GenClassElementWiseConstructor(self):
         """
         Generate the class constructor.
         """
@@ -479,7 +484,6 @@ class VectorType(object):
         code += ";\n"
         code += "}\n"
         return code
-
 
     def GenClassMembers(self):
         """

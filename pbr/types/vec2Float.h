@@ -6,9 +6,12 @@
 
 namespace pbr
 {
-class Vec2Float
+class Vec2Float final
 {
 public:
+    Vec2Float()  = default;
+    ~Vec2Float() = default;
+
     explicit Vec2Float( const float& i_element0, const float& i_element1 )
         : m_elements{i_element0, i_element1}
     {

@@ -6,9 +6,12 @@
 
 namespace pbr
 {
-class Mat3Float
+class Mat3Float final
 {
 public:
+    Mat3Float()  = default;
+    ~Mat3Float() = default;
+
     explicit Mat3Float( const float& i_element0,
                         const float& i_element1,
                         const float& i_element2,

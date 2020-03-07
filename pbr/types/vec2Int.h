@@ -6,9 +6,12 @@
 
 namespace pbr
 {
-class Vec2Int
+class Vec2Int final
 {
 public:
+    Vec2Int()  = default;
+    ~Vec2Int() = default;
+
     explicit Vec2Int( const int& i_element0, const int& i_element1 )
         : m_elements{i_element0, i_element1}
     {

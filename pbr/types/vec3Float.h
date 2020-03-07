@@ -6,9 +6,12 @@
 
 namespace pbr
 {
-class Vec3Float
+class Vec3Float final
 {
 public:
+    Vec3Float()  = default;
+    ~Vec3Float() = default;
+
     explicit Vec3Float( const float& i_element0, const float& i_element1, const float& i_element2 )
         : m_elements{i_element0, i_element1, i_element2}
     {
