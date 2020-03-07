@@ -10,11 +10,19 @@ file(
 # Library.
 file(GLOB SRC_FILES *.cpp)
 add_library(${PACKAGE_NAME} SHARED ${SRC_FILES})
+
 target_compile_options(${PACKAGE_NAME}
     PRIVATE
         -g -O3 -Wno-deprecated -Werror
 )
+
+target_compile_features(${PACKAGE_NAME}
+    PRIVATE
+        cxx_std_11
+)
+
 set_target_properties(${PACKAGE_NAME} PROPERTIES PREFIX "")
+
 target_include_directories(${PACKAGE_NAME}
     SYSTEM
     PRIVATE
@@ -24,10 +32,12 @@ target_include_directories(${PACKAGE_NAME}
         ${Boost_INCLUDE_DIR}
         ${TBB_INCLUDE_DIRS}
 )
+
 target_link_libraries(${PACKAGE_NAME}
     PRIVATE
         -L${USD_LIBRARY_DIR}
 )
+
 target_link_libraries(${PACKAGE_NAME}
     PRIVATE
         ${PYTHON_LIBRARIES}

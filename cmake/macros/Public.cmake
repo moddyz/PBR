@@ -41,6 +41,11 @@ function(pbr_library PACKAGE_NAME)
             -g -O3 -Wno-deprecated -Werror
     )
 
+    target_compile_features(${PACKAGE_TARGET}
+        PRIVATE
+            cxx_std_11
+    )
+
     target_include_directories(${PACKAGE_TARGET}
         PUBLIC
             $<INSTALL_INTERFACE:/include>
@@ -86,6 +91,11 @@ function(pbr_program PROGRAM_NAME)
     target_compile_options(${PROGRAM_NAME}
         PRIVATE
             -g -O3 -Wno-deprecated -Werror
+    )
+
+    target_compile_features(${PROGRAM_NAME}
+        PRIVATE
+            cxx_std_11
     )
 
     target_include_directories(${PROGRAM_NAME}

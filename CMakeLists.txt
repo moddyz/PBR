@@ -24,10 +24,6 @@ find_package(PythonLibs 2.7 REQUIRED)
 list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake/macros")
 include(Public)
 
-# Build with C++11
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-
 # Compiler options
 string(APPEND CMAKE_SHARED_LINKER_FLAGS " -Wl,--no-undefined")
 set(CMAKE_CXX_FLAGS_DEBUG "-DPBR_DEBUG")
