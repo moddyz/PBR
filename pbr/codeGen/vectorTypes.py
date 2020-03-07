@@ -573,6 +573,11 @@ def GenVectorTypes(directoryPrefix):
     headerFileNames = []
     for vectorDim in VECTOR_DIMS:
         for scalarType in SCALAR_TYPES:
+
+            # Don't generate matrices with integer elements.
+            if scalarType == "int" and len(vectorDim) == 2:
+                continue
+
             code = GenVectorTypeHeader(vectorDim, scalarType)
             fileName = GetVectorClassHeaderFileName(vectorDim, scalarType)
             filePath = os.path.join(os.path.abspath(directoryPrefix), fileName)
