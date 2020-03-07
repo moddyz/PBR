@@ -12,8 +12,9 @@ import os
 import functools
 
 from constants import (
-    NAMESPACE,
     ARITHMETIC_OPERATORS,
+    NAMESPACE,
+    TYPES_SUBDIRECTORY,
 )
 
 from scalarTypes import (
@@ -546,12 +547,9 @@ VECTOR_TYPES = [
 ]
 
 
-def GenVectorTypes(directoryPrefix):
+def GenVectorTypes():
     """
     Generate all vector type source files.
-
-    Args:
-        directoryPrefix (str): directory prefix of generated files.
 
     Returns:
         list: paths to generated source files.
@@ -562,7 +560,7 @@ def GenVectorTypes(directoryPrefix):
     for vectorType in VECTOR_TYPES:
 
         fileName = vectorType.GetHeaderFileName()
-        filePath = os.path.join(os.path.abspath(directoryPrefix), fileName)
+        filePath = os.path.join(os.path.abspath(TYPES_SUBDIRECTORY), fileName)
         code = vectorType.GenCode()
         PrintInfo("Generated {!r}:\n{}".format(filePath, code))
         with open(filePath, 'w') as f:
@@ -572,7 +570,7 @@ def GenVectorTypes(directoryPrefix):
         headerFileNames.append(fileName)
 
     # Generate aggregation cpp source.
-    aggregateCppPath = GenAggregateCpp(directoryPrefix, headerFileNames)
+    aggregateCppPath = GenAggregateCpp(TYPES_SUBDIRECTORY, headerFileNames)
     filePaths.append(aggregateCppPath)
 
     return filePaths

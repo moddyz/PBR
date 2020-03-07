@@ -18,11 +18,11 @@ def GenTypes():
     Array types of scalar, vectors, and matrices will also be generated.
 
     Returns:
-        list: names of generated source files.
+        list: paths to of generated source files.
     """
-    fileNames = GenVectorTypes("types")
-    fileNames += GenArrayTypes("types")
-    return fileNames
+    filePaths = GenVectorTypes()
+    filePaths += GenArrayTypes()
+    return filePaths
 
 
 def GenerateCode():

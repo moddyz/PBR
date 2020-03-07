@@ -10,6 +10,10 @@ from utils import (
     PrintInfo,
 )
 
+from constants import(
+    TYPES_SUBDIRECTORY,
+)
+
 from base import (
     GenPragmaOnce,
     GenInclude,
@@ -77,12 +81,9 @@ class ArrayType:
         )
 
 
-def GenArrayTypes(directoryPrefix):
+def GenArrayTypes():
     """
     Generate all array type source files.
-
-    Args:
-        directoryPrefix (str): directory prefix of generated files.
 
     Returns:
         list: paths to generated source files.
@@ -101,7 +102,7 @@ def GenArrayTypes(directoryPrefix):
     filePaths = []
     for arrayType in arrayTypes:
         fileName = arrayType.GetHeaderFileName()
-        filePath = os.path.join(os.path.abspath(directoryPrefix), fileName)
+        filePath = os.path.join(os.path.abspath(TYPES_SUBDIRECTORY), fileName)
         code = arrayType.GenCode()
         PrintInfo("Generated {!r}:\n{}".format(filePath, code))
         with open(filePath, 'w') as f:
