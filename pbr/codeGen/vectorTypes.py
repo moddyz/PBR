@@ -273,8 +273,10 @@ class VectorType(object):
         return argType, argName
 
     def GenClassArithmeticOperatorRHS(self, operator, index):
-        if operator in ['*', '/']:
+        if operator == "*":
             rhs = self.GetScalarArg()
+        elif operator == "/":
+            rhs = self.GetReciprocalVariable()
         else:
             rhs = "{argName}.{elementMember}[{index}]".format(
                 argName=self.GetVectorArg(),
@@ -282,6 +284,25 @@ class VectorType(object):
                 index=index,
             )
         return rhs
+
+    def GenClassDivisionOperatorPrelude(self, argName):
+        """
+        For the division operator, generate code which:
+        - asserts if diviso is zero.
+        - computes inverse then multiply against LHS, as multiplication consumes less cycles.
+        """
+        assertion = "{argName} != 0.0".format(
+            argName=argName
+        )
+        code = GenAssert(assertion)
+
+        code += "{scalarType} reciprocal = 1.0 / {argName};\n".format(
+            scalarType=self.scalarType,
+            recirpocal=self.GetReciprocalVariable(),
+            argName=argName,
+        )
+
+        return code
 
     def GenClassArithmeticOperator(self, operator):
         """
@@ -304,17 +325,21 @@ class VectorType(object):
         )
         code += "{\n"
         code += GenAssert("!HasNans()")
+
+        # Guard division by zero.
+        if operator == "/":
+            code += self.GenClassDivisionOperatorPrelude(argName)
+
         code += "return {className}(".format(
             className=self.GetClassName()
         )
-
         elementCount = self.GetElementCount()
         for index in range(elementCount):
             rhs = self.GenClassArithmeticOperatorRHS(operator, index)
             code += "{elementMember}[{index}] {operator} {rhs}".format(
                 elementMember=self.GetClassElementMember(),
                 index=index,
-                operator=operator,
+                operator=self.CastDivisionToMultiplication(operator),
                 rhs=rhs,
             )
             if index < elementCount - 1:
@@ -342,15 +367,19 @@ class VectorType(object):
             argName=argName,
         )
         code += "{\n"
-
         code += GenAssert("!HasNans()")
+
+        # Guard division by zero.
+        if operator == "/":
+            code += self.GenClassDivisionOperatorPrelude(argName)
+
         elementCount = self.GetElementCount()
         for index in range(elementCount):
             rhs = self.GenClassArithmeticOperatorRHS(operator, index)
             code += "{elementMember}[{index}] {operator}= {rhs};".format(
                 elementMember=self.GetClassElementMember(),
                 index=index,
-                operator=operator,
+                operator=self.CastDivisionToMultiplication(operator),
                 rhs=rhs
             )
         code += "return *this;\n"
@@ -474,6 +503,22 @@ class VectorType(object):
             return "i_vector"
         else:
             raise ValueError("Unsupported vector dimension: {}".format(self.dims))
+
+    @staticmethod
+    def CastDivisionToMultiplication(operator):
+        """
+        Returns:
+            str: new multiply operator if input operator is division.
+        """
+        return operator if operator != "/" else "*"
+
+    @staticmethod
+    def GetReciprocalVariable():
+        """
+        Returns:
+            str: variable name of the recirpocal.
+        """
+        return "reciprocal"
 
     @staticmethod
     def GetScalarArg():

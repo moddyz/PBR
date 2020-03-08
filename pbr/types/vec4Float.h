@@ -106,19 +106,23 @@ public:
     Vec4Float operator/( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
-        return Vec4Float( m_elements[ 0 ] / i_scalar,
-                          m_elements[ 1 ] / i_scalar,
-                          m_elements[ 2 ] / i_scalar,
-                          m_elements[ 3 ] / i_scalar );
+        PBR_ASSERT( i_scalar != 0.0 );
+        float reciprocal = 1.0 / i_scalar;
+        return Vec4Float( m_elements[ 0 ] * reciprocal,
+                          m_elements[ 1 ] * reciprocal,
+                          m_elements[ 2 ] * reciprocal,
+                          m_elements[ 3 ] * reciprocal );
     }
 
     Vec4Float& operator/=( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
-        m_elements[ 0 ] /= i_scalar;
-        m_elements[ 1 ] /= i_scalar;
-        m_elements[ 2 ] /= i_scalar;
-        m_elements[ 3 ] /= i_scalar;
+        PBR_ASSERT( i_scalar != 0.0 );
+        float reciprocal = 1.0 / i_scalar;
+        m_elements[ 0 ] *= reciprocal;
+        m_elements[ 1 ] *= reciprocal;
+        m_elements[ 2 ] *= reciprocal;
+        m_elements[ 3 ] *= reciprocal;
         return *this;
     }
 

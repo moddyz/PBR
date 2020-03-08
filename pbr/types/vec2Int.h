@@ -88,14 +88,18 @@ public:
     Vec2Int operator/( const int& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
-        return Vec2Int( m_elements[ 0 ] / i_scalar, m_elements[ 1 ] / i_scalar );
+        PBR_ASSERT( i_scalar != 0.0 );
+        int reciprocal = 1.0 / i_scalar;
+        return Vec2Int( m_elements[ 0 ] * reciprocal, m_elements[ 1 ] * reciprocal );
     }
 
     Vec2Int& operator/=( const int& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
-        m_elements[ 0 ] /= i_scalar;
-        m_elements[ 1 ] /= i_scalar;
+        PBR_ASSERT( i_scalar != 0.0 );
+        int reciprocal = 1.0 / i_scalar;
+        m_elements[ 0 ] *= reciprocal;
+        m_elements[ 1 ] *= reciprocal;
         return *this;
     }
 
