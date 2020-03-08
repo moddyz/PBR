@@ -3,11 +3,11 @@
 
 #include <algorithm>
 #include <atomic>
+#include <cstring>
 #include <mutex>
+#include <sstream>
 #include <stdio.h>
 #include <vector>
-#include <cstring>
-#include <sstream>
 
 namespace
 {
@@ -30,19 +30,18 @@ timespec computeDuration( const timespec& i_start, const timespec& i_stop )
 
 } // namespace
 
-namespace pbr
-{
+PBR_NAMESPACE_BEGIN
 
 constexpr size_t c_profileRecordStringCapacity = 88;
 
 /// A single profile record.
 struct alignas( 128 ) ProfileRecord
 {
-    char     m_string[ c_profileRecordStringCapacity ];   // 88 bytes
-    timespec m_start = {0, 0}; // 104 bytes
-    timespec m_stop  = {0, 0}; // 120 bytes
-    uint32_t m_line  = 0;      // 124 bytes
-    uint32_t  m_stack = 0;     // 128 bytes
+    char     m_string[ c_profileRecordStringCapacity ]; // 88 bytes
+    timespec m_start = {0, 0};                          // 104 bytes
+    timespec m_stop  = {0, 0};                          // 120 bytes
+    uint32_t m_line  = 0;                               // 124 bytes
+    uint32_t m_stack = 0;                               // 128 bytes
 
     void Print() const
     {
@@ -193,7 +192,6 @@ void PrintProfiling()
     {
         records[ recordIndex ].Print();
     }
-
 }
 
 Profile::Profile( const char* i_file, uint32_t i_line, const char* i_string )
@@ -237,4 +235,4 @@ ScopedProfile::~ScopedProfile()
     Stop();
 }
 
-} // namespace pbr
+PBR_NAMESPACE_END

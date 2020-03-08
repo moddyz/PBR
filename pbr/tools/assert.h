@@ -1,5 +1,7 @@
 #pragma once
 
+#include <pbr/api.h>
+
 /// \brief Assertion tools for printing the call stack when an expression wrapped with PBR_ASSERT( ... ) fails to
 /// evaluate.
 ///
@@ -22,10 +24,10 @@
 #    define PBR_ASSERT_MSG( expr, format, ... ) void()
 #endif
 
-namespace pbr
-{
+PBR_NAMESPACE_BEGIN
+
 void Assert( const char* i_expression );
 void AssertMsg( const char* i_expression, const char* i_format, ... );
 
-} // namespace pbr
+PBR_NAMESPACE_END
 

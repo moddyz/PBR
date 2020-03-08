@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <time.h>
 
+#include <pbr/api.h>
+
 /// \brief Light-weight, thread-safe performance profiling tools.
 ///
 /// SetupProfiling() will need to be explicitly called to allocate memory for storing profile records.
@@ -19,8 +21,8 @@
 #define PBR_PROFILE( string ) _PBR_SCOPED_PROFILE( __FILE__, __LINE__, string )
 #define PBR_PROFILE_FUNCTION() _PBR_SCOPED_PROFILE( __FILE__, __LINE__, __PRETTY_FUNCTION__ )
 
-namespace pbr
-{
+PBR_NAMESPACE_BEGIN
+
 /// Fwd declaration.
 class ProfileRecord;
 
@@ -37,9 +39,11 @@ public:
     Profile& operator=( const Profile& i_profile ) = delete;
 
     /// Record the starting time.
+    PBR_API
     void Start();
 
     /// Record the ending time.  Publish both the starting and ending time.
+    PBR_API
     void Stop();
 
 private:
@@ -74,4 +78,4 @@ void TeardownProfiling();
 /// Print all profiling records.
 void PrintProfiling();
 
-} // namespace pbr
+PBR_NAMESPACE_END

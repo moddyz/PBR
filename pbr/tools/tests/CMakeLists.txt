@@ -1,21 +1,11 @@
-pbr_test_program(testAssert
-    CPPFILES
-        testAssert.cpp
-    LIBRARIES
-        pbr_tools
-)
-
-pbr_test_program(testProfile
-    CPPFILES
-        testProfile.cpp
-    LIBRARIES
-        pbr_tools
-        pthread
-)
-
-pbr_test_program(testLog
-    CPPFILES
-        testLog.cpp
-    LIBRARIES
-        pbr_tools
-)
+file(GLOB CPPFILES *.cpp)
+foreach( CPPFILE ${CPPFILES} )
+    get_filename_component(TEST_PROGRAM ${CPPFILE} NAME_WE)
+    pbr_test_program(${TEST_PROGRAM}
+        CPPFILES
+            ${CPPFILE}
+        LIBRARIES
+            pbr_tools
+            pthread
+    )
+endforeach( CPPFILE )
