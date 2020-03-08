@@ -9,6 +9,8 @@ namespace pbr
 class Vec3Int final
 {
 public:
+    using ElementType = int;
+
     Vec3Int()  = default;
     ~Vec3Int() = default;
 
@@ -113,7 +115,6 @@ public:
 
     bool HasNans() const
     {
-        PBR_ASSERT( !HasNans() );
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] );
     }
 

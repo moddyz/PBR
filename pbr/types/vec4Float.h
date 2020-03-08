@@ -9,6 +9,8 @@ namespace pbr
 class Vec4Float final
 {
 public:
+    using ElementType = float;
+
     Vec4Float()  = default;
     ~Vec4Float() = default;
 
@@ -128,7 +130,6 @@ public:
 
     bool HasNans() const
     {
-        PBR_ASSERT( !HasNans() );
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] ) ||
                std::isnan( m_elements[ 3 ] );
     }

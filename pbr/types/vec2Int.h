@@ -9,6 +9,8 @@ namespace pbr
 class Vec2Int final
 {
 public:
+    using ElementType = int;
+
     Vec2Int()  = default;
     ~Vec2Int() = default;
 
@@ -105,7 +107,6 @@ public:
 
     bool HasNans() const
     {
-        PBR_ASSERT( !HasNans() );
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] );
     }
 

@@ -41,6 +41,7 @@ from base import (
     GenIncludes,
     GenAssert,
     GenAggregateCpp,
+    GenUsing,
 )
 
 
@@ -93,6 +94,9 @@ class VectorType(object):
         #
 
         code += GenClassPublicAccessSpecifier()
+
+        code += GenUsing("ElementType", self.scalarType)
+        code += os.linesep
 
         code += GenClassDefaultConstructor(self.GetClassName())
         code += GenClassDefaultDestructor(self.GetClassName())
@@ -455,7 +459,6 @@ class VectorType(object):
             constQualifier=GenConstQualifier()
         )
         code += "{\n"
-        code += GenAssert("!HasNans()")
         code += "return "
         elementCount = self.GetElementCount()
         for index in range(elementCount):

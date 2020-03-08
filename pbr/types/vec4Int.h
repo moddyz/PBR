@@ -9,6 +9,8 @@ namespace pbr
 class Vec4Int final
 {
 public:
+    using ElementType = int;
+
     Vec4Int()  = default;
     ~Vec4Int() = default;
 
@@ -125,7 +127,6 @@ public:
 
     bool HasNans() const
     {
-        PBR_ASSERT( !HasNans() );
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] ) ||
                std::isnan( m_elements[ 3 ] );
     }
