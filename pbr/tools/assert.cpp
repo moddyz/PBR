@@ -10,7 +10,7 @@
 namespace pbr
 {
 
-static void PrintStacktrace()
+static void PrintStacktraceImpl()
 {
     backward::StackTrace stackTrace;
     stackTrace.load_here( 32 );
@@ -21,13 +21,13 @@ static void PrintStacktrace()
     printer.print( stackTrace, stderr );
 }
 
-void Assert( const char* i_expression )
+void PrintStacktrace( const char* i_expression )
 {
     PBR_LOG_ERROR( "PBR_ASSERT failed for expression: %s\n", "foo" );
-    PrintStacktrace();
+    PrintStacktraceImpl();
 }
 
-void AssertMsg( const char* i_expression, const char* i_format, ... )
+void PrintStacktrace( const char* i_expression, const char* i_format, ... )
 {
     std::stringstream ss;
     ss << "PBR_ASSERT failed for expression: " << i_expression << ", " << i_format << "\n";
@@ -37,7 +37,7 @@ void AssertMsg( const char* i_expression, const char* i_format, ... )
     PBR_LOG_ERROR( ss.str().c_str(), args );
     va_end( args );
 
-    PrintStacktrace();
+    PrintStacktraceImpl();
 }
 
 } // namespace pbr

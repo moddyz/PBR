@@ -12,12 +12,12 @@
 #    define PBR_ASSERT( expr )                                                                                         \
         if ( !( expr ) )                                                                                               \
         {                                                                                                              \
-            pbr::Assert( #expr );                                                                                      \
+            pbr::PrintStacktrace( #expr );                                                                             \
         }
 #    define PBR_ASSERT_MSG( expr, format, ... )                                                                        \
         if ( !( expr ) )                                                                                               \
         {                                                                                                              \
-            pbr::AssertMsg( #expr, format, ##__VA_ARGS__ );                                                            \
+            pbr::PrintStacktrace( #expr, format, ##__VA_ARGS__ );                                                      \
         }
 #else
 #    define PBR_ASSERT( expr, ... ) void()
@@ -26,8 +26,12 @@
 
 PBR_NAMESPACE_BEGIN
 
-void Assert( const char* i_expression );
-void AssertMsg( const char* i_expression, const char* i_format, ... );
+/// Used in conjunction with PBR_ASSERT to print the backtrace when an expression fails to evaluate.
+PBR_API
+void PrintStacktrace( const char* i_expression );
+
+/// Used in conjunction with PBR_ASSERT_MSG to print the backtrace when an expression fails to evaluate.
+PBR_API
+void PrintStacktrace( const char* i_expression, const char* i_format, ... );
 
 PBR_NAMESPACE_END
-
