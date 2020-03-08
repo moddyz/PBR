@@ -1,6 +1,6 @@
 #pragma once
 
-#include <pbr/platform.h>
+#include <pbr/platform/export.h>
 
 /// Symbol exporting.
 #define PBR_API PBR_EXPORT

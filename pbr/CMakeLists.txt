@@ -1,4 +1,5 @@
 set(PACKAGE_PREFIX "pbr")
+add_subdirectory(platform)
 add_subdirectory(tools)
 add_subdirectory(types)
 add_subdirectory(functions)
