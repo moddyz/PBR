@@ -1,13 +1,10 @@
 #pragma once
 
 #include <pbr/api.h>
-#include <pbr/types/vec3Float.h>
 
 /// Dot-product.
 
 PBR_NAMESPACE_BEGIN
-
-class Vec3Float;
 
 /// Compute the dot product of two vectors.
 PBR_API
