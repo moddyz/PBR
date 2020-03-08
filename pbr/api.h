@@ -1,7 +1,9 @@
 #pragma once
 
+#include <pbr/platform.h>
+
 /// Symbol exporting.
-#define PBR_API
+#define PBR_API PBR_EXPORT
 
 /// Namespaces.
 #define PBR_NAMESPACE pbr

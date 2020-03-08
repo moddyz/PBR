@@ -3,12 +3,14 @@ add_subdirectory(tools)
 add_subdirectory(types)
 add_subdirectory(functions)
 
+# Top level headers.
+file(GLOB HEADERS *.h)
 file(
-    COPY "api.h"
+    COPY ${HEADERS}
     DESTINATION ${CMAKE_BINARY_DIR}/include/${PACKAGE_PREFIX}
 )
 
 install(
-    FILES "api.h"
+    FILES ${HEADERS}
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/${PACKAGE_PREFIX}
 )
