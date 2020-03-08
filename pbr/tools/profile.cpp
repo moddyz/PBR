@@ -11,6 +11,8 @@
 
 namespace
 {
+PBR_NAMESPACE_USING
+
 /// Compute the duration between \ref i_start and \ref i_stop.
 timespec computeDuration( const timespec& i_start, const timespec& i_stop )
 {
@@ -27,62 +29,27 @@ timespec computeDuration( const timespec& i_start, const timespec& i_stop )
     }
     return duration;
 }
-
 } // namespace
 
 PBR_NAMESPACE_BEGIN
 
-constexpr size_t c_profileRecordStringCapacity = 88;
-
-/// A single profile record.
-struct alignas( 128 ) ProfileRecord
-{
-    char     m_string[ c_profileRecordStringCapacity ]; // 88 bytes
-    timespec m_start = {0, 0};                          // 104 bytes
-    timespec m_stop  = {0, 0};                          // 120 bytes
-    uint32_t m_line  = 0;                               // 124 bytes
-    uint32_t m_stack = 0;                               // 128 bytes
-
-    void Print() const
-    {
-        timespec duration     = computeDuration( m_start, m_stop );
-        size_t   microseconds = duration.tv_sec * 1e6 + duration.tv_nsec / 1e3;
-
-        std::stringstream ss;
-        for ( size_t i = 0; i < m_stack; ++i )
-        {
-            ss << " ";
-        }
-        ss << "\\_";
-
-        printf( "%s string: '%s', line: %u, stack: %u, duration: %lu us\n",
-                ss.str().c_str(),
-                m_string,
-                m_line,
-                m_stack,
-                microseconds );
-    }
-};
-
-static_assert( sizeof( ProfileRecord ) == 128 );
-
 /// Singleton store of profile records.
-class ProfileRecordStore final
+class TlProfileRecordStore final
 {
 public:
-    ProfileRecordStore( size_t i_recordCapacity )
+    TlProfileRecordStore( size_t i_recordCapacity )
     {
         m_records.resize( i_recordCapacity );
     }
 
-    ~ProfileRecordStore() = default;
+    ~TlProfileRecordStore() = default;
 
     /// Cannot copy.
-    ProfileRecordStore( const ProfileRecordStore& ) = delete;
-    ProfileRecordStore& operator=( const ProfileRecordStore& ) = delete;
+    TlProfileRecordStore( const TlProfileRecordStore& ) = delete;
+    TlProfileRecordStore& operator=( const TlProfileRecordStore& ) = delete;
 
     /// Check out the next record to author timing and metadata into.
-    ProfileRecord* CheckOut()
+    TlProfileRecord* CheckOut()
     {
         int index = m_recordIndex.fetch_add( 1, std::memory_order_relaxed );
         if ( index >= m_records.size() )
@@ -104,7 +71,7 @@ public:
     }
 
     /// Return a reference to the records.
-    const std::vector< ProfileRecord >& GetRecords() const
+    const std::vector< TlProfileRecord >& GetRecords() const
     {
         return m_records;
     }
@@ -137,25 +104,59 @@ private:
     std::atomic_bool m_recordsLoopAround{false};
 
     /// Allocated records.
-    std::vector< ProfileRecord > m_records;
+    std::vector< TlProfileRecord > m_records;
 };
 
 /// Global singleton.
-static ProfileRecordStore* g_profileRecordStore = nullptr;
+static TlProfileRecordStore* g_profileRecordStore = nullptr;
 
 /// Global mutex to guard setup and teardown of store.
 static std::mutex g_profileRecordStoreMutex;
 
-void SetupProfiling( size_t i_capacity )
+constexpr size_t c_profileRecordStringCapacity = 88;
+
+/// A single profile record.
+struct alignas( 128 ) TlProfileRecord
+{
+    char     m_string[ c_profileRecordStringCapacity ]; // 88 bytes
+    timespec m_start = {0, 0};                          // 104 bytes
+    timespec m_stop  = {0, 0};                          // 120 bytes
+    uint32_t m_line  = 0;                               // 124 bytes
+    uint32_t m_stack = 0;                               // 128 bytes
+
+    void Print() const
+    {
+        timespec duration     = computeDuration( m_start, m_stop );
+        size_t   microseconds = duration.tv_sec * 1e6 + duration.tv_nsec / 1e3;
+
+        std::stringstream ss;
+        for ( size_t i = 0; i < m_stack; ++i )
+        {
+            ss << " ";
+        }
+        ss << "\\_";
+
+        printf( "%s string: '%s', line: %u, stack: %u, duration: %lu us\n",
+                ss.str().c_str(),
+                m_string,
+                m_line,
+                m_stack,
+                microseconds );
+    }
+};
+
+static_assert( sizeof( TlProfileRecord ) == 128 );
+
+void TlProfileSetup( size_t i_capacity )
 {
     const std::lock_guard< std::mutex > lock( g_profileRecordStoreMutex );
     if ( g_profileRecordStore == nullptr )
     {
-        g_profileRecordStore = new ProfileRecordStore( i_capacity );
+        g_profileRecordStore = new TlProfileRecordStore( i_capacity );
     }
 }
 
-void TeardownProfiling()
+void TlProfileTeardown()
 {
     const std::lock_guard< std::mutex > lock( g_profileRecordStoreMutex );
     if ( g_profileRecordStore != nullptr )
@@ -166,7 +167,7 @@ void TeardownProfiling()
     }
 }
 
-void PrintProfiling()
+void TlProfilePrint()
 {
     const std::lock_guard< std::mutex > lock( g_profileRecordStoreMutex );
     if ( g_profileRecordStore == nullptr )
@@ -175,18 +176,20 @@ void PrintProfiling()
         return;
     }
 
-    size_t                       recordsSize = g_profileRecordStore->GetRecordsSize();
-    std::vector< ProfileRecord > records     = g_profileRecordStore->GetRecords();
-    std::sort( records.begin(), records.begin() + recordsSize, []( const ProfileRecord& a, const ProfileRecord& b ) {
-        if ( a.m_start.tv_sec == b.m_start.tv_sec )
-        {
-            return a.m_start.tv_nsec < b.m_start.tv_nsec;
-        }
-        else
-        {
-            return a.m_start.tv_sec < b.m_start.tv_sec;
-        }
-    } );
+    size_t                         recordsSize = g_profileRecordStore->GetRecordsSize();
+    std::vector< TlProfileRecord > records     = g_profileRecordStore->GetRecords();
+    std::sort( records.begin(),
+               records.begin() + recordsSize,
+               []( const TlProfileRecord& a, const TlProfileRecord& b ) {
+                   if ( a.m_start.tv_sec == b.m_start.tv_sec )
+                   {
+                       return a.m_start.tv_nsec < b.m_start.tv_nsec;
+                   }
+                   else
+                   {
+                       return a.m_start.tv_sec < b.m_start.tv_sec;
+                   }
+               } );
 
     for ( size_t recordIndex = 0; recordIndex < recordsSize; ++recordIndex )
     {
@@ -194,7 +197,7 @@ void PrintProfiling()
     }
 }
 
-Profile::Profile( const char* i_file, uint32_t i_line, const char* i_string )
+TlProfile::TlProfile( const char* i_file, uint32_t i_line, const char* i_string )
 {
     if ( g_profileRecordStore != nullptr )
     {
@@ -206,7 +209,7 @@ Profile::Profile( const char* i_file, uint32_t i_line, const char* i_string )
 /// Thread-local global for tracking stack position of this profile.
 static thread_local uint32_t c_profileStack = 0;
 
-void Profile::Start()
+void TlProfile::Start()
 {
     if ( m_profileRecord != nullptr )
     {
@@ -215,7 +218,7 @@ void Profile::Start()
     }
 }
 
-void Profile::Stop()
+void TlProfile::Stop()
 {
     if ( m_profileRecord != nullptr )
     {
@@ -224,13 +227,13 @@ void Profile::Stop()
     }
 }
 
-ScopedProfile::ScopedProfile( const char* i_file, uint32_t i_line, const char* i_string )
-    : Profile( i_file, i_line, i_string )
+TlScopedProfile::TlScopedProfile( const char* i_file, uint32_t i_line, const char* i_string )
+    : TlProfile( i_file, i_line, i_string )
 {
     Start();
 }
 
-ScopedProfile::~ScopedProfile()
+TlScopedProfile::~TlScopedProfile()
 {
     Stop();
 }
