@@ -1,19 +1,12 @@
 #pragma once
 
+#include <pbr/platform/os.h>
+
 /// Cross-platform export directives.
 
-#if defined(_WIN32) || defined(_WIN64)
-
+#if defined(PBR_WINDOWS)
 /// Windows platform requires explicit directive for external linkage.
 #define PBR_EXPORT __declspec( dllexport )
-
-#elif defined(__linux__)
-
+#else
 #define PBR_EXPORT
-
-#elif defined(__APPLE__) && defined(__MACH__)
-
-#define PBR_EXPORT
-
 #endif
-
