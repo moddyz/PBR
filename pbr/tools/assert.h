@@ -26,11 +26,11 @@
 
 PBR_NAMESPACE_BEGIN
 
-/// Used in conjunction with PBR_ASSERT to print the backtrace when an expression fails to evaluate.
+/// Used in PBR_ASSERT to print the backtrace when an expression fails to evaluate.
 PBR_API
 void PrintStacktrace( const char* i_expression );
 
-/// Used in conjunction with PBR_ASSERT_MSG to print the backtrace when an expression fails to evaluate.
+/// Used in PBR_ASSERT_MSG to print the backtrace when an expression fails to evaluate.
 PBR_API
 void PrintStacktrace( const char* i_expression, const char* i_format, ... );
 
