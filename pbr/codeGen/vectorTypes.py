@@ -13,7 +13,7 @@ import functools
 
 from constants import (
     ARITHMETIC_OPERATORS,
-    NAMESPACE,
+    PROJECT,
     TYPES_SUBDIRECTORY,
 )
 
@@ -30,6 +30,7 @@ from utils import (
 
 from base import (
     GenPragmaOnce,
+    GenApiDirective,
     GenNamespaceBegin,
     GenNamespaceEnd,
     GenClassDefaultConstructor,
@@ -69,13 +70,16 @@ class VectorType(object):
         # Includes
         code += GenInclude("cmath")
         code += GenInclude("cstring")
+        code += GenInclude("pbr/api.h")
         code += GenInclude("pbr/tools/assert.h")
         code += os.linesep
 
         # Body
-        code += GenNamespaceBegin(NAMESPACE)
+        code += GenNamespaceBegin()
+        code += "\n"
         code += self.GenClass()
-        code += GenNamespaceEnd(NAMESPACE)
+        code += "\n"
+        code += GenNamespaceEnd()
 
         return code
 
@@ -86,7 +90,10 @@ class VectorType(object):
         Returns:
             str: code.
         """
-        code = "class {className} final\n".format(className=self.GetClassName())
+        code = "class {api} {className} final\n".format(
+            api=GenApiDirective(),
+            className=self.GetClassName(),
+        )
         code += "{\n"
 
         #

@@ -4,7 +4,7 @@ Common code generation logic for pbr.
 
 import os
 
-from constants import NAMESPACE
+from constants import PROJECT
 
 __all__ = [
     "GenPragmaOnce",
@@ -33,7 +33,15 @@ def GenPragmaOnce():
     return "#pragma once\n"
 
 
-def GenNamespaceBegin(namespace):
+def GenApiDirective():
+    """
+    Returns:
+        str: the PBR_API directive, for exporting symbols on the windows platform.
+    """
+    return "PBR_API"
+
+
+def GenNamespaceBegin():
     """
     Generate the beginning of a namespace.
 
@@ -43,10 +51,10 @@ def GenNamespaceBegin(namespace):
     Returns:
         str: code.
     """
-    return "namespace %s\n{\n" % (namespace)
+    return "PBR_NAMESPACE_BEGIN\n"
 
 
-def GenNamespaceEnd(namespace):
+def GenNamespaceEnd():
     """
     Generate the end of a namespace.
 
@@ -56,7 +64,7 @@ def GenNamespaceEnd(namespace):
     Returns:
         str: code.
     """
-    return "} // namespace %s\n" % (namespace)
+    return "PBR_NAMESPACE_END\n"
 
 
 def GenClassDefaultConstructor(className):
@@ -171,7 +179,7 @@ def GenAggregateCpp(directoryPrefix, headerFileNames):
     Returns:
         str: file path to the aggregated cpp written to disk.
     """
-    includePaths = [os.path.join(NAMESPACE, directoryPrefix, fileName) for fileName in headerFileNames]
+    includePaths = [os.path.join(PROJECT, directoryPrefix, fileName) for fileName in headerFileNames]
     code = GenIncludes(includePaths)
     aggregateCppPath = os.path.join(directoryPrefix, "vectorTypes.cpp")
     with open(aggregateCppPath, 'w') as f:

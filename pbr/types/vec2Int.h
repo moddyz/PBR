@@ -2,11 +2,12 @@
 
 #include <cmath>
 #include <cstring>
+#include <pbr/api.h>
 #include <pbr/tools/assert.h>
 
-namespace pbr
-{
-class Vec2Int final
+PBR_NAMESPACE_BEGIN
+
+class PBR_API Vec2Int final
 {
 public:
     using ElementType = int;
@@ -113,4 +114,4 @@ public:
 private:
     int m_elements[ 2 ] = {0, 0};
 };
-} // namespace pbr
+PBR_NAMESPACE_END

@@ -2,11 +2,12 @@
 
 #include <cmath>
 #include <cstring>
+#include <pbr/api.h>
 #include <pbr/tools/assert.h>
 
-namespace pbr
-{
-class Vec3Float final
+PBR_NAMESPACE_BEGIN
+
+class PBR_API Vec3Float final
 {
 public:
     using ElementType = float;
@@ -121,4 +122,4 @@ public:
 private:
     float m_elements[ 3 ] = {0.0f, 0.0f, 0.0f};
 };
-} // namespace pbr
+PBR_NAMESPACE_END

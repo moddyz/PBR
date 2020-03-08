@@ -4,12 +4,12 @@ Global constants used for code gen.
 
 __all__ = [
     "ARITHMETIC_OPERATORS",
-    "NAMESPACE",
+    "PROJECT",
     "TYPES_SUBDIRECTORY",
 ]
 
 # Namespace of all the symbols.
-NAMESPACE = "pbr"
+PROJECT = "pbr"
 
 # Name of the subdirectory that all data types should reside.
 TYPES_SUBDIRECTORY = "types"

@@ -2,11 +2,12 @@
 
 #include <cmath>
 #include <cstring>
+#include <pbr/api.h>
 #include <pbr/tools/assert.h>
 
-namespace pbr
-{
-class Mat3Float final
+PBR_NAMESPACE_BEGIN
+
+class PBR_API Mat3Float final
 {
 public:
     using ElementType = float;
@@ -83,4 +84,4 @@ public:
 private:
     float m_elements[ 9 ] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 };
-} // namespace pbr
+PBR_NAMESPACE_END

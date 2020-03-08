@@ -1,3 +1,4 @@
+#include <pbr/api.h>
 #include <pbr/tools/log.h>
 
 #include <sstream>
@@ -7,8 +8,7 @@
 
 #include <backward/backward.hpp>
 
-namespace pbr
-{
+PBR_NAMESPACE_BEGIN
 
 static void PrintStacktraceImpl()
 {
@@ -40,4 +40,4 @@ void PrintStacktrace( const char* i_expression, const char* i_format, ... )
     PrintStacktraceImpl();
 }
 
-} // namespace pbr
+PBR_NAMESPACE_END
