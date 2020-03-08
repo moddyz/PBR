@@ -76,7 +76,13 @@ class ArrayType:
         Returns:
             str: class name of this array.
         """
-        return "{elementTypeName}Array".format(
+        if self.elementTypeName.startswith(TYPES_CLASS_PREFIX):
+            prefix = ""
+        else:
+            prefix = TYPES_CLASS_PREFIX
+
+        return "{prefix}{elementTypeName}Array".format(
+            prefix=prefix,
             elementTypeName=(self.elementTypeName[0].upper() + self.elementTypeName[1:])
         )
 

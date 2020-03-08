@@ -2,6 +2,6 @@
 
 PBR_NAMESPACE_BEGIN
 
-using FloatArray = std::vector< float >;
+using DtFloatArray = std::vector< float >;
 
 PBR_NAMESPACE_END
