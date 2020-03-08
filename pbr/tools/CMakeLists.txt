@@ -7,6 +7,7 @@ pbr_library(${PACKAGE_NAME}
     HEADERS
         ${HEADERS}
     LIBRARIES
+        pbr_platform
         dl
         dw
 )
