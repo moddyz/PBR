@@ -12,12 +12,15 @@ from utils import (
 
 from constants import(
     TYPES_SUBDIRECTORY,
+    TYPES_CLASS_PREFIX,
 )
 
 from base import (
     GenPragmaOnce,
     GenInclude,
     GenUsing,
+    GenNamespaceBegin,
+    GenNamespaceEnd,
 )
 
 from scalarTypes import (
@@ -46,6 +49,7 @@ class ArrayType:
         code = GenPragmaOnce()
         code += os.linesep
 
+        # Includes.
         if self.elementHeaderFileName:
             includePath = "pbr/types/{elementHeaderFileName}".format(
                 elementHeaderFileName=self.elementHeaderFileName
@@ -53,10 +57,17 @@ class ArrayType:
             code += GenInclude(includePath)
             code += os.linesep
 
+        # Body.
+        code += GenNamespaceBegin()
+        code += os.linesep
+
         stdVectorTemplate = "std::vector< {elementTypeName} >".format(
             elementTypeName=self.elementTypeName
         )
         code += GenUsing(self.GetClassName(), stdVectorTemplate)
+        code += os.linesep
+
+        code += GenNamespaceEnd()
 
         return code
 
@@ -76,9 +87,14 @@ class ArrayType:
         Returns:
             str: header file name.
         """
-        return "{elementTypeName}Array.h".format(
-            elementTypeName=self.elementTypeName[0].lower() + self.elementTypeName[1:]
-        )
+        if self.elementHeaderFileName:
+            return "{elementHeaderFileName}Array.h".format(
+                elementHeaderFileName=os.path.splitext(self.elementHeaderFileName)[0]
+            )
+        else:
+            return "{elementTypeName}Array.h".format(
+                elementTypeName=self.elementTypeName[0].lower() + self.elementTypeName[1:]
+            )
 
 
 def GenArrayTypes():

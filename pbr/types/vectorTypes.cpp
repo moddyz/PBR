@@ -1,8 +1,8 @@
-#include <pbr/types/mat3Float.h>
-#include <pbr/types/mat4Float.h>
-#include <pbr/types/vec2Float.h>
-#include <pbr/types/vec2Int.h>
-#include <pbr/types/vec3Float.h>
-#include <pbr/types/vec3Int.h>
-#include <pbr/types/vec4Float.h>
-#include <pbr/types/vec4Int.h>
+#include <pbr/types/mat3f.h>
+#include <pbr/types/mat4f.h>
+#include <pbr/types/vec2f.h>
+#include <pbr/types/vec2i.h>
+#include <pbr/types/vec3f.h>
+#include <pbr/types/vec3i.h>
+#include <pbr/types/vec4f.h>
+#include <pbr/types/vec4i.h>

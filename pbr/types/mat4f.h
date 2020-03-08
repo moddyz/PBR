@@ -7,30 +7,30 @@
 
 PBR_NAMESPACE_BEGIN
 
-class PBR_API Mat4Float final
+class PBR_API DtMat4f final
 {
 public:
     using ElementType = float;
 
-    Mat4Float()  = default;
-    ~Mat4Float() = default;
+    DtMat4f()  = default;
+    ~DtMat4f() = default;
 
-    explicit Mat4Float( const float& i_element0,
-                        const float& i_element1,
-                        const float& i_element2,
-                        const float& i_element3,
-                        const float& i_element4,
-                        const float& i_element5,
-                        const float& i_element6,
-                        const float& i_element7,
-                        const float& i_element8,
-                        const float& i_element9,
-                        const float& i_element10,
-                        const float& i_element11,
-                        const float& i_element12,
-                        const float& i_element13,
-                        const float& i_element14,
-                        const float& i_element15 )
+    explicit DtMat4f( const float& i_element0,
+                      const float& i_element1,
+                      const float& i_element2,
+                      const float& i_element3,
+                      const float& i_element4,
+                      const float& i_element5,
+                      const float& i_element6,
+                      const float& i_element7,
+                      const float& i_element8,
+                      const float& i_element9,
+                      const float& i_element10,
+                      const float& i_element11,
+                      const float& i_element12,
+                      const float& i_element13,
+                      const float& i_element14,
+                      const float& i_element15 )
         : m_elements{i_element0,
                      i_element1,
                      i_element2,
@@ -51,13 +51,13 @@ public:
         PBR_ASSERT( !HasNans() );
     }
 
-    Mat4Float( const Mat4Float& i_matrix )
+    DtMat4f( const DtMat4f& i_matrix )
     {
         PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_matrix.m_elements, sizeof( m_elements ) );
     }
 
-    Mat4Float& operator=( const Mat4Float& i_matrix )
+    DtMat4f& operator=( const DtMat4f& i_matrix )
     {
         PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_matrix.m_elements, sizeof( m_elements ) );

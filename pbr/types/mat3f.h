@@ -7,23 +7,23 @@
 
 PBR_NAMESPACE_BEGIN
 
-class PBR_API Mat3Float final
+class PBR_API DtMat3f final
 {
 public:
     using ElementType = float;
 
-    Mat3Float()  = default;
-    ~Mat3Float() = default;
+    DtMat3f()  = default;
+    ~DtMat3f() = default;
 
-    explicit Mat3Float( const float& i_element0,
-                        const float& i_element1,
-                        const float& i_element2,
-                        const float& i_element3,
-                        const float& i_element4,
-                        const float& i_element5,
-                        const float& i_element6,
-                        const float& i_element7,
-                        const float& i_element8 )
+    explicit DtMat3f( const float& i_element0,
+                      const float& i_element1,
+                      const float& i_element2,
+                      const float& i_element3,
+                      const float& i_element4,
+                      const float& i_element5,
+                      const float& i_element6,
+                      const float& i_element7,
+                      const float& i_element8 )
         : m_elements{i_element0,
                      i_element1,
                      i_element2,
@@ -37,13 +37,13 @@ public:
         PBR_ASSERT( !HasNans() );
     }
 
-    Mat3Float( const Mat3Float& i_matrix )
+    DtMat3f( const DtMat3f& i_matrix )
     {
         PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_matrix.m_elements, sizeof( m_elements ) );
     }
 
-    Mat3Float& operator=( const Mat3Float& i_matrix )
+    DtMat3f& operator=( const DtMat3f& i_matrix )
     {
         PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_matrix.m_elements, sizeof( m_elements ) );

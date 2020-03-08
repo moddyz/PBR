@@ -7,27 +7,27 @@
 
 PBR_NAMESPACE_BEGIN
 
-class PBR_API Vec3Float final
+class PBR_API DtVec3f final
 {
 public:
     using ElementType = float;
 
-    Vec3Float()  = default;
-    ~Vec3Float() = default;
+    DtVec3f()  = default;
+    ~DtVec3f() = default;
 
-    explicit Vec3Float( const float& i_element0, const float& i_element1, const float& i_element2 )
+    explicit DtVec3f( const float& i_element0, const float& i_element1, const float& i_element2 )
         : m_elements{i_element0, i_element1, i_element2}
     {
         PBR_ASSERT( !HasNans() );
     }
 
-    Vec3Float( const Vec3Float& i_vector )
+    DtVec3f( const DtVec3f& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( m_elements ) );
     }
 
-    Vec3Float& operator=( const Vec3Float& i_vector )
+    DtVec3f& operator=( const DtVec3f& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( m_elements ) );
@@ -46,15 +46,15 @@ public:
         return m_elements[ i_index ];
     }
 
-    Vec3Float operator+( const Vec3Float& i_vector )
+    DtVec3f operator+( const DtVec3f& i_vector )
     {
         PBR_ASSERT( !HasNans() );
-        return Vec3Float( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
-                          m_elements[ 1 ] + i_vector.m_elements[ 1 ],
-                          m_elements[ 2 ] + i_vector.m_elements[ 2 ] );
+        return DtVec3f( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
+                        m_elements[ 1 ] + i_vector.m_elements[ 1 ],
+                        m_elements[ 2 ] + i_vector.m_elements[ 2 ] );
     }
 
-    Vec3Float& operator+=( const Vec3Float& i_vector )
+    DtVec3f& operator+=( const DtVec3f& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
@@ -63,15 +63,15 @@ public:
         return *this;
     }
 
-    Vec3Float operator-( const Vec3Float& i_vector )
+    DtVec3f operator-( const DtVec3f& i_vector )
     {
         PBR_ASSERT( !HasNans() );
-        return Vec3Float( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
-                          m_elements[ 1 ] - i_vector.m_elements[ 1 ],
-                          m_elements[ 2 ] - i_vector.m_elements[ 2 ] );
+        return DtVec3f( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
+                        m_elements[ 1 ] - i_vector.m_elements[ 1 ],
+                        m_elements[ 2 ] - i_vector.m_elements[ 2 ] );
     }
 
-    Vec3Float& operator-=( const Vec3Float& i_vector )
+    DtVec3f& operator-=( const DtVec3f& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
@@ -80,13 +80,13 @@ public:
         return *this;
     }
 
-    Vec3Float operator*( const float& i_scalar )
+    DtVec3f operator*( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
-        return Vec3Float( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar, m_elements[ 2 ] * i_scalar );
+        return DtVec3f( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar, m_elements[ 2 ] * i_scalar );
     }
 
-    Vec3Float& operator*=( const float& i_scalar )
+    DtVec3f& operator*=( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] *= i_scalar;
@@ -95,15 +95,15 @@ public:
         return *this;
     }
 
-    Vec3Float operator/( const float& i_scalar )
+    DtVec3f operator/( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
         float reciprocal = 1.0 / i_scalar;
-        return Vec3Float( m_elements[ 0 ] * reciprocal, m_elements[ 1 ] * reciprocal, m_elements[ 2 ] * reciprocal );
+        return DtVec3f( m_elements[ 0 ] * reciprocal, m_elements[ 1 ] * reciprocal, m_elements[ 2 ] * reciprocal );
     }
 
-    Vec3Float& operator/=( const float& i_scalar )
+    DtVec3f& operator/=( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );

@@ -7,27 +7,27 @@
 
 PBR_NAMESPACE_BEGIN
 
-class PBR_API Vec2Int final
+class PBR_API DtVec2i final
 {
 public:
     using ElementType = int;
 
-    Vec2Int()  = default;
-    ~Vec2Int() = default;
+    DtVec2i()  = default;
+    ~DtVec2i() = default;
 
-    explicit Vec2Int( const int& i_element0, const int& i_element1 )
+    explicit DtVec2i( const int& i_element0, const int& i_element1 )
         : m_elements{i_element0, i_element1}
     {
         PBR_ASSERT( !HasNans() );
     }
 
-    Vec2Int( const Vec2Int& i_vector )
+    DtVec2i( const DtVec2i& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( m_elements ) );
     }
 
-    Vec2Int& operator=( const Vec2Int& i_vector )
+    DtVec2i& operator=( const DtVec2i& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( m_elements ) );
@@ -46,13 +46,13 @@ public:
         return m_elements[ i_index ];
     }
 
-    Vec2Int operator+( const Vec2Int& i_vector )
+    DtVec2i operator+( const DtVec2i& i_vector )
     {
         PBR_ASSERT( !HasNans() );
-        return Vec2Int( m_elements[ 0 ] + i_vector.m_elements[ 0 ], m_elements[ 1 ] + i_vector.m_elements[ 1 ] );
+        return DtVec2i( m_elements[ 0 ] + i_vector.m_elements[ 0 ], m_elements[ 1 ] + i_vector.m_elements[ 1 ] );
     }
 
-    Vec2Int& operator+=( const Vec2Int& i_vector )
+    DtVec2i& operator+=( const DtVec2i& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
@@ -60,13 +60,13 @@ public:
         return *this;
     }
 
-    Vec2Int operator-( const Vec2Int& i_vector )
+    DtVec2i operator-( const DtVec2i& i_vector )
     {
         PBR_ASSERT( !HasNans() );
-        return Vec2Int( m_elements[ 0 ] - i_vector.m_elements[ 0 ], m_elements[ 1 ] - i_vector.m_elements[ 1 ] );
+        return DtVec2i( m_elements[ 0 ] - i_vector.m_elements[ 0 ], m_elements[ 1 ] - i_vector.m_elements[ 1 ] );
     }
 
-    Vec2Int& operator-=( const Vec2Int& i_vector )
+    DtVec2i& operator-=( const DtVec2i& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
@@ -74,13 +74,13 @@ public:
         return *this;
     }
 
-    Vec2Int operator*( const int& i_scalar )
+    DtVec2i operator*( const int& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
-        return Vec2Int( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar );
+        return DtVec2i( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar );
     }
 
-    Vec2Int& operator*=( const int& i_scalar )
+    DtVec2i& operator*=( const int& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] *= i_scalar;
@@ -88,15 +88,15 @@ public:
         return *this;
     }
 
-    Vec2Int operator/( const int& i_scalar )
+    DtVec2i operator/( const int& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
         int reciprocal = 1.0 / i_scalar;
-        return Vec2Int( m_elements[ 0 ] * reciprocal, m_elements[ 1 ] * reciprocal );
+        return DtVec2i( m_elements[ 0 ] * reciprocal, m_elements[ 1 ] * reciprocal );
     }
 
-    Vec2Int& operator/=( const int& i_scalar )
+    DtVec2i& operator/=( const int& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );

@@ -15,6 +15,7 @@ from constants import (
     ARITHMETIC_OPERATORS,
     PROJECT,
     TYPES_SUBDIRECTORY,
+    TYPES_CLASS_PREFIX,
 )
 
 from scalarTypes import (
@@ -76,9 +77,9 @@ class VectorType(object):
 
         # Body
         code += GenNamespaceBegin()
-        code += "\n"
+        code += os.linesep
         code += self.GenClass()
-        code += "\n"
+        code += os.linesep
         code += GenNamespaceEnd()
 
         return code
@@ -170,7 +171,7 @@ class VectorType(object):
         return "{prefix}{dims}{scalarType}.h".format(
             prefix=prefix,
             dims=str(self.dims[0]),
-            scalarType=self.scalarType.title()
+            scalarType=self.scalarType[0]
         )
 
     def GetClassName(self):
@@ -181,14 +182,14 @@ class VectorType(object):
             str: class name.
         """
         if len(self.dims) == 2:
-            prefix = "Mat"
+            prefix = TYPES_CLASS_PREFIX + "Mat"
         else:
-            prefix = "Vec"
+            prefix = TYPES_CLASS_PREFIX + "Vec"
 
         return "{prefix}{dims}{scalarType}".format(
             prefix=prefix,
             dims=str(self.dims[0]),
-            scalarType=self.scalarType.title()
+            scalarType=self.scalarType[0]
         )
 
     def GenClassElementWiseConstructor(self):
