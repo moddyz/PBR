@@ -3,7 +3,7 @@
 
 #include <pbr/functions/dotProduct.h>
 
-TEST_CASE( "DotProduct", "DotProduct" )
+TEST_CASE( "functions", "dotProduct" )
 {
     pbr::Vec3Float lhs( 1.0, 0.5, 2.0 );
     pbr::Vec3Float rhs( 2.0, 5.0, 2.5 );
