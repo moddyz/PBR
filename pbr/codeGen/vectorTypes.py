@@ -105,6 +105,8 @@ class VectorType(object):
 
         code += GenUsing("ElementType", self.scalarType)
         code += os.linesep
+        code += self.GenClassElementSizeGetter()
+        code += os.linesep
 
         code += GenClassDefaultConstructor(self.GetClassName())
         code += GenClassDefaultDestructor(self.GetClassName())
@@ -152,6 +154,18 @@ class VectorType(object):
 
         return code
 
+    def GenClassElementSizeGetter(self):
+        """
+        Generate a static method to query the element count of this vector.
+        """
+        code = "static size_t GetElementSize() {" + os.linesep
+        code += "return {elementSize};".format(
+            elementSize=self.GetElementSize()
+        )
+        code += os.linesep
+        code += "}" + os.linesep
+        return code
+
     def GenClassXYZWElementAccessors(self):
         """
         Generate X, Y, Z, W element accessors for convenience.
@@ -181,7 +195,7 @@ class VectorType(object):
                 code += "}" + os.linesep * 2
         return code
 
-    def GetElementCount(self):
+    def GetElementSize(self):
         """
         Returns:
             int: the number of elements in a vector.
@@ -232,13 +246,13 @@ class VectorType(object):
         code = "explicit {className}".format(className=self.GetClassName())
         code += "("
 
-        elementCount = self.GetElementCount()
-        for index in range(elementCount):
+        elementSize = self.GetElementSize()
+        for index in range(elementSize):
             code += "const {scalarType}& {elementArg}".format(
                 scalarType=self.scalarType,
                 elementArg=self.GetElementArg(index)
             )
-            if index < elementCount - 1:
+            if index < elementSize - 1:
                 code += ","
         code += ")\n"
 
@@ -248,9 +262,9 @@ class VectorType(object):
             elementMember=self.GetClassElementMember(),
         )
         code += "{"
-        for index in range(elementCount):
+        for index in range(elementSize):
             code += self.GetElementArg(index)
-            if index < elementCount - 1:
+            if index < elementSize - 1:
                 code += ","
         code += "}\n"
 
@@ -361,7 +375,7 @@ class VectorType(object):
         assert(operator in ARITHMETIC_OPERATORS)
 
         argType, argName = self.GenClassArithmeticOperatorArgTypeAndName(operator)
-        code = "{className} operator{operator}( const {argType}& {argName} )\n".format(
+        code = "{className} operator{operator}( const {argType}& {argName} ) const\n".format(
             className=self.GetClassName(),
             operator=operator,
             argType=argType,
@@ -377,8 +391,8 @@ class VectorType(object):
         code += "return {className}(".format(
             className=self.GetClassName()
         )
-        elementCount = self.GetElementCount()
-        for index in range(elementCount):
+        elementSize = self.GetElementSize()
+        for index in range(elementSize):
             rhs = self.GenClassArithmeticOperatorRHS(operator, index)
             code += "{elementMember}[{index}] {operator} {rhs}".format(
                 elementMember=self.GetClassElementMember(),
@@ -386,7 +400,7 @@ class VectorType(object):
                 operator=self.CastDivisionToMultiplication(operator),
                 rhs=rhs,
             )
-            if index < elementCount - 1:
+            if index < elementSize - 1:
                 code += ",\n"
 
         code += ");\n"
@@ -417,8 +431,8 @@ class VectorType(object):
         if operator == "/":
             code += self.GenClassDivisionOperatorPrelude(argName)
 
-        elementCount = self.GetElementCount()
-        for index in range(elementCount):
+        elementSize = self.GetElementSize()
+        for index in range(elementSize):
             rhs = self.GenClassArithmeticOperatorRHS(operator, index)
             code += "{elementMember}[{index}] {operator}= {rhs};".format(
                 elementMember=self.GetClassElementMember(),
@@ -500,13 +514,13 @@ class VectorType(object):
         )
         code += "{\n"
         code += "return "
-        elementCount = self.GetElementCount()
-        for index in range(elementCount):
+        elementSize = self.GetElementSize()
+        for index in range(elementSize):
             code += "std::isnan({elementMember}[{index}])".format(
                 elementMember=self.GetClassElementMember(),
                 index=index
             )
-            if index < elementCount - 1:
+            if index < elementSize - 1:
                 code += " || "
         code += ";\n"
         code += "}\n"
@@ -519,16 +533,16 @@ class VectorType(object):
         Returns:
             str: code.
         """
-        code = "{scalarType} {elementMember}[{elementCount}] =".format(
+        code = "{scalarType} {elementMember}[{elementSize}] =".format(
             scalarType=self.scalarType,
             elementMember=self.GetClassElementMember(),
-            elementCount=self.GetElementCount(),
+            elementSize=self.GetElementSize(),
         )
         code += "{\n"
-        elementCount = self.GetElementCount()
-        for index in range(elementCount):
+        elementSize = self.GetElementSize()
+        for index in range(elementSize):
             code += GenScalarDefaultValue(self.scalarType)
-            if index < elementCount - 1:
+            if index < elementSize - 1:
                 code += ",\n"
         code += "};\n"
         return code

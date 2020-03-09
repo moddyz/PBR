@@ -12,6 +12,11 @@ class PBR_API DtVec2i final
 public:
     using ElementType = int;
 
+    static size_t GetElementSize()
+    {
+        return 2;
+    }
+
     DtVec2i()  = default;
     ~DtVec2i() = default;
 
@@ -46,7 +51,7 @@ public:
         return m_elements[ i_index ];
     }
 
-    DtVec2i operator+( const DtVec2i& i_vector )
+    DtVec2i operator+( const DtVec2i& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return DtVec2i( m_elements[ 0 ] + i_vector.m_elements[ 0 ], m_elements[ 1 ] + i_vector.m_elements[ 1 ] );
@@ -60,7 +65,7 @@ public:
         return *this;
     }
 
-    DtVec2i operator-( const DtVec2i& i_vector )
+    DtVec2i operator-( const DtVec2i& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return DtVec2i( m_elements[ 0 ] - i_vector.m_elements[ 0 ], m_elements[ 1 ] - i_vector.m_elements[ 1 ] );
@@ -74,7 +79,7 @@ public:
         return *this;
     }
 
-    DtVec2i operator*( const int& i_scalar )
+    DtVec2i operator*( const int& i_scalar ) const
     {
         PBR_ASSERT( !HasNans() );
         return DtVec2i( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar );
@@ -88,7 +93,7 @@ public:
         return *this;
     }
 
-    DtVec2i operator/( const int& i_scalar )
+    DtVec2i operator/( const int& i_scalar ) const
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );

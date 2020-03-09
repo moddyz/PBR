@@ -12,6 +12,11 @@ class PBR_API DtVec4f final
 public:
     using ElementType = float;
 
+    static size_t GetElementSize()
+    {
+        return 4;
+    }
+
     DtVec4f()  = default;
     ~DtVec4f() = default;
 
@@ -49,7 +54,7 @@ public:
         return m_elements[ i_index ];
     }
 
-    DtVec4f operator+( const DtVec4f& i_vector )
+    DtVec4f operator+( const DtVec4f& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return DtVec4f( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
@@ -68,7 +73,7 @@ public:
         return *this;
     }
 
-    DtVec4f operator-( const DtVec4f& i_vector )
+    DtVec4f operator-( const DtVec4f& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return DtVec4f( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
@@ -87,7 +92,7 @@ public:
         return *this;
     }
 
-    DtVec4f operator*( const float& i_scalar )
+    DtVec4f operator*( const float& i_scalar ) const
     {
         PBR_ASSERT( !HasNans() );
         return DtVec4f( m_elements[ 0 ] * i_scalar,
@@ -106,7 +111,7 @@ public:
         return *this;
     }
 
-    DtVec4f operator/( const float& i_scalar )
+    DtVec4f operator/( const float& i_scalar ) const
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );

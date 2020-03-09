@@ -12,6 +12,11 @@ class PBR_API DtMat4f final
 public:
     using ElementType = float;
 
+    static size_t GetElementSize()
+    {
+        return 16;
+    }
+
     DtMat4f()  = default;
     ~DtMat4f() = default;
 
