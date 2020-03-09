@@ -4,8 +4,6 @@
 
 #include <pbr/functions/length.h>
 
-/// Vector normalisation.
-
 PBR_NAMESPACE_BEGIN
 
 /// Compute the normalised vector.

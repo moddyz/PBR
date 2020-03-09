@@ -2,8 +2,6 @@
 
 #include <pbr/api.h>
 
-/// Dot-product.
-
 PBR_NAMESPACE_BEGIN
 
 /// Compute the dot product of two vectors.

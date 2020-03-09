@@ -2,8 +2,6 @@
 
 #include <pbr/api.h>
 
-/// \brief Cross product.
-
 PBR_NAMESPACE_BEGIN
 
 /// Compute the cross product of two vectors.
