@@ -129,6 +129,30 @@ public:
         return *this;
     }
 
+    float X() const
+    {
+        PBR_ASSERT( !HasNans() );
+        return m_elements[ 0 ];
+    }
+
+    float Y() const
+    {
+        PBR_ASSERT( !HasNans() );
+        return m_elements[ 1 ];
+    }
+
+    float Z() const
+    {
+        PBR_ASSERT( !HasNans() );
+        return m_elements[ 2 ];
+    }
+
+    float W() const
+    {
+        PBR_ASSERT( !HasNans() );
+        return m_elements[ 3 ];
+    }
+
     bool HasNans() const
     {
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] ) ||

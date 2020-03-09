@@ -129,6 +129,9 @@ class VectorType(object):
                 code += self.GenClassArithmeticAssignmentOperator(operator)
                 code += os.linesep
 
+            # Gen x, y, z, w accessors
+            code += self.GenClassXYZWElementAccessors()
+
         # Generate round bracket operator for matrix classes.
         if len(self.dims) == 2:
             code += self.GenClassRoundBracketOperator(constQualified=False)
@@ -147,6 +150,35 @@ class VectorType(object):
         code += self.GenClassMembers()
         code += "};";
 
+        return code
+
+    def GenClassXYZWElementAccessors(self):
+        """
+        Generate X, Y, Z, W element accessors for convenience.
+        """
+        # Only availble for single index vectors.
+        assert(len(self.dims) == 1)
+
+        # Skip if this vector contains more than 4 elements.
+        if self.dims[0] > 4:
+            return
+
+        code = ""
+        for index, letter in enumerate(["X", "Y", "Z", "W"]):
+            if index < self.dims[0]:
+                code += "{scalarType} {letter}() const{linesep}".format(
+                    scalarType=self.scalarType,
+                    letter=letter,
+                    linesep=os.linesep
+                )
+                code += "{" + os.linesep
+                code += GenAssert("!HasNans()")
+                code += "return {elementMember}[{index}];{linesep}".format(
+                    elementMember=self.GetClassElementMember(),
+                    index=index,
+                    linesep=os.linesep
+                )
+                code += "}" + os.linesep * 2
         return code
 
     def GetElementCount(self):

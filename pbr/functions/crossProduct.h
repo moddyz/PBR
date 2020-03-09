@@ -12,9 +12,9 @@ template < typename VecT >
 inline void FnCrossProduct( const VecT& i_lhs, const VecT& i_rhs, VecT& o_product )
 {
     o_product =
-        VecT( ( ( double ) i_lhs[ 1 ] * ( double ) i_rhs[ 2 ] ) - ( ( double ) i_lhs[ 2 ] * ( double ) i_rhs[ 1 ] ),
-              ( ( double ) i_lhs[ 2 ] * ( double ) i_rhs[ 0 ] ) - ( ( double ) i_lhs[ 0 ] * ( double ) i_rhs[ 2 ] ),
-              ( ( double ) i_lhs[ 0 ] * ( double ) i_rhs[ 1 ] ) - ( ( double ) i_lhs[ 1 ] * ( double ) i_rhs[ 0 ] ) );
+        VecT( ( ( double ) i_lhs.Y() * ( double ) i_rhs.Z() ) - ( ( double ) i_lhs.Z() * ( double ) i_rhs.Y() ),
+              ( ( double ) i_lhs.Z() * ( double ) i_rhs.X() ) - ( ( double ) i_lhs.X() * ( double ) i_rhs.Z() ),
+              ( ( double ) i_lhs.X() * ( double ) i_rhs.Y() ) - ( ( double ) i_lhs.Y() * ( double ) i_rhs.X() ) );
 }
 
 PBR_NAMESPACE_END
