@@ -2,12 +2,13 @@
 
 #include <pbr/api.h>
 
+#include <pbr/types/vec3f.h>
+
 PBR_NAMESPACE_BEGIN
 
-/// Compute the dot product of two vectors.
+/// Compute the dot product of two Vec3f.
 PBR_API
-template < typename VecT >
-inline void FnDotProduct( const VecT& i_lhs, const VecT& i_rhs, typename VecT::ElementType& o_product )
+inline void FnDotProduct( const Vec3f& i_lhs, const Vec3f& i_rhs, float& o_product )
 {
     o_product = ( i_lhs.X() * i_rhs.X() ) + ( i_lhs.Y() * i_rhs.Y() ) + ( i_lhs.Z() * i_rhs.Z() );
 }

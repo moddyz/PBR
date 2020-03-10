@@ -2,16 +2,37 @@
 
 #include <pbr/api.h>
 
+#include <pbr/types/vec2f.h>
+#include <pbr/types/vec3f.h>
+#include <pbr/types/vec4f.h>
+
 #include <pbr/functions/length.h>
 
 PBR_NAMESPACE_BEGIN
 
 /// Compute the normalised vector.
 PBR_API
-template < typename VecT >
-inline void FnNormalise( const VecT& i_vector, VecT& o_normalised )
+inline void FnNormalise( const Vec2f& i_vector, Vec2f& o_normalised )
 {
-    typename VecT::ElementType length;
+    float length;
+    FnLength( i_vector, length );
+    o_normalised = i_vector / length;
+}
+
+/// Compute the normalised vector.
+PBR_API
+inline void FnNormalise( const Vec3f& i_vector, Vec3f& o_normalised )
+{
+    float length;
+    FnLength( i_vector, length );
+    o_normalised = i_vector / length;
+}
+
+/// Compute the normalised vector.
+PBR_API
+inline void FnNormalise( const Vec4f& i_vector, Vec4f& o_normalised )
+{
+    float length;
     FnLength( i_vector, length );
     o_normalised = i_vector / length;
 }

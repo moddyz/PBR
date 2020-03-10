@@ -21,6 +21,9 @@ CODEGENTEMPLATES_DIR = "codeGenTemplates"
 # Name of the subdirectory that all data types should reside.
 TYPES_DIR = "types"
 
+# Name of the subdirectory that all data types should reside.
+FUNCTIONS_DIR = "functions"
+
 # Prefix for type class names.
 TYPES_CLASS_PREFIX = ""
 
@@ -49,7 +52,7 @@ class CodeGenerator(object):
         with open(templatePath, 'r') as f:
             templateStr = f.read()
             template = Template(templateStr)
-            code = template.render(obj=self)
+            code = template.render(context=self)
             return code
 
 
@@ -74,6 +77,7 @@ class VectorType(CodeGenerator):
         self.scalarType = scalarType
         self.elementSize = self.GetElementSize()
         self.className = self.GetClassName()
+        self.headerFileName = self.GetHeaderFileName()
 
     def GetElementSize(self):
         """
@@ -162,9 +166,25 @@ class ArrayType(CodeGenerator):
 
 
 def RunCommand(command):
+    """
+    Run a command in the shell by forking a subprocess.
+    """
     print("Running command {}".format(command))
     process = subprocess.Popen(shlex.split(command))
     process.wait()
+
+
+def WriteFile(filePath, content):
+    """
+    Write a file to disk.
+
+    Args:
+        filePath (str): path to write to.
+        content (str): content to write.
+    """
+    print("Generated {!r}".format(filePath))
+    with open(filePath, 'w') as f:
+        f.write(content)
 
 
 def FormatCode(fileNames):
@@ -211,13 +231,9 @@ def GenArrayTypes():
     for arrayType in arrayTypes:
         fileName = arrayType.GetHeaderFileName()
         filePath = os.path.join(os.path.abspath(TYPES_DIR), fileName)
-        code = arrayType.GenerateCode(GetCodeGenTemplate('arrayType.h'))
-        print("Generated {!r}".format(filePath))
-        with open(filePath, 'w') as f:
-            f.write(code)
+        code = arrayType.GenerateCode(GetCodeGenTemplate(os.path.join(TYPES_DIR, 'arrayType.h')))
+        WriteFile(filePath, code)
         filePaths.append(filePath)
-
-    filePaths = []
 
     return filePaths
 
@@ -231,7 +247,7 @@ VECTOR_TYPES = [
     VectorType((3,), "float"),
     VectorType((4,), "float"),
 
-    # Matrix ve
+    # Matrix types.
     VectorType((3,3), "float"),
     VectorType((4,4), "float"),
 ]
@@ -249,12 +265,9 @@ def GenVectorTypes():
     headerFileNames = []
     for vectorType in VECTOR_TYPES:
         fileName = vectorType.GetHeaderFileName()
-        code = vectorType.GenerateCode(GetCodeGenTemplate('vectorType.h'))
+        code = vectorType.GenerateCode(GetCodeGenTemplate(os.path.join(TYPES_DIR, 'vectorType.h')))
         filePath = os.path.join(os.path.abspath(TYPES_DIR), fileName)
-        print("Generated {!r}".format(filePath))
-        with open(filePath, 'w') as f:
-            f.write(code)
-
+        WriteFile(filePath, code)
         filePaths.append(filePath)
         headerFileNames.append(fileName)
 
@@ -263,8 +276,7 @@ def GenVectorTypes():
     aggregateIncludes = AggregateIncludesCpp(includePaths)
     aggregateCode = aggregateIncludes.GenerateCode(GetCodeGenTemplate('aggregateIncludes.cpp'))
     aggregateCppPath = os.path.join(os.path.abspath(TYPES_DIR), "vectorTypes.cpp")
-    with open(aggregateCppPath, 'w') as f:
-        f.write(aggregateCode)
+    WriteFile(aggregateCppPath, aggregateCode)
     filePaths.append(aggregateCppPath)
 
     return filePaths
@@ -284,15 +296,91 @@ def GenTypes():
     return filePaths
 
 
-def GenerateCode():
+def GenFunction(functionFileName, **kwargs):
     """
-    Generate all code!
+    Generate code for a function.
+
+    Args:
+        functionFileName (str): name of the template file.  This name will also be used to write the generated code.
+
+    Returns:
+        str: file path to the generated code.
     """
-    filePaths = GenTypes()
-    FormatCode(filePaths)
+    functionGen = CodeGenerator()
+    for key, value in kwargs.items():
+        setattr(functionGen, key, value)
+
+    filePath = os.path.join(os.path.abspath(FUNCTIONS_DIR), functionFileName)
+    code = functionGen.GenerateCode(
+        GetCodeGenTemplate(os.path.join(FUNCTIONS_DIR, functionFileName))
+    )
+    WriteFile(filePath, code)
+
+    return filePath
+
+
+def GenFunctions():
+    """
+    Generate code for templatized functions.
+
+    Returns:
+        list: file paths to the generated files.
+    """
+    filePaths = []
+
+    filePaths.append(
+        GenFunction(
+            "crossProduct.h",
+            vectorTypes=[VectorType((3,), "float")]
+        )
+    )
+
+    filePaths.append(
+        GenFunction(
+            "dotProduct.h",
+            vectorTypes=[VectorType((3,), "float")]
+        )
+    )
+
+    filePaths.append(
+        GenFunction(
+            "length.h",
+            vectorTypes=[
+                VectorType((2,), "float"),
+                VectorType((3,), "float"),
+                VectorType((4,), "float")
+            ]
+        )
+    )
+
+    filePaths.append(
+        GenFunction(
+            "lengthSquared.h",
+            vectorTypes=[
+                VectorType((2,), "float"),
+                VectorType((3,), "float"),
+                VectorType((4,), "float")
+            ]
+        )
+    )
+
+    filePaths.append(
+        GenFunction(
+            "normalise.h",
+            vectorTypes=[
+                VectorType((2,), "float"),
+                VectorType((3,), "float"),
+                VectorType((4,), "float")
+            ]
+        )
+    )
+
+    return filePaths
 
 
 if __name__ == "__main__":
-    GenerateCode()
+    filePaths = GenTypes()
+    filePaths += GenFunctions()
+    FormatCode(filePaths)
 
 

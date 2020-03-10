@@ -2,19 +2,40 @@
 
 #include <pbr/api.h>
 
+#include <pbr/types/vec2f.h>
+#include <pbr/types/vec3f.h>
+#include <pbr/types/vec4f.h>
+
 PBR_NAMESPACE_BEGIN
 
 /// Compute the squared length of a vector.
 PBR_API
-template < typename VecT >
-inline void FnLengthSquared( const VecT& i_vector, typename VecT::ElementType& o_lengthSquared )
+inline void FnLengthSquared( const Vec2f& i_vector, float& o_lengthSquared )
 {
     o_lengthSquared = 0;
-#pragma unroll
-    for ( size_t elementIndex = 0; elementIndex < VecT::GetElementSize(); ++elementIndex )
-    {
-        o_lengthSquared += i_vector[ elementIndex ] * i_vector[ elementIndex ];
-    }
+    o_lengthSquared += i_vector[ 0 ] * i_vector[ 0 ];
+    o_lengthSquared += i_vector[ 1 ] * i_vector[ 1 ];
+}
+
+/// Compute the squared length of a vector.
+PBR_API
+inline void FnLengthSquared( const Vec3f& i_vector, float& o_lengthSquared )
+{
+    o_lengthSquared = 0;
+    o_lengthSquared += i_vector[ 0 ] * i_vector[ 0 ];
+    o_lengthSquared += i_vector[ 1 ] * i_vector[ 1 ];
+    o_lengthSquared += i_vector[ 2 ] * i_vector[ 2 ];
+}
+
+/// Compute the squared length of a vector.
+PBR_API
+inline void FnLengthSquared( const Vec4f& i_vector, float& o_lengthSquared )
+{
+    o_lengthSquared = 0;
+    o_lengthSquared += i_vector[ 0 ] * i_vector[ 0 ];
+    o_lengthSquared += i_vector[ 1 ] * i_vector[ 1 ];
+    o_lengthSquared += i_vector[ 2 ] * i_vector[ 2 ];
+    o_lengthSquared += i_vector[ 3 ] * i_vector[ 3 ];
 }
 
 PBR_NAMESPACE_END

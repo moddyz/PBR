@@ -1,3 +1,3 @@
-{% for path in obj.includePaths -%}
+{% for path in context.includePaths -%}
 #include <{{ path }}>
 {% endfor %}

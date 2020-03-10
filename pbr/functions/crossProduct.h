@@ -2,17 +2,18 @@
 
 #include <pbr/api.h>
 
+#include <pbr/types/vec3f.h>
+
 PBR_NAMESPACE_BEGIN
 
-/// Compute the cross product of two vectors.
+/// Compute the cross product of two Vec3f.
 PBR_API
-template < typename VecT >
-inline void FnCrossProduct( const VecT& i_lhs, const VecT& i_rhs, VecT& o_product )
+inline void FnCrossProduct( const Vec3f& i_lhs, const Vec3f& i_rhs, Vec3f& o_product )
 {
     o_product =
-        VecT( ( ( double ) i_lhs.Y() * ( double ) i_rhs.Z() ) - ( ( double ) i_lhs.Z() * ( double ) i_rhs.Y() ),
-              ( ( double ) i_lhs.Z() * ( double ) i_rhs.X() ) - ( ( double ) i_lhs.X() * ( double ) i_rhs.Z() ),
-              ( ( double ) i_lhs.X() * ( double ) i_rhs.Y() ) - ( ( double ) i_lhs.Y() * ( double ) i_rhs.X() ) );
+        Vec3f( ( ( double ) i_lhs.Y() * ( double ) i_rhs.Z() ) - ( ( double ) i_lhs.Z() * ( double ) i_rhs.Y() ),
+               ( ( double ) i_lhs.Z() * ( double ) i_rhs.X() ) - ( ( double ) i_lhs.X() * ( double ) i_rhs.Z() ),
+               ( ( double ) i_lhs.X() * ( double ) i_rhs.Y() ) - ( ( double ) i_lhs.Y() * ( double ) i_rhs.X() ) );
 }
 
 PBR_NAMESPACE_END
