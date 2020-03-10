@@ -2,62 +2,73 @@
 
 #include <cmath>
 #include <cstring>
+
 #include <pbr/api.h>
 #include <pbr/tools/assert.h>
 
 PBR_NAMESPACE_BEGIN
 
-class PBR_API DtVec2i final
+/// \class Vec2i
+class PBR_API Vec2i final
 {
 public:
     using ElementType = int;
 
-    static size_t GetElementSize()
-    {
-        return 2;
-    }
+    /// Default constructor.
+    Vec2i() = default;
 
-    DtVec2i()  = default;
-    ~DtVec2i() = default;
+    /// Destructor.
+    ~Vec2i() = default;
 
-    explicit DtVec2i( const int& i_element0, const int& i_element1 )
+    /// Element-wise constructor.
+    explicit Vec2i( const int& i_element0, const int& i_element1 )
         : m_elements{i_element0, i_element1}
     {
         PBR_ASSERT( !HasNans() );
     }
 
-    DtVec2i( const DtVec2i& i_vector )
+    /// Copy constructor.
+    Vec2i( const Vec2i& i_vector )
     {
         PBR_ASSERT( !HasNans() );
-        std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( m_elements ) );
+        std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( int ) * 2 );
     }
 
-    DtVec2i& operator=( const DtVec2i& i_vector )
+    /// Copy assignment operator.
+    Vec2i& operator=( const Vec2i& i_vector )
     {
         PBR_ASSERT( !HasNans() );
-        std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( m_elements ) );
+        std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( int ) * 2 );
         return *this;
     }
 
+    /// Element-wise index read accessor.
     int& operator[]( size_t i_index )
     {
         PBR_ASSERT( !HasNans() );
+        PBR_ASSERT( i_index < 2 );
         return m_elements[ i_index ];
     }
 
+    /// Element-wise index write accessor.
     const int& operator[]( size_t i_index ) const
     {
         PBR_ASSERT( !HasNans() );
+        PBR_ASSERT( i_index < 2 );
         return m_elements[ i_index ];
     }
 
-    DtVec2i operator+( const DtVec2i& i_vector ) const
+    //
+    // Arithmetic Operator Overloading.
+    //
+
+    Vec2i operator+( const Vec2i& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
-        return DtVec2i( m_elements[ 0 ] + i_vector.m_elements[ 0 ], m_elements[ 1 ] + i_vector.m_elements[ 1 ] );
+        return Vec2i( m_elements[ 0 ] + i_vector.m_elements[ 0 ], m_elements[ 1 ] + i_vector.m_elements[ 1 ] );
     }
 
-    DtVec2i& operator+=( const DtVec2i& i_vector )
+    Vec2i& operator+=( const Vec2i& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
@@ -65,13 +76,13 @@ public:
         return *this;
     }
 
-    DtVec2i operator-( const DtVec2i& i_vector ) const
+    Vec2i operator-( const Vec2i& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
-        return DtVec2i( m_elements[ 0 ] - i_vector.m_elements[ 0 ], m_elements[ 1 ] - i_vector.m_elements[ 1 ] );
+        return Vec2i( m_elements[ 0 ] - i_vector.m_elements[ 0 ], m_elements[ 1 ] - i_vector.m_elements[ 1 ] );
     }
 
-    DtVec2i& operator-=( const DtVec2i& i_vector )
+    Vec2i& operator-=( const Vec2i& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
@@ -79,13 +90,13 @@ public:
         return *this;
     }
 
-    DtVec2i operator*( const int& i_scalar ) const
+    Vec2i operator*( const int& i_scalar ) const
     {
         PBR_ASSERT( !HasNans() );
-        return DtVec2i( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar );
+        return Vec2i( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar );
     }
 
-    DtVec2i& operator*=( const int& i_scalar )
+    Vec2i& operator*=( const int& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] *= i_scalar;
@@ -93,15 +104,19 @@ public:
         return *this;
     }
 
-    DtVec2i operator/( const int& i_scalar ) const
+    //
+    // Arithmetic Operator Overloading.
+    //
+
+    Vec2i operator/( const int& i_scalar ) const
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
         int reciprocal = 1.0 / i_scalar;
-        return DtVec2i( m_elements[ 0 ] * reciprocal, m_elements[ 1 ] * reciprocal );
+        return Vec2i( m_elements[ 0 ] * reciprocal, m_elements[ 1 ] * reciprocal );
     }
 
-    DtVec2i& operator/=( const int& i_scalar )
+    Vec2i& operator/=( const int& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
@@ -110,19 +125,24 @@ public:
         m_elements[ 1 ] *= reciprocal;
         return *this;
     }
-
     int X() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 0 ];
     }
-
     int Y() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 1 ];
     }
 
+    /// Get the number of elements in this vector.
+    static size_t GetElementSize()
+    {
+        return 2;
+    }
+
+    /// Are any of the element values NaNs?
     bool HasNans() const
     {
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] );

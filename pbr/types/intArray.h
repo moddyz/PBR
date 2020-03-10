@@ -1,7 +1,9 @@
 #pragma once
 
+#include <pbr/types/None>
+
 PBR_NAMESPACE_BEGIN
 
-using DtIntArray = std::vector< int >;
+using IntArray = std::vector< int >;
 
 PBR_NAMESPACE_END

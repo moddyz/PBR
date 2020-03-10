@@ -4,6 +4,6 @@
 
 PBR_NAMESPACE_BEGIN
 
-using DtVec2fArray = std::vector< DtVec2f >;
+using Vec2fArray = std::vector< Vec2f >;
 
 PBR_NAMESPACE_END

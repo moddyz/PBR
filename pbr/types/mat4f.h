@@ -2,40 +2,41 @@
 
 #include <cmath>
 #include <cstring>
+
 #include <pbr/api.h>
 #include <pbr/tools/assert.h>
 
 PBR_NAMESPACE_BEGIN
 
-class PBR_API DtMat4f final
+/// \class Mat4f
+class PBR_API Mat4f final
 {
 public:
     using ElementType = float;
 
-    static size_t GetElementSize()
-    {
-        return 16;
-    }
+    /// Default constructor.
+    Mat4f() = default;
 
-    DtMat4f()  = default;
-    ~DtMat4f() = default;
+    /// Destructor.
+    ~Mat4f() = default;
 
-    explicit DtMat4f( const float& i_element0,
-                      const float& i_element1,
-                      const float& i_element2,
-                      const float& i_element3,
-                      const float& i_element4,
-                      const float& i_element5,
-                      const float& i_element6,
-                      const float& i_element7,
-                      const float& i_element8,
-                      const float& i_element9,
-                      const float& i_element10,
-                      const float& i_element11,
-                      const float& i_element12,
-                      const float& i_element13,
-                      const float& i_element14,
-                      const float& i_element15 )
+    /// Element-wise constructor.
+    explicit Mat4f( const float& i_element0,
+                    const float& i_element1,
+                    const float& i_element2,
+                    const float& i_element3,
+                    const float& i_element4,
+                    const float& i_element5,
+                    const float& i_element6,
+                    const float& i_element7,
+                    const float& i_element8,
+                    const float& i_element9,
+                    const float& i_element10,
+                    const float& i_element11,
+                    const float& i_element12,
+                    const float& i_element13,
+                    const float& i_element14,
+                    const float& i_element15 )
         : m_elements{i_element0,
                      i_element1,
                      i_element2,
@@ -56,43 +57,232 @@ public:
         PBR_ASSERT( !HasNans() );
     }
 
-    DtMat4f( const DtMat4f& i_matrix )
+    /// Copy constructor.
+    Mat4f( const Mat4f& i_vector )
     {
         PBR_ASSERT( !HasNans() );
-        std::memcpy( ( void* ) m_elements, ( const void* ) i_matrix.m_elements, sizeof( m_elements ) );
+        std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( float ) * 16 );
     }
 
-    DtMat4f& operator=( const DtMat4f& i_matrix )
+    /// Copy assignment operator.
+    Mat4f& operator=( const Mat4f& i_vector )
     {
         PBR_ASSERT( !HasNans() );
-        std::memcpy( ( void* ) m_elements, ( const void* ) i_matrix.m_elements, sizeof( m_elements ) );
+        std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( float ) * 16 );
         return *this;
     }
 
+    /// Element-wise index read accessor.
     float& operator[]( size_t i_index )
     {
         PBR_ASSERT( !HasNans() );
+        PBR_ASSERT( i_index < 16 );
         return m_elements[ i_index ];
     }
 
+    /// Element-wise index write accessor.
     const float& operator[]( size_t i_index ) const
     {
         PBR_ASSERT( !HasNans() );
+        PBR_ASSERT( i_index < 16 );
         return m_elements[ i_index ];
     }
 
-    float& operator()( size_t i_row, size_t i_column )
+    //
+    // Arithmetic Operator Overloading.
+    //
+
+    Mat4f operator+( const Mat4f& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
-        return m_elements[ ( i_row * 4 ) + i_column ];
+        return Mat4f( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
+                      m_elements[ 1 ] + i_vector.m_elements[ 1 ],
+                      m_elements[ 2 ] + i_vector.m_elements[ 2 ],
+                      m_elements[ 3 ] + i_vector.m_elements[ 3 ],
+                      m_elements[ 4 ] + i_vector.m_elements[ 4 ],
+                      m_elements[ 5 ] + i_vector.m_elements[ 5 ],
+                      m_elements[ 6 ] + i_vector.m_elements[ 6 ],
+                      m_elements[ 7 ] + i_vector.m_elements[ 7 ],
+                      m_elements[ 8 ] + i_vector.m_elements[ 8 ],
+                      m_elements[ 9 ] + i_vector.m_elements[ 9 ],
+                      m_elements[ 10 ] + i_vector.m_elements[ 10 ],
+                      m_elements[ 11 ] + i_vector.m_elements[ 11 ],
+                      m_elements[ 12 ] + i_vector.m_elements[ 12 ],
+                      m_elements[ 13 ] + i_vector.m_elements[ 13 ],
+                      m_elements[ 14 ] + i_vector.m_elements[ 14 ],
+                      m_elements[ 15 ] + i_vector.m_elements[ 15 ] );
     }
 
+    Mat4f& operator+=( const Mat4f& i_vector )
+    {
+        PBR_ASSERT( !HasNans() );
+        m_elements[ 0 ] += i_vector.m_elements[ 0 ];
+        m_elements[ 1 ] += i_vector.m_elements[ 1 ];
+        m_elements[ 2 ] += i_vector.m_elements[ 2 ];
+        m_elements[ 3 ] += i_vector.m_elements[ 3 ];
+        m_elements[ 4 ] += i_vector.m_elements[ 4 ];
+        m_elements[ 5 ] += i_vector.m_elements[ 5 ];
+        m_elements[ 6 ] += i_vector.m_elements[ 6 ];
+        m_elements[ 7 ] += i_vector.m_elements[ 7 ];
+        m_elements[ 8 ] += i_vector.m_elements[ 8 ];
+        m_elements[ 9 ] += i_vector.m_elements[ 9 ];
+        m_elements[ 10 ] += i_vector.m_elements[ 10 ];
+        m_elements[ 11 ] += i_vector.m_elements[ 11 ];
+        m_elements[ 12 ] += i_vector.m_elements[ 12 ];
+        m_elements[ 13 ] += i_vector.m_elements[ 13 ];
+        m_elements[ 14 ] += i_vector.m_elements[ 14 ];
+        m_elements[ 15 ] += i_vector.m_elements[ 15 ];
+        return *this;
+    }
+
+    Mat4f operator-( const Mat4f& i_vector ) const
+    {
+        PBR_ASSERT( !HasNans() );
+        return Mat4f( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
+                      m_elements[ 1 ] - i_vector.m_elements[ 1 ],
+                      m_elements[ 2 ] - i_vector.m_elements[ 2 ],
+                      m_elements[ 3 ] - i_vector.m_elements[ 3 ],
+                      m_elements[ 4 ] - i_vector.m_elements[ 4 ],
+                      m_elements[ 5 ] - i_vector.m_elements[ 5 ],
+                      m_elements[ 6 ] - i_vector.m_elements[ 6 ],
+                      m_elements[ 7 ] - i_vector.m_elements[ 7 ],
+                      m_elements[ 8 ] - i_vector.m_elements[ 8 ],
+                      m_elements[ 9 ] - i_vector.m_elements[ 9 ],
+                      m_elements[ 10 ] - i_vector.m_elements[ 10 ],
+                      m_elements[ 11 ] - i_vector.m_elements[ 11 ],
+                      m_elements[ 12 ] - i_vector.m_elements[ 12 ],
+                      m_elements[ 13 ] - i_vector.m_elements[ 13 ],
+                      m_elements[ 14 ] - i_vector.m_elements[ 14 ],
+                      m_elements[ 15 ] - i_vector.m_elements[ 15 ] );
+    }
+
+    Mat4f& operator-=( const Mat4f& i_vector )
+    {
+        PBR_ASSERT( !HasNans() );
+        m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
+        m_elements[ 1 ] -= i_vector.m_elements[ 1 ];
+        m_elements[ 2 ] -= i_vector.m_elements[ 2 ];
+        m_elements[ 3 ] -= i_vector.m_elements[ 3 ];
+        m_elements[ 4 ] -= i_vector.m_elements[ 4 ];
+        m_elements[ 5 ] -= i_vector.m_elements[ 5 ];
+        m_elements[ 6 ] -= i_vector.m_elements[ 6 ];
+        m_elements[ 7 ] -= i_vector.m_elements[ 7 ];
+        m_elements[ 8 ] -= i_vector.m_elements[ 8 ];
+        m_elements[ 9 ] -= i_vector.m_elements[ 9 ];
+        m_elements[ 10 ] -= i_vector.m_elements[ 10 ];
+        m_elements[ 11 ] -= i_vector.m_elements[ 11 ];
+        m_elements[ 12 ] -= i_vector.m_elements[ 12 ];
+        m_elements[ 13 ] -= i_vector.m_elements[ 13 ];
+        m_elements[ 14 ] -= i_vector.m_elements[ 14 ];
+        m_elements[ 15 ] -= i_vector.m_elements[ 15 ];
+        return *this;
+    }
+
+    Mat4f operator*( const float& i_scalar ) const
+    {
+        PBR_ASSERT( !HasNans() );
+        return Mat4f( m_elements[ 0 ] * i_scalar,
+                      m_elements[ 1 ] * i_scalar,
+                      m_elements[ 2 ] * i_scalar,
+                      m_elements[ 3 ] * i_scalar,
+                      m_elements[ 4 ] * i_scalar,
+                      m_elements[ 5 ] * i_scalar,
+                      m_elements[ 6 ] * i_scalar,
+                      m_elements[ 7 ] * i_scalar,
+                      m_elements[ 8 ] * i_scalar,
+                      m_elements[ 9 ] * i_scalar,
+                      m_elements[ 10 ] * i_scalar,
+                      m_elements[ 11 ] * i_scalar,
+                      m_elements[ 12 ] * i_scalar,
+                      m_elements[ 13 ] * i_scalar,
+                      m_elements[ 14 ] * i_scalar,
+                      m_elements[ 15 ] * i_scalar );
+    }
+
+    Mat4f& operator*=( const float& i_scalar )
+    {
+        PBR_ASSERT( !HasNans() );
+        m_elements[ 0 ] *= i_scalar;
+        m_elements[ 1 ] *= i_scalar;
+        m_elements[ 2 ] *= i_scalar;
+        m_elements[ 3 ] *= i_scalar;
+        m_elements[ 4 ] *= i_scalar;
+        m_elements[ 5 ] *= i_scalar;
+        m_elements[ 6 ] *= i_scalar;
+        m_elements[ 7 ] *= i_scalar;
+        m_elements[ 8 ] *= i_scalar;
+        m_elements[ 9 ] *= i_scalar;
+        m_elements[ 10 ] *= i_scalar;
+        m_elements[ 11 ] *= i_scalar;
+        m_elements[ 12 ] *= i_scalar;
+        m_elements[ 13 ] *= i_scalar;
+        m_elements[ 14 ] *= i_scalar;
+        m_elements[ 15 ] *= i_scalar;
+        return *this;
+    }
+
+    //
+    // Arithmetic Operator Overloading.
+    //
+
+    Mat4f operator/( const float& i_scalar ) const
+    {
+        PBR_ASSERT( !HasNans() );
+        PBR_ASSERT( i_scalar != 0.0 );
+        float reciprocal = 1.0 / i_scalar;
+        return Mat4f( m_elements[ 0 ] * reciprocal,
+                      m_elements[ 1 ] * reciprocal,
+                      m_elements[ 2 ] * reciprocal,
+                      m_elements[ 3 ] * reciprocal,
+                      m_elements[ 4 ] * reciprocal,
+                      m_elements[ 5 ] * reciprocal,
+                      m_elements[ 6 ] * reciprocal,
+                      m_elements[ 7 ] * reciprocal,
+                      m_elements[ 8 ] * reciprocal,
+                      m_elements[ 9 ] * reciprocal,
+                      m_elements[ 10 ] * reciprocal,
+                      m_elements[ 11 ] * reciprocal,
+                      m_elements[ 12 ] * reciprocal,
+                      m_elements[ 13 ] * reciprocal,
+                      m_elements[ 14 ] * reciprocal,
+                      m_elements[ 15 ] * reciprocal );
+    }
     const float& operator()( size_t i_row, size_t i_column ) const
     {
-        PBR_ASSERT( !HasNans() );
-        return m_elements[ ( i_row * 4 ) + i_column ];
+        return m_elements[ i_row * 4 + i_column ];
     }
 
+    Mat4f& operator/=( const float& i_scalar )
+    {
+        PBR_ASSERT( !HasNans() );
+        PBR_ASSERT( i_scalar != 0.0 );
+        float reciprocal = 1.0 / i_scalar;
+        m_elements[ 0 ] *= reciprocal;
+        m_elements[ 1 ] *= reciprocal;
+        m_elements[ 2 ] *= reciprocal;
+        m_elements[ 3 ] *= reciprocal;
+        m_elements[ 4 ] *= reciprocal;
+        m_elements[ 5 ] *= reciprocal;
+        m_elements[ 6 ] *= reciprocal;
+        m_elements[ 7 ] *= reciprocal;
+        m_elements[ 8 ] *= reciprocal;
+        m_elements[ 9 ] *= reciprocal;
+        m_elements[ 10 ] *= reciprocal;
+        m_elements[ 11 ] *= reciprocal;
+        m_elements[ 12 ] *= reciprocal;
+        m_elements[ 13 ] *= reciprocal;
+        m_elements[ 14 ] *= reciprocal;
+        m_elements[ 15 ] *= reciprocal;
+        return *this;
+    }
+
+    /// Get the number of elements in this vector.
+    static size_t GetElementSize()
+    {
+        return 16;
+    }
+
+    /// Are any of the element values NaNs?
     bool HasNans() const
     {
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] ) ||
@@ -104,7 +294,6 @@ public:
     }
 
 private:
-    float m_elements[ 16 ] =
-        {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+    float m_elements[ 16 ] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 };
 PBR_NAMESPACE_END

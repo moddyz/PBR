@@ -4,6 +4,6 @@
 
 PBR_NAMESPACE_BEGIN
 
-using DtMat4fArray = std::vector< DtMat4f >;
+using Mat4fArray = std::vector< Mat4f >;
 
 PBR_NAMESPACE_END

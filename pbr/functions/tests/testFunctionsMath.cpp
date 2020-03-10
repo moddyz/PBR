@@ -11,8 +11,8 @@
 
 TEST_CASE( "dotProduct" )
 {
-    pbr::DtVec3f lhs( 1.0, 0.5, 2.0 );
-    pbr::DtVec3f rhs( 2.0, 5.0, 2.5 );
+    pbr::Vec3f lhs( 1.0, 0.5, 2.0 );
+    pbr::Vec3f rhs( 2.0, 5.0, 2.5 );
     float        res;
     pbr::FnDotProduct( lhs, rhs, res );
     CHECK( res == Approx( 9.5f ) );
@@ -20,9 +20,9 @@ TEST_CASE( "dotProduct" )
 
 TEST_CASE( "crossProduct" )
 {
-    pbr::DtVec3f lhs( 1.0, 0.5, 2.0 );
-    pbr::DtVec3f rhs( 2.0, 5.0, 2.5 );
-    pbr::DtVec3f res;
+    pbr::Vec3f lhs( 1.0, 0.5, 2.0 );
+    pbr::Vec3f rhs( 2.0, 5.0, 2.5 );
+    pbr::Vec3f res;
     pbr::FnCrossProduct( lhs, rhs, res );
     CHECK( res.X() == Approx( -8.75f ) );
     CHECK( res.Y() == Approx( 1.5f ) );
@@ -31,7 +31,7 @@ TEST_CASE( "crossProduct" )
 
 TEST_CASE( "lengthSquared" )
 {
-    pbr::DtVec3f vector( 1.0, 2.0, 3.0 );
+    pbr::Vec3f vector( 1.0, 2.0, 3.0 );
     float        lengthSquared;
     pbr::FnLengthSquared( vector, lengthSquared );
     CHECK( lengthSquared == Approx( 14.0f ) );
@@ -39,7 +39,7 @@ TEST_CASE( "lengthSquared" )
 
 TEST_CASE( "length" )
 {
-    pbr::DtVec3f vector( 1.0, 2.0, 3.0 );
+    pbr::Vec3f vector( 1.0, 2.0, 3.0 );
     float        length;
     pbr::FnLength( vector, length );
     CHECK( length == Approx( 3.741657387 ) );
@@ -47,8 +47,8 @@ TEST_CASE( "length" )
 
 TEST_CASE( "normalise" )
 {
-    pbr::DtVec3f vector( 1.0, 2.0, 3.0 );
-    pbr::DtVec3f normalised;
+    pbr::Vec3f vector( 1.0, 2.0, 3.0 );
+    pbr::Vec3f normalised;
     pbr::FnNormalise( vector, normalised );
     CHECK( normalised.X() == Approx( 0.267261242 ) );
     CHECK( normalised.Y() == Approx( 0.534522484 ) );
