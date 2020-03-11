@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <cstring>
+#include <sstream>
 
 #include <pbr/api.h>
 #include <pbr/tools/assert.h>
@@ -166,6 +167,13 @@ public:
         return m_elements[ 3 ];
     }
 
+    /// Comparison operator
+    bool operator==( const Vec4f& i_vector ) const
+    {
+        return m_elements[ 0 ] == i_vector.m_elements[ 0 ] && m_elements[ 1 ] == i_vector.m_elements[ 1 ] &&
+               m_elements[ 2 ] == i_vector.m_elements[ 2 ] && m_elements[ 3 ] == i_vector.m_elements[ 3 ];
+    }
+
     /// Get the number of elements in this vector.
     static size_t GetElementSize()
     {
@@ -177,6 +185,22 @@ public:
     {
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] ) ||
                std::isnan( m_elements[ 3 ] );
+    }
+
+    /// Get the string representation.  For debugging purposes.
+    std::string ToString()
+    {
+        std::stringstream ss;
+        ss << "Vec4f( ";
+        ss << m_elements[ 0 ];
+        ss << ", ";
+        ss << m_elements[ 1 ];
+        ss << ", ";
+        ss << m_elements[ 2 ];
+        ss << ", ";
+        ss << m_elements[ 3 ];
+        ss << " )";
+        return ss.str();
     }
 
 private:

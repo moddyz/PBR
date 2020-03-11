@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <cstring>
+#include <sstream>
 
 #include <pbr/api.h>
 #include <pbr/tools/assert.h>
@@ -211,6 +212,19 @@ public:
     }
 {%- endif %}
 
+    /// Comparison operator
+    bool operator==( const {{context.className}}& i_vector ) const
+    {
+        return
+{% for index in range(context.elementSize) -%}
+        m_elements[ {{ index }} ] == i_vector.m_elements[ {{ index }} ]
+{%- if index + 1 < context.elementSize -%}
+        &&
+{% endif %}
+{%- endfor -%}
+        ;
+    }
+
     /// Get the number of elements in this vector.
     static size_t GetElementSize()
     {
@@ -228,6 +242,21 @@ public:
 {%- endif %}
 {%- endfor %}
         ;
+    }
+
+    /// Get the string representation.  For debugging purposes.
+    std::string ToString()
+    {
+        std::stringstream ss;
+        ss << "{{ context.className }}( ";
+{%- for index in range(context.elementSize) -%}
+        ss << m_elements[ {{ index }} ];
+{%- if index + 1 < context.elementSize -%}
+        ss << ", ";
+{%- endif %}
+{%- endfor %}
+        ss << " )";
+        return ss.str();
     }
 
 private:

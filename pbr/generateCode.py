@@ -353,6 +353,15 @@ def GenFunctions():
         )
     )
 
+    filePaths.append(
+        GenFunction(
+            "coordinateSystem.h",
+            vectorTypes=[
+                VectorType((3,), "float"),
+            ]
+        )
+    )
+
     return filePaths
 
 

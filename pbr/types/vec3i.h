@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <cstring>
+#include <sstream>
 
 #include <pbr/api.h>
 #include <pbr/tools/assert.h>
@@ -149,6 +150,13 @@ public:
         return m_elements[ 2 ];
     }
 
+    /// Comparison operator
+    bool operator==( const Vec3i& i_vector ) const
+    {
+        return m_elements[ 0 ] == i_vector.m_elements[ 0 ] && m_elements[ 1 ] == i_vector.m_elements[ 1 ] &&
+               m_elements[ 2 ] == i_vector.m_elements[ 2 ];
+    }
+
     /// Get the number of elements in this vector.
     static size_t GetElementSize()
     {
@@ -159,6 +167,20 @@ public:
     bool HasNans() const
     {
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] );
+    }
+
+    /// Get the string representation.  For debugging purposes.
+    std::string ToString()
+    {
+        std::stringstream ss;
+        ss << "Vec3i( ";
+        ss << m_elements[ 0 ];
+        ss << ", ";
+        ss << m_elements[ 1 ];
+        ss << ", ";
+        ss << m_elements[ 2 ];
+        ss << " )";
+        return ss.str();
     }
 
 private:
