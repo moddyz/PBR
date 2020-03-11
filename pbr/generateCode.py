@@ -12,51 +12,29 @@ import shlex
 from jinja2 import Template
 
 
-# Namespace of all the symbols.
-PROJECT = "pbr"
+# Name of the project directory.
+PROJECT_DIR = "pbr"
 
-# Name of the subdirectory that all data types should reside.
+# Name of the codeGenTemplates directory.
 CODEGENTEMPLATES_DIR = "codeGenTemplates"
 
-# Name of the subdirectory that all data types should reside.
+# Name of the subdirectory where all types reside.
 TYPES_DIR = "types"
 
-# Name of the subdirectory that all data types should reside.
+# Name of the subdirectory where all functions reside.
 FUNCTIONS_DIR = "functions"
 
-# Prefix for type class names.
+# Prefix for the class names of types.
 TYPES_CLASS_PREFIX = ""
 
-# Available arithmetic operators.
+# Kinds of arithmetic operators.
 ARITHMETIC_OPERATORS = ['+', '-', '*', '/']
 
-# Scalar types we are interested in generating code for.
+# Scalar types we are interested in generating code for.  Double is omitted for the time being.
 SCALAR_TYPES = ['float', 'int']
 
 
-class CodeGenerator(object):
-    """
-    Code generator base class.  Basically wraps jinja2.Template.render.
-    """
-
-    def GenerateCode(self, templatePath):
-        """
-        Generate a single vector type as a header source.
-
-        Args:
-            templatePath (str): path to the template file to perform substitution.
-
-        Returns:
-            str: file name of generated vector class.
-        """
-        with open(templatePath, 'r') as f:
-            templateStr = f.read()
-            template = Template(templateStr)
-            code = template.render(context=self)
-            return code
-
-
-class AggregateIncludesCpp(CodeGenerator):
+class AggregateIncludesCpp:
     """
     Code generation for aggregating includes in a single CPP.
     """
@@ -65,7 +43,7 @@ class AggregateIncludesCpp(CodeGenerator):
         self.includePaths = includePaths
 
 
-class VectorType(CodeGenerator):
+class VectorType:
     """
     Code generation for an C++ vector type.
     """
@@ -75,55 +53,36 @@ class VectorType(CodeGenerator):
         assert(isinstance(scalarType, str))
         self.dims = dims
         self.scalarType = scalarType
-        self.elementSize = self.GetElementSize()
-        self.className = self.GetClassName()
-        self.headerFileName = self.GetHeaderFileName()
 
-    def GetElementSize(self):
-        """
-        Returns:
-            int: the number of elements in a vector.
-        """
-        return functools.reduce(lambda x, y: x * y, self.dims)
+        # Compute element size.
+        self.elementSize = functools.reduce(lambda x, y: x * y, self.dims)
 
-    def GetHeaderFileName(self):
-        """
-        Get the name of the header file to author the code into.
-
-        Returns:
-            str: header file name.
-        """
-        if len(self.dims) == 2:
-            prefix = "mat"
-        else:
-            prefix = "vec"
-
-        return "{prefix}{dims}{scalarType}.h".format(
-            prefix=prefix,
-            dims=str(self.dims[0]),
-            scalarType=self.scalarType[0]
-        )
-
-    def GetClassName(self):
-        """
-        Get the name of the vector class.
-
-        Returns:
-            str: class name.
-        """
+        # Class name
         if len(self.dims) == 2:
             prefix = TYPES_CLASS_PREFIX + "Mat"
         else:
             prefix = TYPES_CLASS_PREFIX + "Vec"
 
-        return "{prefix}{dims}{scalarType}".format(
+        self.className = "{prefix}{dims}{scalarType}".format(
+            prefix=prefix,
+            dims=str(self.dims[0]),
+            scalarType=self.scalarType[0]
+        )
+
+        # Header file name.
+        if len(self.dims) == 2:
+            prefix = "mat"
+        else:
+            prefix = "vec"
+
+        self.headerFileName = "{prefix}{dims}{scalarType}.h".format(
             prefix=prefix,
             dims=str(self.dims[0]),
             scalarType=self.scalarType[0]
         )
 
 
-class ArrayType(CodeGenerator):
+class ArrayType:
     """
     Code generation for an C++ array type.
     """
@@ -131,38 +90,32 @@ class ArrayType(CodeGenerator):
     def __init__(self, elementTypeName, elementHeaderFileName=None):
         self.elementTypeName = elementTypeName
         self.elementHeaderFileName = elementHeaderFileName
-        self.className = self.GetClassName()
 
-    def GetClassName(self):
-        """
-        Returns:
-            str: class name of this array.
-        """
+        # Class name.
         if self.elementTypeName.startswith(TYPES_CLASS_PREFIX):
             prefix = ""
         else:
             prefix = TYPES_CLASS_PREFIX
 
-        return "{prefix}{elementTypeName}Array".format(
+        self.className = "{prefix}{elementTypeName}Array".format(
             prefix=prefix,
             elementTypeName=(self.elementTypeName[0].upper() + self.elementTypeName[1:])
         )
 
-    def GetHeaderFileName(self):
-        """
-        Get the name of the header file to author the code into.
-
-        Returns:
-            str: header file name.
-        """
+        # header file name.
         if self.elementHeaderFileName:
-            return "{elementHeaderFileName}Array.h".format(
+            self.headerFileName = "{elementHeaderFileName}Array.h".format(
                 elementHeaderFileName=os.path.splitext(self.elementHeaderFileName)[0]
             )
         else:
-            return "{elementTypeName}Array.h".format(
+            self.headerFileName = "{elementTypeName}Array.h".format(
                 elementTypeName=self.elementTypeName[0].lower() + self.elementTypeName[1:]
             )
+
+
+class Function:
+    def __init__(self):
+        pass
 
 
 def RunCommand(command):
@@ -209,6 +162,24 @@ def GetCodeGenTemplate(templateName):
     return os.path.abspath(os.path.join(CODEGENTEMPLATES_DIR, templateName))
 
 
+def GenerateCode(context, templatePath):
+    """
+    Generate a single vector type as a header source.
+
+    Args:
+        context (obj): context object with attributes which are consumed in the template rendering.
+        templatePath (str): path to the template file to perform substitution.
+
+    Returns:
+        str: file name of generated vector class.
+    """
+    with open(templatePath, 'r') as f:
+        templateStr = f.read()
+        template = Template(templateStr)
+        code = template.render(context=context)
+        return code
+
+
 def GenArrayTypes():
     """
     Generate all array type source files.
@@ -223,15 +194,14 @@ def GenArrayTypes():
         arrayTypes.append(arrayType)
 
     for vectorType in VECTOR_TYPES:
-        arrayType = ArrayType(vectorType.GetClassName(), elementHeaderFileName=vectorType.GetHeaderFileName())
+        arrayType = ArrayType(vectorType.className, elementHeaderFileName=vectorType.headerFileName)
         arrayTypes.append(arrayType)
 
     # Generate code for ArrayType(s)
     filePaths = []
     for arrayType in arrayTypes:
-        fileName = arrayType.GetHeaderFileName()
-        filePath = os.path.join(os.path.abspath(TYPES_DIR), fileName)
-        code = arrayType.GenerateCode(GetCodeGenTemplate(os.path.join(TYPES_DIR, 'arrayType.h')))
+        filePath = os.path.join(os.path.abspath(TYPES_DIR), arrayType.headerFileName)
+        code = GenerateCode(arrayType, GetCodeGenTemplate(os.path.join(TYPES_DIR, 'arrayType.h')))
         WriteFile(filePath, code)
         filePaths.append(filePath)
 
@@ -264,17 +234,18 @@ def GenVectorTypes():
     filePaths = []
     headerFileNames = []
     for vectorType in VECTOR_TYPES:
-        fileName = vectorType.GetHeaderFileName()
-        code = vectorType.GenerateCode(GetCodeGenTemplate(os.path.join(TYPES_DIR, 'vectorType.h')))
-        filePath = os.path.join(os.path.abspath(TYPES_DIR), fileName)
+        code = GenerateCode(vectorType, GetCodeGenTemplate(os.path.join(TYPES_DIR, 'vectorType.h')))
+        filePath = os.path.join(os.path.abspath(TYPES_DIR), vectorType.headerFileName)
         WriteFile(filePath, code)
         filePaths.append(filePath)
-        headerFileNames.append(fileName)
+        headerFileNames.append(vectorType.headerFileName)
 
     # Generate aggregation cpp source.
-    includePaths = [os.path.join(PROJECT, TYPES_DIR, fileName) for fileName in headerFileNames]
-    aggregateIncludes = AggregateIncludesCpp(includePaths)
-    aggregateCode = aggregateIncludes.GenerateCode(GetCodeGenTemplate('aggregateIncludes.cpp'))
+    includePaths = [os.path.join(PROJECT_DIR, TYPES_DIR, fileName) for fileName in headerFileNames]
+    aggregateCode = GenerateCode(
+        AggregateIncludesCpp(includePaths),
+        GetCodeGenTemplate('aggregateIncludes.cpp')
+    )
     aggregateCppPath = os.path.join(os.path.abspath(TYPES_DIR), "vectorTypes.cpp")
     WriteFile(aggregateCppPath, aggregateCode)
     filePaths.append(aggregateCppPath)
@@ -306,12 +277,13 @@ def GenFunction(functionFileName, **kwargs):
     Returns:
         str: file path to the generated code.
     """
-    functionGen = CodeGenerator()
+    function = Function()
     for key, value in kwargs.items():
-        setattr(functionGen, key, value)
+        setattr(function, key, value)
 
     filePath = os.path.join(os.path.abspath(FUNCTIONS_DIR), functionFileName)
-    code = functionGen.GenerateCode(
+    code = GenerateCode(
+        function,
         GetCodeGenTemplate(os.path.join(FUNCTIONS_DIR, functionFileName))
     )
     WriteFile(filePath, code)
