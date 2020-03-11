@@ -18,8 +18,8 @@ PBR_NAMESPACE_BEGIN
 /// The result is two new vectors, of which all three are mutually orthogonal.
 PBR_API
 inline void FnCoordinateSystem( const {{ vectorType.className }}& i_vector,
-                                {{ vectorType.className }}& o_vector1,
-                                {{ vectorType.className }}& o_vector2 )
+                                {{ vectorType.className }}& o_vectorA,
+                                {{ vectorType.className }}& o_vectorB )
 {
     // Input vector should be normalised.
 #ifdef PBR_DEBUG
@@ -35,16 +35,16 @@ inline void FnCoordinateSystem( const {{ vectorType.className }}& i_vector,
     // TODO: Describe why the following conditional expression is required.
     if ( std::abs( i_vector.X() ) > std::abs( i_vector.Y() ) )
     {
-        o_vector1 = {{vectorType.className}}( -i_vector.Z(), 0, i_vector.X() );
+        o_vectorA = {{vectorType.className}}( -i_vector.Z(), 0, i_vector.X() );
     }
     else
     {
-        o_vector1 = {{vectorType.className}}( 0, i_vector.Z(), -i_vector.Y() );
+        o_vectorA = {{vectorType.className}}( 0, i_vector.Z(), -i_vector.Y() );
     }
-    FnNormalise( o_vector1, o_vector1 );
+    FnNormalise( o_vectorA, o_vectorA );
 
     // Compute the second output vector by via the cross product of the input & first output vector.
-    FnCrossProduct( o_vector1, o_vector2, o_vector2 );
+    FnCrossProduct( i_vector, o_vectorA, o_vectorB );
 }
 {%- endfor %}
 
