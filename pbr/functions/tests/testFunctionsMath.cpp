@@ -1,6 +1,8 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+#include <pbr/tools/log.h>
+
 #include <pbr/types/vec3f.h>
 
 #include <pbr/functions/crossProduct.h>
@@ -8,6 +10,7 @@
 #include <pbr/functions/length.h>
 #include <pbr/functions/lengthSquared.h>
 #include <pbr/functions/normalise.h>
+#include <pbr/functions/coordinateSystem.h>
 
 TEST_CASE( "dotProduct" )
 {
@@ -53,4 +56,13 @@ TEST_CASE( "normalise" )
     CHECK( normalised.X() == Approx( 0.267261242 ) );
     CHECK( normalised.Y() == Approx( 0.534522484 ) );
     CHECK( normalised.Z() == Approx( 0.801783726 ) );
+}
+
+TEST_CASE( "coordinateSystem" )
+{
+    pbr::Vec3f vector( 1.0, 0.0, 0.0 );
+    pbr::Vec3f vector2, vector3;
+    pbr::FnCoordinateSystem( vector, vector2, vector3 );
+    CHECK( vector2 == pbr::Vec3f( 0.0, 0.0, 1.0 ) );
+    CHECK( vector3 == pbr::Vec3f( 0.0, -1.0, 0.0 ) );
 }

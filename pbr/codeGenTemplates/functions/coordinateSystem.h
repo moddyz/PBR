@@ -1,0 +1,51 @@
+#pragma once
+
+#include <pbr/api.h>
+#include <pbr/tools/assert.h>
+#include <pbr/tools/almost.h>
+
+{% for vectorType in context.vectorTypes -%}
+#include <pbr/types/{{ vectorType.headerFileName }}>
+{% endfor %}
+
+#include <pbr/functions/length.h>
+#include <pbr/functions/crossProduct.h>
+
+PBR_NAMESPACE_BEGIN
+
+{% for vectorType in context.vectorTypes -%}
+/// Compute a local coordinate system from \ref i_vector.
+/// The result is two new vectors, of which all three are mutually orthogonal.
+PBR_API
+inline void FnCoordinateSystem( const {{ vectorType.className }}& i_vector,
+                                {{ vectorType.className }}& o_vector1,
+                                {{ vectorType.className }}& o_vector2 )
+{
+    // Input vector should be normalised.
+#ifdef PBR_DEBUG
+    float length;
+    FnLength( i_vector, length );
+    PBR_ASSERT( TlAlmostEqual( length, 1.0f ) );
+#endif
+
+    // Compute first output vector by:
+    // 1. Zeroing out one of the components,
+    // 2. Swapping the 2 other ones.
+    // 3. Negating one of the swapped components.
+    // TODO: Describe why the following conditional expression is required.
+    if ( std::abs( i_vector.X() ) > std::abs( i_vector.Y() ) )
+    {
+        o_vector1 = {{vectorType.className}}( -i_vector.Z(), 0, i_vector.X() );
+    }
+    else
+    {
+        o_vector1 = {{vectorType.className}}( 0, i_vector.Z(), -i_vector.Y() );
+    }
+    FnNormalise( o_vector1, o_vector1 );
+
+    // Compute the second output vector by via the cross product of the input & first output vector.
+    FnCrossProduct( o_vector1, o_vector2, o_vector2 );
+}
+{%- endfor %}
+
+PBR_NAMESPACE_END
