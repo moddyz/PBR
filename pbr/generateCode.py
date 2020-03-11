@@ -331,14 +331,20 @@ def GenFunctions():
     filePaths.append(
         GenFunction(
             "crossProduct.h",
-            vectorTypes=[VectorType((3,), "float")]
+            vectorTypes=[
+                VectorType((3,), "float"),
+            ]
         )
     )
 
     filePaths.append(
         GenFunction(
             "dotProduct.h",
-            vectorTypes=[VectorType((3,), "float")]
+            vectorTypes=[
+                VectorType((2,), "float"),
+                VectorType((3,), "float"),
+                VectorType((4,), "float"),
+            ]
         )
     )
 
@@ -348,7 +354,7 @@ def GenFunctions():
             vectorTypes=[
                 VectorType((2,), "float"),
                 VectorType((3,), "float"),
-                VectorType((4,), "float")
+                VectorType((4,), "float"),
             ]
         )
     )
@@ -359,7 +365,7 @@ def GenFunctions():
             vectorTypes=[
                 VectorType((2,), "float"),
                 VectorType((3,), "float"),
-                VectorType((4,), "float")
+                VectorType((4,), "float"),
             ]
         )
     )
@@ -370,7 +376,7 @@ def GenFunctions():
             vectorTypes=[
                 VectorType((2,), "float"),
                 VectorType((3,), "float"),
-                VectorType((4,), "float")
+                VectorType((4,), "float"),
             ]
         )
     )
