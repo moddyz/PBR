@@ -131,6 +131,6 @@ TEST_CASE( "ceil" )
 {
     pbr::Vec3f value( 2.9, 3.5, 1.0 );
     pbr::Vec3f ceiled;
-    pbr::FnFloor( value, ceiled );
+    pbr::FnCeil( value, ceiled );
     CHECK( ceiled == pbr::Vec3f( 3.0, 4.0, 1.0 ) );
 }
