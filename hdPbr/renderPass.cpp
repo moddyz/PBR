@@ -13,8 +13,7 @@ HdPbrRenderPass::~HdPbrRenderPass()
 {
 }
 
-void HdPbrRenderPass::_Execute( const HdRenderPassStateSharedPtr& i_renderPassState,
-                                 const TfTokenVector&              i_renderTags )
+void HdPbrRenderPass::_Execute( const HdRenderPassStateSharedPtr& i_renderPassState, const TfTokenVector& i_renderTags )
 {
     printf( "Executing Render Pass!\n" );
 }

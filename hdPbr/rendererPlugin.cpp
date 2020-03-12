@@ -12,7 +12,6 @@ TF_REGISTRY_FUNCTION( TfType )
 
 namespace pbr
 {
-
 HdRenderDelegate* HdPbrRendererPlugin::CreateRenderDelegate()
 {
     return new HdPbrRenderDelegate();

@@ -35,20 +35,20 @@ public:
 
     /// Create render pass.
     virtual pxr::HdRenderPassSharedPtr CreateRenderPass( pxr::HdRenderIndex*           io_index,
-                                                            const pxr::HdRprimCollection& i_collection ) override;
+                                                         const pxr::HdRprimCollection& i_collection ) override;
 
     /// Create an instancer.
     virtual pxr::HdInstancer* CreateInstancer( pxr::HdSceneDelegate* i_delegate,
-                                                  const pxr::SdfPath&   i_id,
-                                                  const pxr::SdfPath&   i_instancerId ) override;
+                                               const pxr::SdfPath&   i_id,
+                                               const pxr::SdfPath&   i_instancerId ) override;
 
     /// Destroy an instancer.
     virtual void DestroyInstancer( pxr::HdInstancer* o_instancer ) override;
 
     /// Create a new Rprim.
     virtual pxr::HdRprim* CreateRprim( const pxr::TfToken& i_typeId,
-                                          const pxr::SdfPath& i_rprimId,
-                                          const pxr::SdfPath& i_instancerId ) override;
+                                       const pxr::SdfPath& i_rprimId,
+                                       const pxr::SdfPath& i_instancerId ) override;
 
     virtual void DestroyRprim( pxr::HdRprim* i_rprim ) override;
 
@@ -78,8 +78,8 @@ private:
     static const pxr::TfTokenVector s_supportedSprimTypes;
     static const pxr::TfTokenVector s_supportedBprimTypes;
 
-    std::unique_ptr< HdPbrRenderParam >  m_renderParam;
-    pxr::HdRenderSettingDescriptorList m_settingDescriptors;
+    std::unique_ptr< HdPbrRenderParam > m_renderParam;
+    pxr::HdRenderSettingDescriptorList  m_settingDescriptors;
 
     pxr::HdResourceRegistrySharedPtr m_resourceRegistry;
 };

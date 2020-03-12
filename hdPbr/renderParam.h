@@ -1,7 +1,7 @@
 #pragma once
 
-#include <pxr/pxr.h>
 #include <pxr/imaging/hd/renderDelegate.h>
+#include <pxr/pxr.h>
 
 namespace pbr
 {

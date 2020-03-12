@@ -1,8 +1,8 @@
 #include <hdPbr/debugCodes.h>
+#include <hdPbr/mesh.h>
 #include <hdPbr/renderDelegate.h>
 #include <hdPbr/renderParam.h>
 #include <hdPbr/renderPass.h>
-#include <hdPbr/mesh.h>
 
 #include <pxr/imaging/hd/rprim.h>
 
@@ -61,7 +61,7 @@ HdResourceRegistrySharedPtr HdPbrRenderDelegate::GetResourceRegistry() const
 }
 
 HdRenderPassSharedPtr HdPbrRenderDelegate::CreateRenderPass( HdRenderIndex*           io_index,
-                                                              const HdRprimCollection& i_collection )
+                                                             const HdRprimCollection& i_collection )
 {
     return HdRenderPassSharedPtr( new HdPbrRenderPass( io_index, i_collection ) );
 }
