@@ -8,6 +8,7 @@
 
 #include <pbr/functions/crossProduct.h>
 #include <pbr/functions/length.h>
+#include <pbr/functions/normalise.h>
 
 PBR_NAMESPACE_BEGIN
 

@@ -5,18 +5,20 @@
 
 #include <pbr/types/vec3f.h>
 
+#include <pbr/functions/coordinateSystem.h>
 #include <pbr/functions/crossProduct.h>
+#include <pbr/functions/distance.h>
+#include <pbr/functions/distanceSquared.h>
 #include <pbr/functions/dotProduct.h>
 #include <pbr/functions/length.h>
 #include <pbr/functions/lengthSquared.h>
 #include <pbr/functions/normalise.h>
-#include <pbr/functions/coordinateSystem.h>
 
 TEST_CASE( "dotProduct" )
 {
     pbr::Vec3f lhs( 1.0, 0.5, 2.0 );
     pbr::Vec3f rhs( 2.0, 5.0, 2.5 );
-    float        res;
+    float      res;
     pbr::FnDotProduct( lhs, rhs, res );
     CHECK( res == Approx( 9.5f ) );
 }
@@ -32,20 +34,38 @@ TEST_CASE( "crossProduct" )
     CHECK( res.Z() == Approx( 4.0f ) );
 }
 
+TEST_CASE( "length" )
+{
+    pbr::Vec3f vector( 1.0, 2.0, 3.0 );
+    float      length;
+    pbr::FnLength( vector, length );
+    CHECK( length == Approx( 3.741657387 ) );
+}
+
 TEST_CASE( "lengthSquared" )
 {
     pbr::Vec3f vector( 1.0, 2.0, 3.0 );
-    float        lengthSquared;
+    float      lengthSquared;
     pbr::FnLengthSquared( vector, lengthSquared );
     CHECK( lengthSquared == Approx( 14.0f ) );
 }
 
-TEST_CASE( "length" )
+TEST_CASE( "distance" )
 {
-    pbr::Vec3f vector( 1.0, 2.0, 3.0 );
-    float        length;
-    pbr::FnLength( vector, length );
-    CHECK( length == Approx( 3.741657387 ) );
+    pbr::Vec3f vectorA( 1.0, 2.0, 3.0 );
+    pbr::Vec3f vectorB( 25.0, 10.0, -5.0 );
+    float      distance;
+    pbr::FnDistance( vectorA, vectorB, distance );
+    CHECK( distance == Approx( 26.532999f ) );
+}
+
+TEST_CASE( "distanceSquared" )
+{
+    pbr::Vec3f vectorA( 1.0, 2.0, 3.0 );
+    pbr::Vec3f vectorB( 25.0, 10.0, -5.0 );
+    float      distanceSquared;
+    pbr::FnDistanceSquared( vectorA, vectorB, distanceSquared );
+    CHECK( distanceSquared == Approx( 704 ) );
 }
 
 TEST_CASE( "normalise" )

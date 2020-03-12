@@ -33,6 +33,71 @@ ARITHMETIC_OPERATORS = ['+', '-', '*', '/']
 # Scalar types we are interested in generating code for.  Double is omitted for the time being.
 SCALAR_TYPES = ['float', 'int']
 
+#
+# Utilities
+#
+
+def RunCommand(command):
+    """
+    Run a command in the shell by forking a subprocess.
+    """
+    print("Running command {}".format(command))
+    process = subprocess.Popen(shlex.split(command))
+    process.wait()
+
+
+def WriteFile(filePath, content):
+    """
+    Write a file to disk.
+
+    Args:
+        filePath (str): path to write to.
+        content (str): content to write.
+    """
+    print("Generated {!r}".format(filePath))
+    with open(filePath, 'w') as f:
+        f.write(content)
+
+
+def FormatCode(fileNames):
+    """
+    Run clang-format over input files, formatting in-place.
+
+    Args:
+        fileNames (list): input files to automatically format.
+    """
+    command = "clang-format -i " + " ".join(fileNames)
+    RunCommand(command)
+
+
+def GetCodeGenTemplate(templateName):
+    """
+    Args:
+        templateName (str): name of the template file.
+
+    Returns:
+        str: full path to the codegen template.
+    """
+    return os.path.abspath(os.path.join(CODEGENTEMPLATES_DIR, templateName))
+
+
+def GenerateCode(context, templatePath):
+    """
+    Generate a single vector type as a header source.
+
+    Args:
+        context (obj): context object with attributes which are consumed in the template rendering.
+        templatePath (str): path to the template file to perform substitution.
+
+    Returns:
+        str: file name of generated vector class.
+    """
+    with open(templatePath, 'r') as f:
+        templateStr = f.read()
+        template = Template(templateStr)
+        code = template.render(context=context)
+        return code
+
 
 class AggregateIncludesCpp:
     """
@@ -42,6 +107,10 @@ class AggregateIncludesCpp:
     def __init__(self, includePaths):
         self.includePaths = includePaths
 
+
+#
+# Types
+#
 
 class VectorType:
     """
@@ -111,73 +180,6 @@ class ArrayType:
             self.headerFileName = "{elementTypeName}Array.h".format(
                 elementTypeName=self.elementTypeName[0].lower() + self.elementTypeName[1:]
             )
-
-
-class Function:
-    def __init__(self):
-        pass
-
-
-def RunCommand(command):
-    """
-    Run a command in the shell by forking a subprocess.
-    """
-    print("Running command {}".format(command))
-    process = subprocess.Popen(shlex.split(command))
-    process.wait()
-
-
-def WriteFile(filePath, content):
-    """
-    Write a file to disk.
-
-    Args:
-        filePath (str): path to write to.
-        content (str): content to write.
-    """
-    print("Generated {!r}".format(filePath))
-    with open(filePath, 'w') as f:
-        f.write(content)
-
-
-def FormatCode(fileNames):
-    """
-    Run clang-format over input files, formatting in-place.
-
-    Args:
-        fileNames (list): input files to automatically format.
-    """
-    command = "clang-format -i " + " ".join(fileNames)
-    RunCommand(command)
-
-
-def GetCodeGenTemplate(templateName):
-    """
-    Args:
-        templateName (str): name of the template file.
-
-    Returns:
-        str: full path to the codegen template.
-    """
-    return os.path.abspath(os.path.join(CODEGENTEMPLATES_DIR, templateName))
-
-
-def GenerateCode(context, templatePath):
-    """
-    Generate a single vector type as a header source.
-
-    Args:
-        context (obj): context object with attributes which are consumed in the template rendering.
-        templatePath (str): path to the template file to perform substitution.
-
-    Returns:
-        str: file name of generated vector class.
-    """
-    with open(templatePath, 'r') as f:
-        templateStr = f.read()
-        template = Template(templateStr)
-        code = template.render(context=context)
-        return code
 
 
 def GenArrayTypes():
@@ -266,6 +268,9 @@ def GenTypes():
     filePaths += GenArrayTypes()
     return filePaths
 
+#
+# Functions
+#
 
 def GenFunction(functionFileName, **kwargs):
     """
@@ -291,6 +296,42 @@ def GenFunction(functionFileName, **kwargs):
     return filePath
 
 
+class Function:
+    def __init__(self):
+        pass
+
+
+class FunctionGroup:
+
+    def __init__(self, files, **kwargs):
+        self.files = files
+        self.kwargs = kwargs
+
+
+FUNCTION_GROUPS = [
+    FunctionGroup([
+        "crossProduct.h",
+        "coordinateSystem.h",
+    ],
+    vectorTypes=[
+        VectorType((3,), "float"),
+    ]),
+    FunctionGroup([
+        "dotProduct.h",
+        "length.h",
+        "lengthSquared.h",
+        "distance.h",
+        "distanceSquared.h",
+        "normalise.h",
+    ],
+    vectorTypes=[
+        VectorType((2,), "float"),
+        VectorType((3,), "float"),
+        VectorType((4,), "float"),
+    ]),
+]
+
+
 def GenFunctions():
     """
     Generate code for templatized functions.
@@ -300,67 +341,10 @@ def GenFunctions():
     """
     filePaths = []
 
-    filePaths.append(
-        GenFunction(
-            "crossProduct.h",
-            vectorTypes=[
-                VectorType((3,), "float"),
-            ]
-        )
-    )
-
-    filePaths.append(
-        GenFunction(
-            "dotProduct.h",
-            vectorTypes=[
-                VectorType((2,), "float"),
-                VectorType((3,), "float"),
-                VectorType((4,), "float"),
-            ]
-        )
-    )
-
-    filePaths.append(
-        GenFunction(
-            "length.h",
-            vectorTypes=[
-                VectorType((2,), "float"),
-                VectorType((3,), "float"),
-                VectorType((4,), "float"),
-            ]
-        )
-    )
-
-    filePaths.append(
-        GenFunction(
-            "lengthSquared.h",
-            vectorTypes=[
-                VectorType((2,), "float"),
-                VectorType((3,), "float"),
-                VectorType((4,), "float"),
-            ]
-        )
-    )
-
-    filePaths.append(
-        GenFunction(
-            "normalise.h",
-            vectorTypes=[
-                VectorType((2,), "float"),
-                VectorType((3,), "float"),
-                VectorType((4,), "float"),
-            ]
-        )
-    )
-
-    filePaths.append(
-        GenFunction(
-            "coordinateSystem.h",
-            vectorTypes=[
-                VectorType((3,), "float"),
-            ]
-        )
-    )
+    for functionGroup in FUNCTION_GROUPS:
+        for f in functionGroup.files:
+            filePath = GenFunction(f, **functionGroup.kwargs)
+            filePaths.append(filePath)
 
     return filePaths
 

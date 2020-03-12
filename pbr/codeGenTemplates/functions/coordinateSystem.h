@@ -9,6 +9,7 @@
 {% endfor %}
 
 #include <pbr/functions/length.h>
+#include <pbr/functions/normalise.h>
 #include <pbr/functions/crossProduct.h>
 
 PBR_NAMESPACE_BEGIN
