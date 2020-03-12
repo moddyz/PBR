@@ -10,11 +10,12 @@
 #include <pbr/functions/distance.h>
 #include <pbr/functions/distanceSquared.h>
 #include <pbr/functions/dotProduct.h>
+#include <pbr/functions/floor.h>
 #include <pbr/functions/length.h>
 #include <pbr/functions/lengthSquared.h>
 #include <pbr/functions/lerp.h>
-#include <pbr/functions/min.h>
 #include <pbr/functions/max.h>
+#include <pbr/functions/min.h>
 #include <pbr/functions/normalise.h>
 
 TEST_CASE( "dotProduct" )
@@ -115,4 +116,12 @@ TEST_CASE( "max" )
     pbr::Vec3f max;
     pbr::FnMax( a, b, max );
     CHECK( max == pbr::Vec3f( 2.0, 3.0, 5.0 ) );
+}
+
+TEST_CASE( "floor" )
+{
+    pbr::Vec3f value( 2.9, 3.5, 0.7 );
+    pbr::Vec3f floored;
+    pbr::FnFloor( value, floored );
+    CHECK( floored == pbr::Vec3f( 2.0, 3.0, 0.0 ) );
 }

@@ -394,6 +394,7 @@ FUNCTION_GROUPS = [
     FunctionGroup([
         "min.h",
         "max.h",
+        "floor.h",
     ],
     types=[
         ScalarType(INT),
