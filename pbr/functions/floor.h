@@ -19,61 +19,61 @@ PBR_NAMESPACE_BEGIN
 PBR_API
 inline void FnFloor( const int& i_value, int& o_floored )
 {
-    o_floored = floor( i_value );
+    o_floored = std::floor( i_value );
 }
 
 PBR_API
 inline void FnFloor( const float& i_value, float& o_floored )
 {
-    o_floored = floor( i_value );
+    o_floored = std::floor( i_value );
 }
 
 PBR_API
 inline void FnFloor( const Vec2f& i_value, Vec2f& o_floored )
 {
-    o_floored[ 0 ] = floor( i_value[ 0 ] );
-    o_floored[ 1 ] = floor( i_value[ 1 ] );
+    o_floored[ 0 ] = std::floor( i_value[ 0 ] );
+    o_floored[ 1 ] = std::floor( i_value[ 1 ] );
 }
 
 PBR_API
 inline void FnFloor( const Vec3f& i_value, Vec3f& o_floored )
 {
-    o_floored[ 0 ] = floor( i_value[ 0 ] );
-    o_floored[ 1 ] = floor( i_value[ 1 ] );
-    o_floored[ 2 ] = floor( i_value[ 2 ] );
+    o_floored[ 0 ] = std::floor( i_value[ 0 ] );
+    o_floored[ 1 ] = std::floor( i_value[ 1 ] );
+    o_floored[ 2 ] = std::floor( i_value[ 2 ] );
 }
 
 PBR_API
 inline void FnFloor( const Vec4f& i_value, Vec4f& o_floored )
 {
-    o_floored[ 0 ] = floor( i_value[ 0 ] );
-    o_floored[ 1 ] = floor( i_value[ 1 ] );
-    o_floored[ 2 ] = floor( i_value[ 2 ] );
-    o_floored[ 3 ] = floor( i_value[ 3 ] );
+    o_floored[ 0 ] = std::floor( i_value[ 0 ] );
+    o_floored[ 1 ] = std::floor( i_value[ 1 ] );
+    o_floored[ 2 ] = std::floor( i_value[ 2 ] );
+    o_floored[ 3 ] = std::floor( i_value[ 3 ] );
 }
 
 PBR_API
 inline void FnFloor( const Vec2i& i_value, Vec2i& o_floored )
 {
-    o_floored[ 0 ] = floor( i_value[ 0 ] );
-    o_floored[ 1 ] = floor( i_value[ 1 ] );
+    o_floored[ 0 ] = std::floor( i_value[ 0 ] );
+    o_floored[ 1 ] = std::floor( i_value[ 1 ] );
 }
 
 PBR_API
 inline void FnFloor( const Vec3i& i_value, Vec3i& o_floored )
 {
-    o_floored[ 0 ] = floor( i_value[ 0 ] );
-    o_floored[ 1 ] = floor( i_value[ 1 ] );
-    o_floored[ 2 ] = floor( i_value[ 2 ] );
+    o_floored[ 0 ] = std::floor( i_value[ 0 ] );
+    o_floored[ 1 ] = std::floor( i_value[ 1 ] );
+    o_floored[ 2 ] = std::floor( i_value[ 2 ] );
 }
 
 PBR_API
 inline void FnFloor( const Vec4i& i_value, Vec4i& o_floored )
 {
-    o_floored[ 0 ] = floor( i_value[ 0 ] );
-    o_floored[ 1 ] = floor( i_value[ 1 ] );
-    o_floored[ 2 ] = floor( i_value[ 2 ] );
-    o_floored[ 3 ] = floor( i_value[ 3 ] );
+    o_floored[ 0 ] = std::floor( i_value[ 0 ] );
+    o_floored[ 1 ] = std::floor( i_value[ 1 ] );
+    o_floored[ 2 ] = std::floor( i_value[ 2 ] );
+    o_floored[ 3 ] = std::floor( i_value[ 3 ] );
 }
 
 PBR_NAMESPACE_END

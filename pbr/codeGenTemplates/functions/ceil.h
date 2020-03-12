@@ -12,19 +12,19 @@
 
 PBR_NAMESPACE_BEGIN
 
-/// Floor the input value, by rounding downwards, returning the largest integral value less than the input.
-/// If the value type is a vector, the floor will be operated element-wise.
+/// Compute the ceiling of the input value, by rounding upwards, returning the smallest integral value greater than the input.
+/// If the value type is a vector, the ceiling will be operated element-wise.
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnFloor( const {{ dataType.className }}& i_value,
-                     {{ dataType.className }}& o_floored )
+inline void FnCeil( const {{ dataType.className }}& i_value,
+                    {{ dataType.className }}& o_ceiled )
 {
 {% if dataType.isScalar -%}
-    o_floored = std::floor( i_value );
+    o_ceiled = std::ceil( i_value );
 {%- elif dataType.isVector -%}
 {% for index in range(dataType.elementSize) %}
-    o_floored[ {{ index }} ] = std::floor( i_value[ {{ index }} ] );
+    o_ceiled[ {{ index }} ] = std::ceil( i_value[ {{ index }} ] );
 {%- endfor %}
 {%- endif %}
 }
