@@ -124,7 +124,11 @@ class DataType:
         raise NotImplementedError()
 
     @property
-    def isCustom(self):
+    def isScalar(self):
+        raise NotImplementedError()
+
+    @property
+    def isVector(self):
         raise NotImplementedError()
 
 
@@ -142,10 +146,11 @@ class ScalarType(DataType):
         return self._typeName
 
     @property
-    def isCustom(self):
-        """
-        These are POD (plain old data) types, so they are not custom.
-        """
+    def isScalar(self):
+        return True
+
+    @property
+    def isVector(self):
         return False
 
 
@@ -191,10 +196,11 @@ class VectorType(DataType):
         )
 
     @property
-    def isCustom(self):
-        """
-        Vector types are custom, and defined by the pbr library.
-        """
+    def isScalar(self):
+        return False
+
+    @property
+    def isVector(self):
         return True
 
 
@@ -384,6 +390,20 @@ FUNCTION_GROUPS = [
         VectorType((2,), FLOAT),
         VectorType((3,), FLOAT),
         VectorType((4,), FLOAT),
+    ]),
+    FunctionGroup([
+        "min.h",
+        "max.h",
+    ],
+    types=[
+        ScalarType(INT),
+        ScalarType(FLOAT),
+        VectorType((2,), FLOAT),
+        VectorType((3,), FLOAT),
+        VectorType((4,), FLOAT),
+        VectorType((2,), INT),
+        VectorType((3,), INT),
+        VectorType((4,), INT),
     ]),
 ]
 

@@ -3,7 +3,7 @@
 #include <pbr/api.h>
 
 {% for dataType in context.types -%}
-{% if dataType.isCustom -%}
+{% if dataType.isVector -%}
 #include <pbr/types/{{ dataType.headerFileName }}>
 {%- endif %}
 {% endfor %}

@@ -12,8 +12,10 @@
 #include <pbr/functions/dotProduct.h>
 #include <pbr/functions/length.h>
 #include <pbr/functions/lengthSquared.h>
-#include <pbr/functions/normalise.h>
 #include <pbr/functions/lerp.h>
+#include <pbr/functions/min.h>
+#include <pbr/functions/max.h>
+#include <pbr/functions/normalise.h>
 
 TEST_CASE( "dotProduct" )
 {
@@ -95,4 +97,22 @@ TEST_CASE( "lerp" )
     pbr::Vec3f interpolated;
     pbr::FnLerp( 0.5, a, b, interpolated );
     CHECK( interpolated == pbr::Vec3f( 2.0, 2.0, 2.0 ) );
+}
+
+TEST_CASE( "min" )
+{
+    pbr::Vec3f a( 1.0, 2.0, 5.0 );
+    pbr::Vec3f b( 2.0, 3.0, 0.0 );
+    pbr::Vec3f min;
+    pbr::FnMin( a, b, min );
+    CHECK( min == pbr::Vec3f( 1.0, 2.0, 0.0 ) );
+}
+
+TEST_CASE( "max" )
+{
+    pbr::Vec3f a( 1.0, 2.0, 5.0 );
+    pbr::Vec3f b( 2.0, 3.0, 0.0 );
+    pbr::Vec3f max;
+    pbr::FnMax( a, b, max );
+    CHECK( max == pbr::Vec3f( 2.0, 3.0, 5.0 ) );
 }
