@@ -14,7 +14,7 @@
 PBR_NAMESPACE_BEGIN
 
 /// Floor the input value, by rounding downwards, returning the largest integral value less than the input.
-/// If the value type is a vector, the floor will be operated element-wise.
+/// If the value type is a vector, the floor will be performed element-wise.
 
 PBR_API
 inline void FnFloor( const int& i_value, int& o_floored )

@@ -396,6 +396,7 @@ FUNCTION_GROUPS = [
         "max.h",
         "floor.h",
         "ceil.h",
+        "abs.h",
     ],
     types=[
         ScalarType(INT),

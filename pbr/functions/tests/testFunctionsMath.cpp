@@ -5,11 +5,12 @@
 
 #include <pbr/types/vec3f.h>
 
+#include <pbr/functions/abs.h>
+#include <pbr/functions/ceil.h>
 #include <pbr/functions/coordinateSystem.h>
 #include <pbr/functions/crossProduct.h>
 #include <pbr/functions/distance.h>
 #include <pbr/functions/distanceSquared.h>
-#include <pbr/functions/ceil.h>
 #include <pbr/functions/dotProduct.h>
 #include <pbr/functions/floor.h>
 #include <pbr/functions/length.h>
@@ -133,4 +134,12 @@ TEST_CASE( "ceil" )
     pbr::Vec3f ceiled;
     pbr::FnCeil( value, ceiled );
     CHECK( ceiled == pbr::Vec3f( 3.0, 4.0, 1.0 ) );
+}
+
+TEST_CASE( "abs" )
+{
+    pbr::Vec3f value( -2.9, 3.5, -1.0 );
+    pbr::Vec3f absoluteValue;
+    pbr::FnAbs( value, absoluteValue );
+    CHECK( absoluteValue == pbr::Vec3f( 2.9, 3.5, 1.0 ) );
 }

@@ -12,19 +12,19 @@
 
 PBR_NAMESPACE_BEGIN
 
-/// Floor the input value, by rounding downwards, returning the largest integral value less than the input.
-/// If the value type is a vector, the floor will be performed element-wise.
+/// Compute the absolute value of the input, which is the magnitude of the value without its sign.
+/// If the value type is a vector, the absolute value will be performed element-wise.
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnFloor( const {{ dataType.className }}& i_value,
-                     {{ dataType.className }}& o_floored )
+inline void FnAbs( const {{ dataType.className }}& i_value,
+                    {{ dataType.className }}& o_absoluteValue )
 {
 {% if dataType.isScalar -%}
-    o_floored = std::floor( i_value );
+    o_absoluteValue = std::abs( i_value );
 {%- elif dataType.isVector -%}
 {% for index in range(dataType.elementSize) %}
-    o_floored[ {{ index }} ] = std::floor( i_value[ {{ index }} ] );
+    o_absoluteValue[ {{ index }} ] = std::abs( i_value[ {{ index }} ] );
 {%- endfor %}
 {%- endif %}
 }
