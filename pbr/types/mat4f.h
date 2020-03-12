@@ -179,27 +179,6 @@ public:
         return *this;
     }
 
-    Mat4f operator*( const float& i_scalar ) const
-    {
-        PBR_ASSERT( !HasNans() );
-        return Mat4f( m_elements[ 0 ] * i_scalar,
-                      m_elements[ 1 ] * i_scalar,
-                      m_elements[ 2 ] * i_scalar,
-                      m_elements[ 3 ] * i_scalar,
-                      m_elements[ 4 ] * i_scalar,
-                      m_elements[ 5 ] * i_scalar,
-                      m_elements[ 6 ] * i_scalar,
-                      m_elements[ 7 ] * i_scalar,
-                      m_elements[ 8 ] * i_scalar,
-                      m_elements[ 9 ] * i_scalar,
-                      m_elements[ 10 ] * i_scalar,
-                      m_elements[ 11 ] * i_scalar,
-                      m_elements[ 12 ] * i_scalar,
-                      m_elements[ 13 ] * i_scalar,
-                      m_elements[ 14 ] * i_scalar,
-                      m_elements[ 15 ] * i_scalar );
-    }
-
     Mat4f& operator*=( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
@@ -221,10 +200,6 @@ public:
         m_elements[ 15 ] *= i_scalar;
         return *this;
     }
-
-    //
-    // Arithmetic Operator Overloading.
-    //
 
     Mat4f operator/( const float& i_scalar ) const
     {
@@ -350,4 +325,47 @@ public:
 private:
     float m_elements[ 16 ] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 };
+
+Mat4f operator*( const Mat4f& i_vector, const float& i_scalar )
+{
+    PBR_ASSERT( !i_vector.HasNans() );
+    return Mat4f( i_vector[ 0 ] * i_scalar,
+                  i_vector[ 1 ] * i_scalar,
+                  i_vector[ 2 ] * i_scalar,
+                  i_vector[ 3 ] * i_scalar,
+                  i_vector[ 4 ] * i_scalar,
+                  i_vector[ 5 ] * i_scalar,
+                  i_vector[ 6 ] * i_scalar,
+                  i_vector[ 7 ] * i_scalar,
+                  i_vector[ 8 ] * i_scalar,
+                  i_vector[ 9 ] * i_scalar,
+                  i_vector[ 10 ] * i_scalar,
+                  i_vector[ 11 ] * i_scalar,
+                  i_vector[ 12 ] * i_scalar,
+                  i_vector[ 13 ] * i_scalar,
+                  i_vector[ 14 ] * i_scalar,
+                  i_vector[ 15 ] * i_scalar );
+}
+
+Mat4f operator*( const float& i_scalar, const Mat4f& i_vector )
+{
+    PBR_ASSERT( !i_vector.HasNans() );
+    return Mat4f( i_vector[ 0 ] * i_scalar,
+                  i_vector[ 1 ] * i_scalar,
+                  i_vector[ 2 ] * i_scalar,
+                  i_vector[ 3 ] * i_scalar,
+                  i_vector[ 4 ] * i_scalar,
+                  i_vector[ 5 ] * i_scalar,
+                  i_vector[ 6 ] * i_scalar,
+                  i_vector[ 7 ] * i_scalar,
+                  i_vector[ 8 ] * i_scalar,
+                  i_vector[ 9 ] * i_scalar,
+                  i_vector[ 10 ] * i_scalar,
+                  i_vector[ 11 ] * i_scalar,
+                  i_vector[ 12 ] * i_scalar,
+                  i_vector[ 13 ] * i_scalar,
+                  i_vector[ 14 ] * i_scalar,
+                  i_vector[ 15 ] * i_scalar );
+}
+
 PBR_NAMESPACE_END

@@ -121,19 +121,6 @@ public:
         return *this;
     }
 
-    {{ context.className }} operator*( const {{ context.scalarType }}& i_scalar ) const
-    {
-        PBR_ASSERT( !HasNans() );
-        return {{ context.className }}(
-{% for index in range(context.elementSize) -%}
-        m_elements[ {{ index }} ] * i_scalar
-{%- if index + 1 < context.elementSize -%}
-        ,
-{%- endif %}
-{%- endfor %}
-        );
-    }
-
     {{ context.className }}& operator*=( const {{ context.scalarType }}& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
@@ -142,10 +129,6 @@ public:
 {%- endfor %}
         return *this;
     }
-
-    //
-    // Arithmetic Operator Overloading.
-    //
 
     {{ context.className }} operator/( const {{ context.scalarType }}& i_scalar ) const
     {
@@ -269,4 +252,31 @@ private:
 {%- endfor %}
     };
 };
+
+{{ context.className }} operator*( const {{ context.className }}& i_vector, const {{ context.scalarType }}& i_scalar )
+{
+    PBR_ASSERT( !i_vector.HasNans() );
+    return {{ context.className }}(
+{% for index in range(context.elementSize) -%}
+    i_vector[ {{ index }} ] * i_scalar
+{%- if index + 1 < context.elementSize -%}
+    ,
+{%- endif %}
+{%- endfor %}
+    );
+}
+
+{{ context.className }} operator*( const {{ context.scalarType }}& i_scalar, const {{ context.className }}& i_vector )
+{
+    PBR_ASSERT( !i_vector.HasNans() );
+    return {{ context.className }}(
+{% for index in range(context.elementSize) -%}
+    i_vector[ {{ index }} ] * i_scalar
+{%- if index + 1 < context.elementSize -%}
+    ,
+{%- endif %}
+{%- endfor %}
+    );
+}
+
 PBR_NAMESPACE_END

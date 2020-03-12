@@ -11,7 +11,7 @@
 PBR_NAMESPACE_BEGIN
 
 {% for vectorType in context.vectorTypes %}
-/// Compute the length of {{ vectorType.className }}.
+/// Compute the distance between two {{ vectorType.className }}s.
 PBR_API
 inline void FnDistance( const {{ vectorType.className }}& i_vectorA,
                         const {{ vectorType.className }}& i_vectorB,

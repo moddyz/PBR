@@ -31,7 +31,9 @@ TYPES_CLASS_PREFIX = ""
 ARITHMETIC_OPERATORS = ['+', '-', '*', '/']
 
 # Scalar types we are interested in generating code for.  Double is omitted for the time being.
-SCALAR_TYPES = ['float', 'int']
+FLOAT = "float"
+INT = "int"
+SCALAR_TYPES = [FLOAT, INT]
 
 #
 # Utilities
@@ -112,7 +114,42 @@ class AggregateIncludesCpp:
 # Types
 #
 
-class VectorType:
+class DataType:
+    """
+    Abstract base class.
+    """
+
+    @property
+    def className(self):
+        raise NotImplementedError()
+
+    @property
+    def isCustom(self):
+        raise NotImplementedError()
+
+
+class ScalarType(DataType):
+
+    def __init__(self, typeName):
+        self._typeName = typeName
+
+    @property
+    def className(self):
+        """
+        Returns:
+            str: the c name of this type.
+        """
+        return self._typeName
+
+    @property
+    def isCustom(self):
+        """
+        These are POD (plain old data) types, so they are not custom.
+        """
+        return False
+
+
+class VectorType(DataType):
     """
     Code generation for an C++ vector type.
     """
@@ -123,32 +160,42 @@ class VectorType:
         self.dims = dims
         self.scalarType = scalarType
 
-        # Compute element size.
-        self.elementSize = functools.reduce(lambda x, y: x * y, self.dims)
+    @property
+    def elementSize(self):
+        return functools.reduce(lambda x, y: x * y, self.dims)
 
-        # Class name
+    @property
+    def className(self):
         if len(self.dims) == 2:
             prefix = TYPES_CLASS_PREFIX + "Mat"
         else:
             prefix = TYPES_CLASS_PREFIX + "Vec"
 
-        self.className = "{prefix}{dims}{scalarType}".format(
+        return "{prefix}{dims}{scalarType}".format(
             prefix=prefix,
             dims=str(self.dims[0]),
             scalarType=self.scalarType[0]
         )
 
-        # Header file name.
+    @property
+    def headerFileName(self):
         if len(self.dims) == 2:
             prefix = "mat"
         else:
             prefix = "vec"
 
-        self.headerFileName = "{prefix}{dims}{scalarType}.h".format(
+        return "{prefix}{dims}{scalarType}.h".format(
             prefix=prefix,
             dims=str(self.dims[0]),
             scalarType=self.scalarType[0]
         )
+
+    @property
+    def isCustom(self):
+        """
+        Vector types are custom, and defined by the pbr library.
+        """
+        return True
 
 
 class ArrayType:
@@ -212,16 +259,16 @@ def GenArrayTypes():
 
 VECTOR_TYPES = [
     # Single-index vector types.
-    VectorType((2,), "int"),
-    VectorType((3,), "int"),
-    VectorType((4,), "int"),
-    VectorType((2,), "float"),
-    VectorType((3,), "float"),
-    VectorType((4,), "float"),
+    VectorType((2,), INT),
+    VectorType((3,), INT),
+    VectorType((4,), INT),
+    VectorType((2,), FLOAT),
+    VectorType((3,), FLOAT),
+    VectorType((4,), FLOAT),
 
     # Matrix types.
-    VectorType((3,3), "float"),
-    VectorType((4,4), "float"),
+    VectorType((3,3), FLOAT),
+    VectorType((4,4), FLOAT),
 ]
 
 
@@ -314,7 +361,7 @@ FUNCTION_GROUPS = [
         "coordinateSystem.h",
     ],
     vectorTypes=[
-        VectorType((3,), "float"),
+        VectorType((3,), FLOAT),
     ]),
     FunctionGroup([
         "dotProduct.h",
@@ -325,9 +372,18 @@ FUNCTION_GROUPS = [
         "normalise.h",
     ],
     vectorTypes=[
-        VectorType((2,), "float"),
-        VectorType((3,), "float"),
-        VectorType((4,), "float"),
+        VectorType((2,), FLOAT),
+        VectorType((3,), FLOAT),
+        VectorType((4,), FLOAT),
+    ]),
+    FunctionGroup([
+        "lerp.h",
+    ],
+    types=[
+        ScalarType(FLOAT),
+        VectorType((2,), FLOAT),
+        VectorType((3,), FLOAT),
+        VectorType((4,), FLOAT),
     ]),
 ]
 

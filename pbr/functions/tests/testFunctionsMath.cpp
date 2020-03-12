@@ -13,6 +13,7 @@
 #include <pbr/functions/length.h>
 #include <pbr/functions/lengthSquared.h>
 #include <pbr/functions/normalise.h>
+#include <pbr/functions/lerp.h>
 
 TEST_CASE( "dotProduct" )
 {
@@ -85,4 +86,13 @@ TEST_CASE( "coordinateSystem" )
     pbr::FnCoordinateSystem( vector, vector2, vector3 );
     CHECK( vector2 == pbr::Vec3f( 0.0, 0.0, 1.0 ) );
     CHECK( vector3 == pbr::Vec3f( 0.0, -1.0, 0.0 ) );
+}
+
+TEST_CASE( "lerp" )
+{
+    pbr::Vec3f a( 1.0, 1.0, 1.0 );
+    pbr::Vec3f b( 3.0, 3.0, 3.0 );
+    pbr::Vec3f interpolated;
+    pbr::FnLerp( 0.5, a, b, interpolated );
+    CHECK( interpolated == pbr::Vec3f( 2.0, 2.0, 2.0 ) );
 }

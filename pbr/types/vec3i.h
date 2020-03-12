@@ -97,12 +97,6 @@ public:
         return *this;
     }
 
-    Vec3i operator*( const int& i_scalar ) const
-    {
-        PBR_ASSERT( !HasNans() );
-        return Vec3i( m_elements[ 0 ] * i_scalar, m_elements[ 1 ] * i_scalar, m_elements[ 2 ] * i_scalar );
-    }
-
     Vec3i& operator*=( const int& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
@@ -111,10 +105,6 @@ public:
         m_elements[ 2 ] *= i_scalar;
         return *this;
     }
-
-    //
-    // Arithmetic Operator Overloading.
-    //
 
     Vec3i operator/( const int& i_scalar ) const
     {
@@ -186,4 +176,17 @@ public:
 private:
     int m_elements[ 3 ] = {0, 0, 0};
 };
+
+Vec3i operator*( const Vec3i& i_vector, const int& i_scalar )
+{
+    PBR_ASSERT( !i_vector.HasNans() );
+    return Vec3i( i_vector[ 0 ] * i_scalar, i_vector[ 1 ] * i_scalar, i_vector[ 2 ] * i_scalar );
+}
+
+Vec3i operator*( const int& i_scalar, const Vec3i& i_vector )
+{
+    PBR_ASSERT( !i_vector.HasNans() );
+    return Vec3i( i_vector[ 0 ] * i_scalar, i_vector[ 1 ] * i_scalar, i_vector[ 2 ] * i_scalar );
+}
+
 PBR_NAMESPACE_END
