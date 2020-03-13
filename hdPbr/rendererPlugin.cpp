@@ -5,13 +5,14 @@
 
 PXR_NAMESPACE_USING_DIRECTIVE
 
+namespace pbr
+{
+
 TF_REGISTRY_FUNCTION( TfType )
 {
     HdRendererPluginRegistry::Define< pbr::HdPbrRendererPlugin >();
 }
 
-namespace pbr
-{
 HdRenderDelegate* HdPbrRendererPlugin::CreateRenderDelegate()
 {
     return new HdPbrRenderDelegate();

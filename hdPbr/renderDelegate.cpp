@@ -4,6 +4,7 @@
 #include <hdPbr/renderParam.h>
 #include <hdPbr/renderPass.h>
 
+#include <pxr/imaging/hd/camera.h>
 #include <pxr/imaging/hd/rprim.h>
 
 PXR_NAMESPACE_USING_DIRECTIVE
@@ -14,7 +15,7 @@ namespace pbr
 const TfTokenVector HdPbrRenderDelegate::s_supportedRprimTypes = {
     HdPrimTypeTokens->mesh,
 };
-const TfTokenVector HdPbrRenderDelegate::s_supportedSprimTypes = {};
+const TfTokenVector HdPbrRenderDelegate::s_supportedSprimTypes = {HdPrimTypeTokens->camera};
 const TfTokenVector HdPbrRenderDelegate::s_supportedBprimTypes = {};
 
 HdPbrRenderDelegate::HdPbrRenderDelegate()
@@ -91,20 +92,33 @@ HdPbrRenderDelegate::CreateRprim( const TfToken& i_typeId, const SdfPath& i_rpri
 
 void HdPbrRenderDelegate::DestroyRprim( HdRprim* o_rprim )
 {
-    TF_DEBUG( HDPBR_GENERAL )
-        .Msg( "[%s] Destroy Tiny Rprim id %s\n", TF_FUNC_NAME().c_str(), o_rprim->GetId().GetText() );
+    TF_DEBUG( HDPBR_GENERAL ).Msg( "[%s] Destroy Rprim id %s\n", TF_FUNC_NAME().c_str(), o_rprim->GetId().GetText() );
     delete o_rprim;
 }
 
 HdSprim* HdPbrRenderDelegate::CreateSprim( const TfToken& i_typeId, const SdfPath& i_sprimId )
 {
-    TF_CODING_ERROR( "Unknown Sprim type=%s id=%s", i_typeId.GetText(), i_sprimId.GetText() );
+    if ( i_typeId == HdPrimTypeTokens->camera )
+    {
+        return new HdCamera( i_sprimId );
+    }
+    else
+    {
+        TF_CODING_ERROR( "Unknown Sprim type=%s id=%s", i_typeId.GetText(), i_sprimId.GetText() );
+    }
     return nullptr;
 }
 
 HdSprim* HdPbrRenderDelegate::CreateFallbackSprim( const TfToken& i_typeId )
 {
-    TF_CODING_ERROR( "Creating unknown fallback sprim type=%s", i_typeId.GetText() );
+    if ( i_typeId == HdPrimTypeTokens->camera )
+    {
+        return new HdCamera( SdfPath::EmptyPath() );
+    }
+    else
+    {
+        TF_CODING_ERROR( "Unknown Fallback Sprim type=%s id=%s", i_typeId.GetText() );
+    }
     return nullptr;
 }
 
