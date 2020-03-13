@@ -10,8 +10,9 @@
 
 PBR_NAMESPACE_BEGIN
 
+/// Compute the squared distance between two points.
+
 {% for vectorType in context.vectorTypes %}
-/// Compute the squared distance between two {{ vectorType.className }}s.
 PBR_API
 inline void FnDistanceSquared( const {{ vectorType.className }}& i_vectorA,
                                const {{ vectorType.className }}& i_vectorB,

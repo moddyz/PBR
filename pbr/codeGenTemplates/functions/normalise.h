@@ -10,8 +10,9 @@
 
 PBR_NAMESPACE_BEGIN
 
+/// Compute the normalised version of the input vector.  A normalised vector has a length of 1.0.
+
 {% for vectorType in context.vectorTypes %}
-/// Compute the normalised vector.
 PBR_API
 inline void FnNormalise( const {{ vectorType.className }}& i_vector, {{ vectorType.className }}& o_normalised )
 {

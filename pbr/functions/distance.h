@@ -10,7 +10,8 @@
 
 PBR_NAMESPACE_BEGIN
 
-/// Compute the distance between two Vec2fs.
+/// Compute the distance between two points.
+
 PBR_API
 inline void FnDistance( const Vec2f& i_vectorA, const Vec2f& i_vectorB, float& o_distance )
 {
@@ -18,7 +19,6 @@ inline void FnDistance( const Vec2f& i_vectorA, const Vec2f& i_vectorB, float& o
     FnLength( diffVector, o_distance );
 }
 
-/// Compute the distance between two Vec3fs.
 PBR_API
 inline void FnDistance( const Vec3f& i_vectorA, const Vec3f& i_vectorB, float& o_distance )
 {
@@ -26,7 +26,6 @@ inline void FnDistance( const Vec3f& i_vectorA, const Vec3f& i_vectorB, float& o
     FnLength( diffVector, o_distance );
 }
 
-/// Compute the distance between two Vec4fs.
 PBR_API
 inline void FnDistance( const Vec4f& i_vectorA, const Vec4f& i_vectorB, float& o_distance )
 {

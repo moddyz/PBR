@@ -8,8 +8,9 @@
 
 PBR_NAMESPACE_BEGIN
 
+/// Compute the cross product of two vectors.
+
 {% for vectorType in context.vectorTypes -%}
-/// Compute the cross product of two {{ vectorType.className }}.
 PBR_API
 inline void FnCrossProduct( const {{ vectorType.className }}& i_lhs,
                             const {{ vectorType.className }}& i_rhs,

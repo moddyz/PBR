@@ -10,7 +10,8 @@
 
 PBR_NAMESPACE_BEGIN
 
-/// Compute the squared distance between two Vec2fs.
+/// Compute the squared distance between two points.
+
 PBR_API
 inline void FnDistanceSquared( const Vec2f& i_vectorA, const Vec2f& i_vectorB, float& o_distanceSquared )
 {
@@ -18,7 +19,6 @@ inline void FnDistanceSquared( const Vec2f& i_vectorA, const Vec2f& i_vectorB, f
     FnLengthSquared( diffVector, o_distanceSquared );
 }
 
-/// Compute the squared distance between two Vec3fs.
 PBR_API
 inline void FnDistanceSquared( const Vec3f& i_vectorA, const Vec3f& i_vectorB, float& o_distanceSquared )
 {
@@ -26,7 +26,6 @@ inline void FnDistanceSquared( const Vec3f& i_vectorA, const Vec3f& i_vectorB, f
     FnLengthSquared( diffVector, o_distanceSquared );
 }
 
-/// Compute the squared distance between two Vec4fs.
 PBR_API
 inline void FnDistanceSquared( const Vec4f& i_vectorA, const Vec4f& i_vectorB, float& o_distanceSquared )
 {

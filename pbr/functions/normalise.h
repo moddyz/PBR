@@ -10,7 +10,8 @@
 
 PBR_NAMESPACE_BEGIN
 
-/// Compute the normalised vector.
+/// Compute the normalised version of the input vector.  A normalised vector has a length of 1.0.
+
 PBR_API
 inline void FnNormalise( const Vec2f& i_vector, Vec2f& o_normalised )
 {
@@ -19,7 +20,6 @@ inline void FnNormalise( const Vec2f& i_vector, Vec2f& o_normalised )
     o_normalised = i_vector / length;
 }
 
-/// Compute the normalised vector.
 PBR_API
 inline void FnNormalise( const Vec3f& i_vector, Vec3f& o_normalised )
 {
@@ -28,7 +28,6 @@ inline void FnNormalise( const Vec3f& i_vector, Vec3f& o_normalised )
     o_normalised = i_vector / length;
 }
 
-/// Compute the normalised vector.
 PBR_API
 inline void FnNormalise( const Vec4f& i_vector, Vec4f& o_normalised )
 {

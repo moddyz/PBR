@@ -6,7 +6,8 @@
 
 PBR_NAMESPACE_BEGIN
 
-/// Compute the cross product of two Vec3f.
+/// Compute the cross product of two vectors.
+
 PBR_API
 inline void FnCrossProduct( const Vec3f& i_lhs, const Vec3f& i_rhs, Vec3f& o_product )
 {
