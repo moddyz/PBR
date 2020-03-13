@@ -15,7 +15,13 @@ class HdPbrRenderParam;
 class HdPbrRenderDelegate final : public pxr::HdRenderDelegate
 {
 public:
+    /// Default constructor.
     HdPbrRenderDelegate();
+
+    /// Constructor with render settings.
+    HdPbrRenderDelegate( const pxr::HdRenderSettingsMap& i_settingsMap );
+
+    /// Destrucutor.
     virtual ~HdPbrRenderDelegate() override;
 
     /// Cannot copy.
@@ -78,6 +84,9 @@ public:
     virtual void CommitResources( pxr::HdChangeTracker* tracker ) override;
 
 private:
+    /// Setup routine (used in both constructors).
+    void _Setup();
+
     static const pxr::TfTokenVector s_supportedRprimTypes;
     static const pxr::TfTokenVector s_supportedSprimTypes;
     static const pxr::TfTokenVector s_supportedBprimTypes;

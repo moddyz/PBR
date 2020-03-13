@@ -20,8 +20,11 @@ const TfTokenVector HdPbrRenderDelegate::s_supportedBprimTypes = {};
 
 HdPbrRenderDelegate::HdPbrRenderDelegate()
     : HdRenderDelegate()
-    , m_resourceRegistry( new HdResourceRegistry() )
-    , m_renderParam( new HdPbrRenderParam() )
+{
+}
+
+HdPbrRenderDelegate::HdPbrRenderDelegate( const HdRenderSettingsMap& i_settingsMap )
+    : HdRenderDelegate( i_settingsMap )
 {
 }
 
@@ -155,5 +158,12 @@ void HdPbrRenderDelegate::DestroyInstancer( HdInstancer* instancer )
 {
     TF_CODING_ERROR( "Destroy instancer not supported" );
 }
+
+void HdPbrRenderDelegate::_Setup()
+{
+    m_renderParam = std::unique_ptr< HdPbrRenderParam >( new HdPbrRenderParam() );
+    m_resourceRegistry = boost::shared_ptr< HdResourceRegistry >( new HdResourceRegistry() );
+}
+
 
 } // namespace pbr
