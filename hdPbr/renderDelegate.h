@@ -9,12 +9,16 @@ namespace pbr
 {
 class HdPbrRenderParam;
 
+/// \class HdPbrRenderDelegate
+///
+/// Hydra renderer interface for the pbr renderer.
 class HdPbrRenderDelegate final : public pxr::HdRenderDelegate
 {
 public:
     HdPbrRenderDelegate();
-    ~HdPbrRenderDelegate() override;
+    virtual ~HdPbrRenderDelegate() override;
 
+    /// Cannot copy.
     HdPbrRenderDelegate( const HdPbrRenderDelegate& ) = delete;
     HdPbrRenderDelegate& operator=( const HdPbrRenderDelegate& ) = delete;
 
