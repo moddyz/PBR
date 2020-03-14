@@ -1,8 +1,8 @@
 set(PACKAGE_PREFIX "pbr")
 add_subdirectory(platform)
-add_subdirectory(tools)
-add_subdirectory(types)
-add_subdirectory(functions)
+add_subdirectory(tool)
+add_subdirectory(type)
+add_subdirectory(function)
 
 # Top level headers.
 file(GLOB HEADERS *.h)

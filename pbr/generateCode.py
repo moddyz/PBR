@@ -16,13 +16,13 @@ from jinja2 import Template
 PROJECT_DIR = "pbr"
 
 # Name of the codeGenTemplates directory.
-CODEGENTEMPLATES_DIR = "codeGenTemplates"
+TEMPLATE_DIR = "template"
 
 # Name of the subdirectory where all types reside.
-TYPES_DIR = "types"
+TYPE_DIR = "type"
 
-# Name of the subdirectory where all functions reside.
-FUNCTIONS_DIR = "functions"
+# Name of the subdirectory where all function reside.
+FUNCTION_DIR = "function"
 
 # Prefix for the class names of types.
 TYPES_CLASS_PREFIX = ""
@@ -80,7 +80,7 @@ def GetCodeGenTemplate(templateName):
     Returns:
         str: full path to the codegen template.
     """
-    return os.path.abspath(os.path.join(CODEGENTEMPLATES_DIR, templateName))
+    return os.path.abspath(os.path.join(TEMPLATE_DIR, templateName))
 
 
 def GenerateCode(context, templatePath):
@@ -255,8 +255,8 @@ def GenArrayTypes():
     # Generate code for ArrayType(s)
     filePaths = []
     for arrayType in arrayTypes:
-        filePath = os.path.join(os.path.abspath(TYPES_DIR), arrayType.headerFileName)
-        code = GenerateCode(arrayType, GetCodeGenTemplate(os.path.join(TYPES_DIR, 'arrayType.h')))
+        filePath = os.path.join(os.path.abspath(TYPE_DIR), arrayType.headerFileName)
+        code = GenerateCode(arrayType, GetCodeGenTemplate(os.path.join(TYPE_DIR, 'arrayType.h')))
         WriteFile(filePath, code)
         filePaths.append(filePath)
 
@@ -289,19 +289,19 @@ def GenVectorTypes():
     filePaths = []
     headerFileNames = []
     for vectorType in VECTOR_TYPES:
-        code = GenerateCode(vectorType, GetCodeGenTemplate(os.path.join(TYPES_DIR, 'vectorType.h')))
-        filePath = os.path.join(os.path.abspath(TYPES_DIR), vectorType.headerFileName)
+        code = GenerateCode(vectorType, GetCodeGenTemplate(os.path.join(TYPE_DIR, 'vectorType.h')))
+        filePath = os.path.join(os.path.abspath(TYPE_DIR), vectorType.headerFileName)
         WriteFile(filePath, code)
         filePaths.append(filePath)
         headerFileNames.append(vectorType.headerFileName)
 
     # Generate aggregation cpp source.
-    includePaths = [os.path.join(PROJECT_DIR, TYPES_DIR, fileName) for fileName in headerFileNames]
+    includePaths = [os.path.join(PROJECT_DIR, TYPE_DIR, fileName) for fileName in headerFileNames]
     aggregateCode = GenerateCode(
         AggregateIncludesCpp(includePaths),
         GetCodeGenTemplate('aggregateIncludes.cpp')
     )
-    aggregateCppPath = os.path.join(os.path.abspath(TYPES_DIR), "vectorTypes.cpp")
+    aggregateCppPath = os.path.join(os.path.abspath(TYPE_DIR), "vectorTypes.cpp")
     WriteFile(aggregateCppPath, aggregateCode)
     filePaths.append(aggregateCppPath)
 
@@ -339,10 +339,10 @@ def GenFunction(functionFileName, **kwargs):
     for key, value in kwargs.items():
         setattr(function, key, value)
 
-    filePath = os.path.join(os.path.abspath(FUNCTIONS_DIR), functionFileName)
+    filePath = os.path.join(os.path.abspath(FUNCTION_DIR), functionFileName)
     code = GenerateCode(
         function,
-        GetCodeGenTemplate(os.path.join(FUNCTIONS_DIR, functionFileName))
+        GetCodeGenTemplate(os.path.join(FUNCTION_DIR, functionFileName))
     )
     WriteFile(filePath, code)
 
@@ -350,11 +350,18 @@ def GenFunction(functionFileName, **kwargs):
 
 
 class Function:
+    """
+    A simple code-gen context object for a function.  Not much to see here.
+    """
+
     def __init__(self):
         pass
 
 
 class FunctionGroup:
+    """
+    Group of functions which share the same code-gen context.
+    """
 
     def __init__(self, files, **kwargs):
         self.files = files
@@ -414,7 +421,7 @@ FUNCTION_GROUPS = [
 
 def GenFunctions():
     """
-    Generate code for templatized functions.
+    Generate code for templatized function.
 
     Returns:
         list: file paths to the generated files.
