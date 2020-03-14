@@ -1,7 +1,5 @@
 #pragma once
 
-#include <pbr/type/None>
-
 PBR_NAMESPACE_BEGIN
 
 using IntArray = std::vector< int >;

@@ -33,7 +33,6 @@ ARITHMETIC_OPERATORS = ['+', '-', '*', '/']
 # Scalar types we are interested in generating code for.  Double is omitted for the time being.
 FLOAT = "float"
 INT = "int"
-SCALAR_TYPES = [FLOAT, INT]
 
 #
 # Utilities
@@ -209,30 +208,35 @@ class ArrayType:
     Code generation for an C++ array type.
     """
 
-    def __init__(self, elementTypeName, elementHeaderFileName=None):
-        self.elementTypeName = elementTypeName
-        self.elementHeaderFileName = elementHeaderFileName
+    def __init__(self, elementType):
+        self.elementType = elementType
 
         # Class name.
-        if self.elementTypeName.startswith(TYPES_CLASS_PREFIX):
+        if self.elementType.className.startswith(TYPES_CLASS_PREFIX):
             prefix = ""
         else:
             prefix = TYPES_CLASS_PREFIX
 
         self.className = "{prefix}{elementTypeName}Array".format(
             prefix=prefix,
-            elementTypeName=(self.elementTypeName[0].upper() + self.elementTypeName[1:])
+            elementTypeName=(self.elementType.className[0].upper() + self.elementType.className[1:])
         )
 
         # header file name.
-        if self.elementHeaderFileName:
+        if self.elementType.isVector:
             self.headerFileName = "{elementHeaderFileName}Array.h".format(
-                elementHeaderFileName=os.path.splitext(self.elementHeaderFileName)[0]
+                elementHeaderFileName=os.path.splitext(self.elementType.headerFileName)[0]
             )
         else:
             self.headerFileName = "{elementTypeName}Array.h".format(
-                elementTypeName=self.elementTypeName[0].lower() + self.elementTypeName[1:]
+                elementTypeName=self.elementType.className[0].lower() + self.elementType.className[1:]
             )
+
+
+SCALAR_TYPES = [
+    ScalarType(FLOAT),
+    ScalarType(INT)
+]
 
 
 def GenArrayTypes():
@@ -249,7 +253,7 @@ def GenArrayTypes():
         arrayTypes.append(arrayType)
 
     for vectorType in VECTOR_TYPES:
-        arrayType = ArrayType(vectorType.className, elementHeaderFileName=vectorType.headerFileName)
+        arrayType = ArrayType(vectorType)
         arrayTypes.append(arrayType)
 
     # Generate code for ArrayType(s)
