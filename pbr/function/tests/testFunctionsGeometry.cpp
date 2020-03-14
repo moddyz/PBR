@@ -14,5 +14,7 @@ TEST_CASE( "rayPosition" )
     pbr::Vec3f rayPos;
     pbr::FnRayPosition( origin, direction, 2.0f, rayPos );
     CHECK( rayPos == pbr::Vec3f( 1.0, 2.0, 2.0 ) );
+
+    PBR_ASSERT_NORMALISED( origin );
 }
 
