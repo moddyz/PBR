@@ -72,6 +72,7 @@ public:
                       m_elements[ 3 ] + i_vector.m_elements[ 3 ] );
     }
 
+    /// Addition assignment.
     Vec4i& operator+=( const Vec4i& i_vector )
     {
         PBR_ASSERT( !HasNans() );
@@ -82,6 +83,7 @@ public:
         return *this;
     }
 
+    /// Subtraction.
     Vec4i operator-( const Vec4i& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
@@ -89,6 +91,13 @@ public:
                       m_elements[ 1 ] - i_vector.m_elements[ 1 ],
                       m_elements[ 2 ] - i_vector.m_elements[ 2 ],
                       m_elements[ 3 ] - i_vector.m_elements[ 3 ] );
+    }
+
+    /// Unary negation.
+    Vec4i operator-() const
+    {
+        PBR_ASSERT( !HasNans() );
+        return Vec4i( -m_elements[ 0 ], -m_elements[ 1 ], -m_elements[ 2 ], -m_elements[ 3 ] );
     }
 
     Vec4i& operator-=( const Vec4i& i_vector )

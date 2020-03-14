@@ -90,6 +90,7 @@ public:
         );
     }
 
+    /// Addition assignment.
     {{ context.className }}& operator+=( const {{ context.className }}& i_vector )
     {
         PBR_ASSERT( !HasNans() );
@@ -99,12 +100,27 @@ public:
         return *this;
     }
 
+    /// Subtraction.
     {{ context.className }} operator-( const {{ context.className }}& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return {{ context.className }}(
 {% for index in range(context.elementSize) -%}
         m_elements[ {{ index }} ] - i_vector.m_elements[ {{ index }} ]
+{%- if index + 1 < context.elementSize -%}
+        ,
+{%- endif %}
+{%- endfor %}
+        );
+    }
+
+    /// Unary negation.
+    {{ context.className }} operator-() const
+    {
+        PBR_ASSERT( !HasNans() );
+        return {{ context.className }}(
+{% for index in range(context.elementSize) -%}
+        -m_elements[ {{ index }} ]
 {%- if index + 1 < context.elementSize -%}
         ,
 {%- endif %}

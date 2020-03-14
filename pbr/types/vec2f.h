@@ -69,6 +69,7 @@ public:
         return Vec2f( m_elements[ 0 ] + i_vector.m_elements[ 0 ], m_elements[ 1 ] + i_vector.m_elements[ 1 ] );
     }
 
+    /// Addition assignment.
     Vec2f& operator+=( const Vec2f& i_vector )
     {
         PBR_ASSERT( !HasNans() );
@@ -77,10 +78,18 @@ public:
         return *this;
     }
 
+    /// Subtraction.
     Vec2f operator-( const Vec2f& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return Vec2f( m_elements[ 0 ] - i_vector.m_elements[ 0 ], m_elements[ 1 ] - i_vector.m_elements[ 1 ] );
+    }
+
+    /// Unary negation.
+    Vec2f operator-() const
+    {
+        PBR_ASSERT( !HasNans() );
+        return Vec2f( -m_elements[ 0 ], -m_elements[ 1 ] );
     }
 
     Vec2f& operator-=( const Vec2f& i_vector )
