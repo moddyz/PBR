@@ -9,7 +9,7 @@
 
 #include <type_traits>
 
-/// Debugging tools for functions.
+/// Debugging tools built with tool & function libraries.
 
 /// PBR_ASSERT_NORMALISED asserts that the input vector must be normalised (length of 1.0) in debug builds.
 #ifdef PBR_DEBUG
