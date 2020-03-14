@@ -44,20 +44,22 @@ public:
         PBR_ASSERT( !HasNans() );
     }
 
+#ifdef PBR_DEBUG
     /// Copy constructor.
     Mat3f( const Mat3f& i_vector )
     {
-        PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( float ) * 9 );
+        PBR_ASSERT( !HasNans() );
     }
 
     /// Copy assignment operator.
     Mat3f& operator=( const Mat3f& i_vector )
     {
-        PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( float ) * 9 );
+        PBR_ASSERT( !HasNans() );
         return *this;
     }
+#endif
 
     /// Element-wise index read accessor.
     float& operator[]( size_t i_index )

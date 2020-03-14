@@ -28,20 +28,22 @@ public:
         PBR_ASSERT( !HasNans() );
     }
 
+#ifdef PBR_DEBUG
     /// Copy constructor.
     Vec3i( const Vec3i& i_vector )
     {
-        PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( int ) * 3 );
+        PBR_ASSERT( !HasNans() );
     }
 
     /// Copy assignment operator.
     Vec3i& operator=( const Vec3i& i_vector )
     {
-        PBR_ASSERT( !HasNans() );
         std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( int ) * 3 );
+        PBR_ASSERT( !HasNans() );
         return *this;
     }
+#endif
 
     /// Element-wise index read accessor.
     int& operator[]( size_t i_index )
