@@ -27,6 +27,7 @@ inline void FnFaceForward( const Vec2f& i_normal, const Vec2f& i_direction, Vec2
     FnDotProduct( i_normal, i_direction, product );
     o_faceForwardNormal = product >= 0 ? i_normal : -i_normal;
 }
+
 PBR_API
 inline void FnFaceForward( const Vec3f& i_normal, const Vec3f& i_direction, Vec3f& o_faceForwardNormal )
 {
@@ -41,6 +42,7 @@ inline void FnFaceForward( const Vec3f& i_normal, const Vec3f& i_direction, Vec3
     FnDotProduct( i_normal, i_direction, product );
     o_faceForwardNormal = product >= 0 ? i_normal : -i_normal;
 }
+
 PBR_API
 inline void FnFaceForward( const Vec4f& i_normal, const Vec4f& i_direction, Vec4f& o_faceForwardNormal )
 {
