@@ -8,6 +8,7 @@ import os
 import functools
 import subprocess
 import shlex
+import collections
 
 from jinja2 import Template
 
@@ -33,6 +34,10 @@ ARITHMETIC_OPERATORS = ['+', '-', '*', '/']
 # Scalar types we are interested in generating code for.  Double is omitted for the time being.
 FLOAT = "float"
 INT = "int"
+
+# COMPOSITE_TYPES is a dict of key (composite type name) -> value (composite type object)
+# It is populated in GenCompositeTypes.
+COMPOSITE_TYPES = {}
 
 #
 # Utilities
@@ -115,11 +120,15 @@ class AggregateIncludesCpp:
 
 class DataType:
     """
-    Abstract base class.
+    Abstract base class for all data types.
     """
 
     @property
     def className(self):
+        raise NotImplementedError()
+
+    @property
+    def headerFileName(self):
         raise NotImplementedError()
 
     @property
@@ -128,6 +137,14 @@ class DataType:
 
     @property
     def isVector(self):
+        raise NotImplementedError()
+
+    @property
+    def isArray(self):
+        raise NotImplementedError()
+
+    @property
+    def isComposite(self):
         raise NotImplementedError()
 
 
@@ -151,6 +168,21 @@ class ScalarType(DataType):
     @property
     def isVector(self):
         return False
+
+    @property
+    def isArray(self):
+        return False
+
+    @property
+    def isComposite(self):
+        return False
+
+
+SCALAR_TYPES = [
+    ScalarType(FLOAT),
+    ScalarType(INT)
+]
+
 
 
 class VectorType(DataType):
@@ -202,8 +234,16 @@ class VectorType(DataType):
     def isVector(self):
         return True
 
+    @property
+    def isArray(self):
+        return False
 
-class ArrayType:
+    @property
+    def isComposite(self):
+        return False
+
+
+class ArrayType(DataType):
     """
     Code generation for an C++ array type.
     """
@@ -211,32 +251,190 @@ class ArrayType:
     def __init__(self, elementType):
         self.elementType = elementType
 
-        # Class name.
+    @property
+    def className(self):
         if self.elementType.className.startswith(TYPES_CLASS_PREFIX):
             prefix = ""
         else:
             prefix = TYPES_CLASS_PREFIX
 
-        self.className = "{prefix}{elementTypeName}Array".format(
+        return "{prefix}{elementTypeName}Array".format(
             prefix=prefix,
             elementTypeName=(self.elementType.className[0].upper() + self.elementType.className[1:])
         )
 
-        # header file name.
+    @property
+    def headerFileName(self):
         if self.elementType.isVector:
-            self.headerFileName = "{elementHeaderFileName}Array.h".format(
+            return "{elementHeaderFileName}Array.h".format(
                 elementHeaderFileName=os.path.splitext(self.elementType.headerFileName)[0]
             )
         else:
-            self.headerFileName = "{elementTypeName}Array.h".format(
+            return "{elementTypeName}Array.h".format(
                 elementTypeName=self.elementType.className[0].lower() + self.elementType.className[1:]
             )
 
+    @property
+    def isScalar(self):
+        return False
 
-SCALAR_TYPES = [
-    ScalarType(FLOAT),
-    ScalarType(INT)
-]
+    @property
+    def isVector(self):
+        return False
+
+    @property
+    def isArray(self):
+        return True
+
+    @property
+    def isComposite(self):
+        return False
+
+
+"""
+CompositeElement is a single element of an CompositeType, described by a name, type, and default value.
+
+Args:
+    name (str): is used to uniquely address this element from the parent Composite type.
+    type (object): the data type.
+    defaultValue (str): string, encoding C++ code that will be assigned to element member variable.
+"""
+CompositeElement = collections.namedtuple("CompositeElement", ["name", "type", "defaultValue"])
+
+
+class CompositeType(DataType):
+    """
+    Code generation for an C++ composite data type.
+    A composite type is a structure composed of one or more elements.
+    Each element can be of type scalar, vector, array, or another composite.
+
+    Args:
+        name (str): name of the composite type.
+        elements (list): list of CompositeElement(s).
+        extraIncludes (list): list of extras includes to encode near the top of the source file.
+    """
+
+    def __init__(self, name, elements, extraIncludes=None):
+        self._name = name
+        self.elements = elements
+        self.elementSize = len(self.elements)
+        self.extraIncludes = extraIncludes or []
+
+    @property
+    def className(self):
+        return self._name[:1].upper() + self._name[1:]
+
+    @property
+    def headerFileName(self):
+        return "{name}.h".format(
+            name=self._name[:1].lower() + self._name[1:]
+        )
+
+    @property
+    def isScalar(self):
+        return False
+
+    @property
+    def isVector(self):
+        return False
+
+    @property
+    def isArray(self):
+        return False
+
+    @property
+    def isComposite(self):
+        return True
+
+
+def GenCompositeType(compositeType):
+    """
+    Generate a single C++ composite type source file.
+
+    Args:
+        compositeType (CompositeType): composite data type to generate definition source code for.
+
+    Returns:
+        str: file path to the generated source file.
+    """
+    filePath = os.path.join(os.path.abspath(TYPE_DIR), compositeType.headerFileName)
+    code = GenerateCode(
+        compositeType,
+        GetCodeGenTemplate(os.path.join(TYPE_DIR, "compositeType.h"))
+    )
+    WriteFile(filePath, code)
+    return filePath
+
+
+def GenBoundsCompositeTypes():
+    """
+    Generate Bounds composite type source file.
+
+    Returns:
+        list: paths to generated source files.
+    """
+    filePaths = []
+
+    for vectorType in [
+        VectorType((2,), FLOAT),
+        VectorType((3,), FLOAT),
+        VectorType((2,), INT),
+        VectorType((3,), INT)
+    ]:
+        compositeTypeName = "bounds{dims}{elementType}".format(
+            dims=str(vectorType.dims[0]),
+            elementType=vectorType.elementType[0]
+        )
+
+        # Min default value.
+        minDefaultValue = "{vectorClassName}(".format(
+            vectorClassName=vectorType.className
+        )
+        for index in range(vectorType.dims[0]):
+            minDefaultValue += "std::numeric_limits< {vectorElementType} >::max()".format(
+                vectorElementType=vectorType.elementType
+            )
+            if index + 1 < vectorType.dims[0]:
+                minDefaultValue += ","
+        minDefaultValue += ")"
+
+        # Max default value.
+        maxDefaultValue = "{vectorClassName}(".format(
+            vectorClassName=vectorType.className
+        )
+        for index in range(vectorType.dims[0]):
+            maxDefaultValue += "std::numeric_limits< {vectorElementType} >::min()".format(
+                vectorElementType=vectorType.elementType
+            )
+            if index + 1 < vectorType.dims[0]:
+                maxDefaultValue += ","
+        maxDefaultValue += ")"
+
+        compositeType = CompositeType(
+            compositeTypeName,
+            [
+                CompositeElement(name="min", type=vectorType, defaultValue=minDefaultValue),
+                CompositeElement(name="max", type=vectorType, defaultValue=maxDefaultValue),
+            ],
+            extraIncludes=[
+                "<limits>",
+            ]
+        )
+        filePaths.append(GenCompositeType(compositeType))
+
+    return filePaths
+
+
+def GenCompositeTypes():
+    """
+    Generate all composite type source files.
+
+    Returns:
+        list: paths to generated source files.
+    """
+    filePaths = []
+    filePaths += GenBoundsCompositeTypes()
+    return filePaths
 
 
 def GenArrayTypes():
@@ -293,7 +491,7 @@ def GenVectorTypes():
     filePaths = []
     headerFileNames = []
     for vectorType in VECTOR_TYPES:
-        code = GenerateCode(vectorType, GetCodeGenTemplate(os.path.join(TYPE_DIR, 'vectorType.h')))
+        code = GenerateCode(vectorType, GetCodeGenTemplate(os.path.join(TYPE_DIR, "vectorType.h")))
         filePath = os.path.join(os.path.abspath(TYPE_DIR), vectorType.headerFileName)
         WriteFile(filePath, code)
         filePaths.append(filePath)
@@ -323,6 +521,7 @@ def GenTypes():
     """
     filePaths = GenVectorTypes()
     filePaths += GenArrayTypes()
+    filePaths += GenCompositeTypes()
     return filePaths
 
 #
