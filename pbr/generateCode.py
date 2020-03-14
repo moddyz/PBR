@@ -376,6 +376,7 @@ FUNCTION_GROUPS = [
     FunctionGroup([
         "crossProduct.h",
         "coordinateSystem.h",
+        "rayPosition.h",
     ],
     vectorTypes=[
         VectorType((3,), FLOAT),
