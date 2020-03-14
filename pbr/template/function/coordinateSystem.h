@@ -8,6 +8,7 @@
 #include <pbr/type/{{ vectorType.headerFileName }}>
 {% endfor %}
 
+#include <pbr/function/debug.h>
 #include <pbr/function/length.h>
 #include <pbr/function/normalise.h>
 #include <pbr/function/crossProduct.h>
@@ -22,12 +23,7 @@ inline void FnCoordinateSystem( const {{ vectorType.className }}& i_vector,
                                 {{ vectorType.className }}& o_vectorA,
                                 {{ vectorType.className }}& o_vectorB )
 {
-    // Input vector should be normalised.
-#ifdef PBR_DEBUG
-    float length;
-    FnLength( i_vector, length );
-    PBR_ASSERT( TlAlmostEqual( length, 1.0f ) );
-#endif
+    PBR_ASSERT_NORMALISED( i_vector );
 
     // Compute first output vector by:
     // 1. Zeroing out one of the components,

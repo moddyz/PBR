@@ -7,6 +7,7 @@
 #include <pbr/type/vec3f.h>
 
 #include <pbr/function/crossProduct.h>
+#include <pbr/function/debug.h>
 #include <pbr/function/length.h>
 #include <pbr/function/normalise.h>
 
@@ -17,12 +18,7 @@ PBR_NAMESPACE_BEGIN
 PBR_API
 inline void FnCoordinateSystem( const Vec3f& i_vector, Vec3f& o_vectorA, Vec3f& o_vectorB )
 {
-    // Input vector should be normalised.
-#ifdef PBR_DEBUG
-    float length;
-    FnLength( i_vector, length );
-    PBR_ASSERT( TlAlmostEqual( length, 1.0f ) );
-#endif
+    PBR_ASSERT_NORMALISED( i_vector );
 
     // Compute first output vector by:
     // 1. Zeroing out one of the components,

@@ -6,6 +6,7 @@
 #include <pbr/type/{{ vectorType.headerFileName }}>
 {% endfor %}
 
+#include <pbr/function/debug.h>
 #include <pbr/function/dotProduct.h>
 
 PBR_NAMESPACE_BEGIN
@@ -19,12 +20,7 @@ inline void FnFaceForward( const {{ vectorType.className }}& i_normal,
                            const {{ vectorType.className }}& i_direction,
                            {{ vectorType.className }}& o_faceForwardNormal )
 {
-    // Input vector should be normalised.
-#ifdef PBR_DEBUG
-    {{ vectorType.scalarType }} length;
-    FnLength( i_normal, length );
-    PBR_ASSERT( TlAlmostEqual( length, 1.0f ) );
-#endif
+    PBR_ASSERT_NORMALISED( i_normal );
 
     {{ vectorType.scalarType }} product = 0.0f;
     FnDotProduct( i_normal, i_direction, product );

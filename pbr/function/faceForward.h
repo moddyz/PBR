@@ -6,6 +6,7 @@
 #include <pbr/type/vec3f.h>
 #include <pbr/type/vec4f.h>
 
+#include <pbr/function/debug.h>
 #include <pbr/function/dotProduct.h>
 
 PBR_NAMESPACE_BEGIN
@@ -16,12 +17,7 @@ PBR_NAMESPACE_BEGIN
 PBR_API
 inline void FnFaceForward( const Vec2f& i_normal, const Vec2f& i_direction, Vec2f& o_faceForwardNormal )
 {
-    // Input vector should be normalised.
-#ifdef PBR_DEBUG
-    float length;
-    FnLength( i_normal, length );
-    PBR_ASSERT( TlAlmostEqual( length, 1.0f ) );
-#endif
+    PBR_ASSERT_NORMALISED( i_normal );
 
     float product = 0.0f;
     FnDotProduct( i_normal, i_direction, product );
@@ -31,12 +27,7 @@ inline void FnFaceForward( const Vec2f& i_normal, const Vec2f& i_direction, Vec2
 PBR_API
 inline void FnFaceForward( const Vec3f& i_normal, const Vec3f& i_direction, Vec3f& o_faceForwardNormal )
 {
-    // Input vector should be normalised.
-#ifdef PBR_DEBUG
-    float length;
-    FnLength( i_normal, length );
-    PBR_ASSERT( TlAlmostEqual( length, 1.0f ) );
-#endif
+    PBR_ASSERT_NORMALISED( i_normal );
 
     float product = 0.0f;
     FnDotProduct( i_normal, i_direction, product );
@@ -46,12 +37,7 @@ inline void FnFaceForward( const Vec3f& i_normal, const Vec3f& i_direction, Vec3
 PBR_API
 inline void FnFaceForward( const Vec4f& i_normal, const Vec4f& i_direction, Vec4f& o_faceForwardNormal )
 {
-    // Input vector should be normalised.
-#ifdef PBR_DEBUG
-    float length;
-    FnLength( i_normal, length );
-    PBR_ASSERT( TlAlmostEqual( length, 1.0f ) );
-#endif
+    PBR_ASSERT_NORMALISED( i_normal );
 
     float product = 0.0f;
     FnDotProduct( i_normal, i_direction, product );
