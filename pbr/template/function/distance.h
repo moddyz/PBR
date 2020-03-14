@@ -16,7 +16,7 @@ PBR_NAMESPACE_BEGIN
 PBR_API
 inline void FnDistance( const {{ vectorType.className }}& i_vectorA,
                         const {{ vectorType.className }}& i_vectorB,
-                        {{ vectorType.scalarType }}& o_distance )
+                        {{ vectorType.elementType }}& o_distance )
 {
     {{ vectorType.className }} diffVector = i_vectorA - i_vectorB;
     FnLength( diffVector, o_distance );

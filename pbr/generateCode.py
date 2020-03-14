@@ -158,11 +158,11 @@ class VectorType(DataType):
     Code generation for an C++ vector type.
     """
 
-    def __init__(self, dims, scalarType):
+    def __init__(self, dims, elementType):
         assert(isinstance(dims, tuple))
-        assert(isinstance(scalarType, str))
+        assert(isinstance(elementType, str))
         self.dims = dims
-        self.scalarType = scalarType
+        self.elementType = elementType
 
     @property
     def elementSize(self):
@@ -175,10 +175,10 @@ class VectorType(DataType):
         else:
             prefix = TYPES_CLASS_PREFIX + "Vec"
 
-        return "{prefix}{dims}{scalarType}".format(
+        return "{prefix}{dims}{elementType}".format(
             prefix=prefix,
             dims=str(self.dims[0]),
-            scalarType=self.scalarType[0]
+            elementType=self.elementType[0]
         )
 
     @property
@@ -188,10 +188,10 @@ class VectorType(DataType):
         else:
             prefix = "vec"
 
-        return "{prefix}{dims}{scalarType}.h".format(
+        return "{prefix}{dims}{elementType}.h".format(
             prefix=prefix,
             dims=str(self.dims[0]),
-            scalarType=self.scalarType[0]
+            elementType=self.elementType[0]
         )
 
     @property

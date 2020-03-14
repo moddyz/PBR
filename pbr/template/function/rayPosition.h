@@ -16,7 +16,7 @@ PBR_NAMESPACE_BEGIN
 PBR_API
 inline void FnRayPosition( const {{ vectorType.className }}& i_origin,
                            const {{ vectorType.className }}& i_direction,
-                           const {{ vectorType.scalarType }}& i_scale,
+                           const {{ vectorType.elementType }}& i_scale,
                            {{ vectorType.className }}& o_rayPosition )
 {
     // Direction should be normalised.

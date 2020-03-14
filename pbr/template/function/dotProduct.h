@@ -13,7 +13,7 @@ PBR_NAMESPACE_BEGIN
 PBR_API
 inline void FnDotProduct( const {{ vectorType.className }}& i_lhs,
                           const {{ vectorType.className }}& i_rhs,
-                          {{ vectorType.scalarType }}& o_product )
+                          {{ vectorType.elementType }}& o_product )
 {
     o_product = 0;
 {% for index in range(vectorType.elementSize) -%}

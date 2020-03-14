@@ -13,7 +13,7 @@ PBR_NAMESPACE_BEGIN
 class PBR_API {{ context.className }} final
 {
 public:
-    using ElementType = {{ context.scalarType }};
+    using ElementType = {{ context.elementType }};
 
     /// Default constructor.
     {{ context.className }}()  = default;
@@ -24,7 +24,7 @@ public:
     /// Element-wise constructor.
     explicit {{ context.className }}(
 {% for index in range(context.elementSize) -%}
-        const {{ context.scalarType }}& i_element{{ index }}
+        const {{ context.elementType }}& i_element{{ index }}
 {%- if index + 1 < context.elementSize -%}
         ,
 {%- endif -%}
@@ -46,19 +46,19 @@ public:
     {{ context.className }}( const {{ context.className }}& i_vector )
     {
         PBR_ASSERT( !HasNans() );
-        std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( {{ context.scalarType }}  )* {{ context.elementSize }} );
+        std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( {{ context.elementType }}  )* {{ context.elementSize }} );
     }
 
     /// Copy assignment operator.
     {{ context.className }}& operator=( const {{ context.className }}& i_vector )
     {
         PBR_ASSERT( !HasNans() );
-        std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( {{ context.scalarType }}  )* {{ context.elementSize }} );
+        std::memcpy( ( void* ) m_elements, ( const void* ) i_vector.m_elements, sizeof( {{ context.elementType }}  )* {{ context.elementSize }} );
         return *this;
     }
 
     /// Element-wise index read accessor.
-    {{ context.scalarType }}& operator[]( size_t i_index )
+    {{ context.elementType }}& operator[]( size_t i_index )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_index < {{ context.elementSize }} );
@@ -66,7 +66,7 @@ public:
     }
 
     /// Element-wise index write accessor.
-    const {{ context.scalarType }}& operator[]( size_t i_index ) const
+    const {{ context.elementType }}& operator[]( size_t i_index ) const
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_index < {{ context.elementSize }} );
@@ -137,7 +137,7 @@ public:
         return *this;
     }
 
-    {{ context.className }}& operator*=( const {{ context.scalarType }}& i_scalar )
+    {{ context.className }}& operator*=( const {{ context.elementType }}& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
 {% for index in range(context.elementSize) -%}
@@ -146,11 +146,11 @@ public:
         return *this;
     }
 
-    {{ context.className }} operator/( const {{ context.scalarType }}& i_scalar ) const
+    {{ context.className }} operator/( const {{ context.elementType }}& i_scalar ) const
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
-        {{ context.scalarType }} reciprocal = 1.0 / i_scalar;
+        {{ context.elementType }} reciprocal = 1.0 / i_scalar;
         return {{ context.className }}(
 {% for index in range(context.elementSize) -%}
         m_elements[ {{ index }} ] * reciprocal
@@ -162,17 +162,17 @@ public:
     }
 
 {%- if context.dims|length == 2 -%}
-    const {{ context.scalarType }}& operator()( size_t i_row, size_t i_column ) const
+    const {{ context.elementType }}& operator()( size_t i_row, size_t i_column ) const
     {
         return m_elements[ i_row * {{ context.dims[ 0 ] }} + i_column ];
     }
 {%- endif %}
 
-    {{ context.className }}& operator/=( const {{ context.scalarType }}& i_scalar )
+    {{ context.className }}& operator/=( const {{ context.elementType }}& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
-        {{ context.scalarType }} reciprocal = 1.0 / i_scalar;
+        {{ context.elementType }} reciprocal = 1.0 / i_scalar;
 {% for index in range(context.elementSize) -%}
         m_elements[ {{ index }} ] *= reciprocal;
 {%- endfor %}
@@ -180,7 +180,7 @@ public:
     }
 
 {%- if context.dims|length == 1 and context.elementSize <= 4 -%}
-    {{ context.scalarType }} X() const
+    {{ context.elementType }} X() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 0 ];
@@ -188,7 +188,7 @@ public:
 {%- endif %}
 
 {%- if context.dims|length == 1 and context.elementSize >= 2 and context.elementSize <= 4 -%}
-    {{ context.scalarType }} Y() const
+    {{ context.elementType }} Y() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 1 ];
@@ -196,7 +196,7 @@ public:
 {%- endif %}
 
 {%- if context.dims|length == 1 and context.elementSize >= 3 and context.elementSize <= 4 -%}
-    {{ context.scalarType }} Z() const
+    {{ context.elementType }} Z() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 2 ];
@@ -204,7 +204,7 @@ public:
 {%- endif %}
 
 {%- if context.dims|length == 1 and context.elementSize == 4 %}
-    {{ context.scalarType }} W() const
+    {{ context.elementType }} W() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 3 ];
@@ -259,7 +259,7 @@ public:
     }
 
 private:
-    {{ context.scalarType }} m_elements[ {{ context.elementSize }} ] = {
+    {{ context.elementType }} m_elements[ {{ context.elementSize }} ] = {
 {%- for index in range(context.elementSize) -%}
         0
 {%- if index + 1 < context.elementSize -%}
@@ -269,7 +269,7 @@ private:
     };
 };
 
-{{ context.className }} operator*( const {{ context.className }}& i_vector, const {{ context.scalarType }}& i_scalar )
+{{ context.className }} operator*( const {{ context.className }}& i_vector, const {{ context.elementType }}& i_scalar )
 {
     PBR_ASSERT( !i_vector.HasNans() );
     return {{ context.className }}(
@@ -282,7 +282,7 @@ private:
     );
 }
 
-{{ context.className }} operator*( const {{ context.scalarType }}& i_scalar, const {{ context.className }}& i_vector )
+{{ context.className }} operator*( const {{ context.elementType }}& i_scalar, const {{ context.className }}& i_vector )
 {
     PBR_ASSERT( !i_vector.HasNans() );
     return {{ context.className }}(
