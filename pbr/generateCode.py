@@ -376,6 +376,7 @@ FUNCTION_GROUPS = [
         "distance.h",
         "distanceSquared.h",
         "normalise.h",
+        "faceForward.h",
     ],
     vectorTypes=[
         VectorType((2,), FLOAT),

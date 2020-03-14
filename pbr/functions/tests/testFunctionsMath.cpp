@@ -12,6 +12,7 @@
 #include <pbr/functions/distance.h>
 #include <pbr/functions/distanceSquared.h>
 #include <pbr/functions/dotProduct.h>
+#include <pbr/functions/faceForward.h>
 #include <pbr/functions/floor.h>
 #include <pbr/functions/length.h>
 #include <pbr/functions/lengthSquared.h>
@@ -142,4 +143,17 @@ TEST_CASE( "abs" )
     pbr::Vec3f absoluteValue;
     pbr::FnAbs( value, absoluteValue );
     CHECK( absoluteValue == pbr::Vec3f( 2.9, 3.5, 1.0 ) );
+}
+
+TEST_CASE( "faceForward" )
+{
+    pbr::Vec3f normal( 1, 1, 1 );
+    pbr::Vec3f positionHemisphere( 3, 4, 5 );
+    pbr::Vec3f forward;
+    pbr::FnFaceForward( normal, positionHemisphere, forward );
+    CHECK( forward == pbr::Vec3f( 1, 1, 1 ) );
+
+    pbr::Vec3f negativeHemisphere( -3, 4, -5 );
+    pbr::FnFaceForward( normal, negativeHemisphere, forward );
+    CHECK( forward == pbr::Vec3f( -1, -1, -1 ) );
 }
