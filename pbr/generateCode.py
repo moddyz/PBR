@@ -89,14 +89,14 @@ def GetCodeGenTemplate(templateName):
 
 def GenerateCode(context, templatePath):
     """
-    Generate a single vector type as a header source.
+    Generate a single source file with a template and code-gen context.
 
     Args:
         context (obj): context object with attributes which are consumed in the template rendering.
         templatePath (str): path to the template file to perform substitution.
 
     Returns:
-        str: file name of generated vector class.
+        str: file name of generated source file.
     """
     with open(templatePath, 'r') as f:
         templateStr = f.read()
@@ -149,6 +149,9 @@ class DataType:
 
 
 class PODType(DataType):
+    """
+    POD (Plain old data) type, used in code-gen contexts.
+    """
 
     def __init__(self, typeName):
         assert(isinstance(typeName, str))
@@ -158,7 +161,7 @@ class PODType(DataType):
     def className(self):
         """
         Returns:
-            str: the c name of this type.
+            str: the ctype of this type.
         """
         return self._typeName
 
