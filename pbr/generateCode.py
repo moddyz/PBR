@@ -133,19 +133,19 @@ class DataType:
 
     @property
     def isScalar(self):
-        raise NotImplementedError()
+        return False
 
     @property
     def isVector(self):
-        raise NotImplementedError()
+        return False
 
     @property
     def isArray(self):
-        raise NotImplementedError()
+        return False
 
     @property
     def isComposite(self):
-        raise NotImplementedError()
+        return False
 
 
 class ScalarType(DataType):
@@ -164,18 +164,6 @@ class ScalarType(DataType):
     @property
     def isScalar(self):
         return True
-
-    @property
-    def isVector(self):
-        return False
-
-    @property
-    def isArray(self):
-        return False
-
-    @property
-    def isComposite(self):
-        return False
 
 
 SCALAR_TYPES = [
@@ -227,20 +215,8 @@ class VectorType(DataType):
         )
 
     @property
-    def isScalar(self):
-        return False
-
-    @property
     def isVector(self):
         return True
-
-    @property
-    def isArray(self):
-        return False
-
-    @property
-    def isComposite(self):
-        return False
 
 
 class ArrayType(DataType):
@@ -275,20 +251,8 @@ class ArrayType(DataType):
             )
 
     @property
-    def isScalar(self):
-        return False
-
-    @property
-    def isVector(self):
-        return False
-
-    @property
     def isArray(self):
         return True
-
-    @property
-    def isComposite(self):
-        return False
 
 
 """
@@ -329,18 +293,6 @@ class CompositeType(DataType):
         return "{name}.h".format(
             name=self._name[:1].lower() + self._name[1:]
         )
-
-    @property
-    def isScalar(self):
-        return False
-
-    @property
-    def isVector(self):
-        return False
-
-    @property
-    def isArray(self):
-        return False
 
     @property
     def isComposite(self):
