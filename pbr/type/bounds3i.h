@@ -72,7 +72,5 @@ private:
                          std::numeric_limits< int >::min(),
                          std::numeric_limits< int >::min() );
 };
-}
-;
 
 PBR_NAMESPACE_END

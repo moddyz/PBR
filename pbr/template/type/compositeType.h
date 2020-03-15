@@ -88,7 +88,6 @@ private:
 {%- endif -%}
     ;
 {%- endfor %}
-    };
 };
 
 PBR_NAMESPACE_END

@@ -68,7 +68,5 @@ private:
     Vec2f m_min = Vec2f( std::numeric_limits< float >::max(), std::numeric_limits< float >::max() );
     Vec2f m_max = Vec2f( std::numeric_limits< float >::min(), std::numeric_limits< float >::min() );
 };
-}
-;
 
 PBR_NAMESPACE_END
