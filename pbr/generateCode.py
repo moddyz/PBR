@@ -589,6 +589,7 @@ def GenFunctions():
         ]),
         FunctionGroup([
             "boundsUnion.h",
+            "boundsIntersection.h",
         ],
         types=[
             COMPOSITE_TYPES["Bounds2i"],
