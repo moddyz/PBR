@@ -46,7 +46,7 @@ public:
 #endif
 
     /// Element-wise index read accessor.
-    float& operator[]( size_t i_index )
+    inline float& operator[]( size_t i_index )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_index < 4 );
@@ -54,7 +54,7 @@ public:
     }
 
     /// Element-wise index write accessor.
-    const float& operator[]( size_t i_index ) const
+    inline const float& operator[]( size_t i_index ) const
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_index < 4 );
@@ -65,7 +65,7 @@ public:
     // Arithmetic Operator Overloading.
     //
 
-    Vec4f operator+( const Vec4f& i_vector ) const
+    inline Vec4f operator+( const Vec4f& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return Vec4f( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
@@ -75,7 +75,7 @@ public:
     }
 
     /// Addition assignment.
-    Vec4f& operator+=( const Vec4f& i_vector )
+    inline Vec4f& operator+=( const Vec4f& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
@@ -86,7 +86,7 @@ public:
     }
 
     /// Subtraction.
-    Vec4f operator-( const Vec4f& i_vector ) const
+    inline Vec4f operator-( const Vec4f& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return Vec4f( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
@@ -96,13 +96,13 @@ public:
     }
 
     /// Unary negation.
-    Vec4f operator-() const
+    inline Vec4f operator-() const
     {
         PBR_ASSERT( !HasNans() );
         return Vec4f( -m_elements[ 0 ], -m_elements[ 1 ], -m_elements[ 2 ], -m_elements[ 3 ] );
     }
 
-    Vec4f& operator-=( const Vec4f& i_vector )
+    inline Vec4f& operator-=( const Vec4f& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
@@ -112,7 +112,7 @@ public:
         return *this;
     }
 
-    Vec4f& operator*=( const float& i_scalar )
+    inline Vec4f& operator*=( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] *= i_scalar;
@@ -122,7 +122,7 @@ public:
         return *this;
     }
 
-    Vec4f operator/( const float& i_scalar ) const
+    inline Vec4f operator/( const float& i_scalar ) const
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
@@ -133,7 +133,7 @@ public:
                       m_elements[ 3 ] * reciprocal );
     }
 
-    Vec4f& operator/=( const float& i_scalar )
+    inline Vec4f& operator/=( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
@@ -144,49 +144,49 @@ public:
         m_elements[ 3 ] *= reciprocal;
         return *this;
     }
-    float X() const
+    inline float X() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 0 ];
     }
-    float Y() const
+    inline float Y() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 1 ];
     }
-    float Z() const
+    inline float Z() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 2 ];
     }
-    float W() const
+    inline float W() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 3 ];
     }
 
     /// Comparison operator
-    bool operator==( const Vec4f& i_vector ) const
+    inline bool operator==( const Vec4f& i_vector ) const
     {
         return m_elements[ 0 ] == i_vector.m_elements[ 0 ] && m_elements[ 1 ] == i_vector.m_elements[ 1 ] &&
                m_elements[ 2 ] == i_vector.m_elements[ 2 ] && m_elements[ 3 ] == i_vector.m_elements[ 3 ];
     }
 
     /// Get the number of elements in this vector.
-    static size_t GetElementSize()
+    inline static size_t GetElementSize()
     {
         return 4;
     }
 
     /// Are any of the element values NaNs?
-    bool HasNans() const
+    inline bool HasNans() const
     {
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] ) ||
                std::isnan( m_elements[ 3 ] );
     }
 
     /// Get the string representation.  For debugging purposes.
-    std::string ToString()
+    inline std::string ToString() const
     {
         std::stringstream ss;
         ss << "Vec4f( ";
@@ -205,7 +205,7 @@ private:
     float m_elements[ 4 ] = {0, 0, 0, 0};
 };
 
-Vec4f operator*( const Vec4f& i_vector, const float& i_scalar )
+inline Vec4f operator*( const Vec4f& i_vector, const float& i_scalar )
 {
     PBR_ASSERT( !i_vector.HasNans() );
     return Vec4f( i_vector[ 0 ] * i_scalar,
@@ -214,7 +214,7 @@ Vec4f operator*( const Vec4f& i_vector, const float& i_scalar )
                   i_vector[ 3 ] * i_scalar );
 }
 
-Vec4f operator*( const float& i_scalar, const Vec4f& i_vector )
+inline Vec4f operator*( const float& i_scalar, const Vec4f& i_vector )
 {
     PBR_ASSERT( !i_vector.HasNans() );
     return Vec4f( i_vector[ 0 ] * i_scalar,

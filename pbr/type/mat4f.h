@@ -76,7 +76,7 @@ public:
 #endif
 
     /// Element-wise index read accessor.
-    float& operator[]( size_t i_index )
+    inline float& operator[]( size_t i_index )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_index < 16 );
@@ -84,7 +84,7 @@ public:
     }
 
     /// Element-wise index write accessor.
-    const float& operator[]( size_t i_index ) const
+    inline const float& operator[]( size_t i_index ) const
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_index < 16 );
@@ -95,7 +95,7 @@ public:
     // Arithmetic Operator Overloading.
     //
 
-    Mat4f operator+( const Mat4f& i_vector ) const
+    inline Mat4f operator+( const Mat4f& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return Mat4f( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
@@ -117,7 +117,7 @@ public:
     }
 
     /// Addition assignment.
-    Mat4f& operator+=( const Mat4f& i_vector )
+    inline Mat4f& operator+=( const Mat4f& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
@@ -140,7 +140,7 @@ public:
     }
 
     /// Subtraction.
-    Mat4f operator-( const Mat4f& i_vector ) const
+    inline Mat4f operator-( const Mat4f& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return Mat4f( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
@@ -162,7 +162,7 @@ public:
     }
 
     /// Unary negation.
-    Mat4f operator-() const
+    inline Mat4f operator-() const
     {
         PBR_ASSERT( !HasNans() );
         return Mat4f( -m_elements[ 0 ],
@@ -183,7 +183,7 @@ public:
                       -m_elements[ 15 ] );
     }
 
-    Mat4f& operator-=( const Mat4f& i_vector )
+    inline Mat4f& operator-=( const Mat4f& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
@@ -205,7 +205,7 @@ public:
         return *this;
     }
 
-    Mat4f& operator*=( const float& i_scalar )
+    inline Mat4f& operator*=( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] *= i_scalar;
@@ -227,7 +227,7 @@ public:
         return *this;
     }
 
-    Mat4f operator/( const float& i_scalar ) const
+    inline Mat4f operator/( const float& i_scalar ) const
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
@@ -249,12 +249,12 @@ public:
                       m_elements[ 14 ] * reciprocal,
                       m_elements[ 15 ] * reciprocal );
     }
-    const float& operator()( size_t i_row, size_t i_column ) const
+    inline const float& operator()( size_t i_row, size_t i_column ) const
     {
         return m_elements[ i_row * 4 + i_column ];
     }
 
-    Mat4f& operator/=( const float& i_scalar )
+    inline Mat4f& operator/=( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
@@ -279,7 +279,7 @@ public:
     }
 
     /// Comparison operator
-    bool operator==( const Mat4f& i_vector ) const
+    inline bool operator==( const Mat4f& i_vector ) const
     {
         return m_elements[ 0 ] == i_vector.m_elements[ 0 ] && m_elements[ 1 ] == i_vector.m_elements[ 1 ] &&
                m_elements[ 2 ] == i_vector.m_elements[ 2 ] && m_elements[ 3 ] == i_vector.m_elements[ 3 ] &&
@@ -292,13 +292,13 @@ public:
     }
 
     /// Get the number of elements in this vector.
-    static size_t GetElementSize()
+    inline static size_t GetElementSize()
     {
         return 16;
     }
 
     /// Are any of the element values NaNs?
-    bool HasNans() const
+    inline bool HasNans() const
     {
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] ) ||
                std::isnan( m_elements[ 3 ] ) || std::isnan( m_elements[ 4 ] ) || std::isnan( m_elements[ 5 ] ) ||
@@ -309,7 +309,7 @@ public:
     }
 
     /// Get the string representation.  For debugging purposes.
-    std::string ToString()
+    inline std::string ToString() const
     {
         std::stringstream ss;
         ss << "Mat4f( ";
@@ -352,7 +352,7 @@ private:
     float m_elements[ 16 ] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 };
 
-Mat4f operator*( const Mat4f& i_vector, const float& i_scalar )
+inline Mat4f operator*( const Mat4f& i_vector, const float& i_scalar )
 {
     PBR_ASSERT( !i_vector.HasNans() );
     return Mat4f( i_vector[ 0 ] * i_scalar,
@@ -373,7 +373,7 @@ Mat4f operator*( const Mat4f& i_vector, const float& i_scalar )
                   i_vector[ 15 ] * i_scalar );
 }
 
-Mat4f operator*( const float& i_scalar, const Mat4f& i_vector )
+inline Mat4f operator*( const float& i_scalar, const Mat4f& i_vector )
 {
     PBR_ASSERT( !i_vector.HasNans() );
     return Mat4f( i_vector[ 0 ] * i_scalar,

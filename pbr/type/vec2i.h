@@ -46,7 +46,7 @@ public:
 #endif
 
     /// Element-wise index read accessor.
-    int& operator[]( size_t i_index )
+    inline int& operator[]( size_t i_index )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_index < 2 );
@@ -54,7 +54,7 @@ public:
     }
 
     /// Element-wise index write accessor.
-    const int& operator[]( size_t i_index ) const
+    inline const int& operator[]( size_t i_index ) const
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_index < 2 );
@@ -65,14 +65,14 @@ public:
     // Arithmetic Operator Overloading.
     //
 
-    Vec2i operator+( const Vec2i& i_vector ) const
+    inline Vec2i operator+( const Vec2i& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return Vec2i( m_elements[ 0 ] + i_vector.m_elements[ 0 ], m_elements[ 1 ] + i_vector.m_elements[ 1 ] );
     }
 
     /// Addition assignment.
-    Vec2i& operator+=( const Vec2i& i_vector )
+    inline Vec2i& operator+=( const Vec2i& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
@@ -81,20 +81,20 @@ public:
     }
 
     /// Subtraction.
-    Vec2i operator-( const Vec2i& i_vector ) const
+    inline Vec2i operator-( const Vec2i& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return Vec2i( m_elements[ 0 ] - i_vector.m_elements[ 0 ], m_elements[ 1 ] - i_vector.m_elements[ 1 ] );
     }
 
     /// Unary negation.
-    Vec2i operator-() const
+    inline Vec2i operator-() const
     {
         PBR_ASSERT( !HasNans() );
         return Vec2i( -m_elements[ 0 ], -m_elements[ 1 ] );
     }
 
-    Vec2i& operator-=( const Vec2i& i_vector )
+    inline Vec2i& operator-=( const Vec2i& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
@@ -102,7 +102,7 @@ public:
         return *this;
     }
 
-    Vec2i& operator*=( const int& i_scalar )
+    inline Vec2i& operator*=( const int& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] *= i_scalar;
@@ -110,7 +110,7 @@ public:
         return *this;
     }
 
-    Vec2i operator/( const int& i_scalar ) const
+    inline Vec2i operator/( const int& i_scalar ) const
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
@@ -118,7 +118,7 @@ public:
         return Vec2i( m_elements[ 0 ] * reciprocal, m_elements[ 1 ] * reciprocal );
     }
 
-    Vec2i& operator/=( const int& i_scalar )
+    inline Vec2i& operator/=( const int& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
@@ -127,37 +127,37 @@ public:
         m_elements[ 1 ] *= reciprocal;
         return *this;
     }
-    int X() const
+    inline int X() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 0 ];
     }
-    int Y() const
+    inline int Y() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 1 ];
     }
 
     /// Comparison operator
-    bool operator==( const Vec2i& i_vector ) const
+    inline bool operator==( const Vec2i& i_vector ) const
     {
         return m_elements[ 0 ] == i_vector.m_elements[ 0 ] && m_elements[ 1 ] == i_vector.m_elements[ 1 ];
     }
 
     /// Get the number of elements in this vector.
-    static size_t GetElementSize()
+    inline static size_t GetElementSize()
     {
         return 2;
     }
 
     /// Are any of the element values NaNs?
-    bool HasNans() const
+    inline bool HasNans() const
     {
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] );
     }
 
     /// Get the string representation.  For debugging purposes.
-    std::string ToString()
+    inline std::string ToString() const
     {
         std::stringstream ss;
         ss << "Vec2i( ";
@@ -172,13 +172,13 @@ private:
     int m_elements[ 2 ] = {0, 0};
 };
 
-Vec2i operator*( const Vec2i& i_vector, const int& i_scalar )
+inline Vec2i operator*( const Vec2i& i_vector, const int& i_scalar )
 {
     PBR_ASSERT( !i_vector.HasNans() );
     return Vec2i( i_vector[ 0 ] * i_scalar, i_vector[ 1 ] * i_scalar );
 }
 
-Vec2i operator*( const int& i_scalar, const Vec2i& i_vector )
+inline Vec2i operator*( const int& i_scalar, const Vec2i& i_vector )
 {
     PBR_ASSERT( !i_vector.HasNans() );
     return Vec2i( i_vector[ 0 ] * i_scalar, i_vector[ 1 ] * i_scalar );

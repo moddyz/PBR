@@ -60,7 +60,7 @@ public:
 #endif
 
     /// Element-wise index read accessor.
-    {{ context.elementType.className }}& operator[]( size_t i_index )
+    inline {{ context.elementType.className }}& operator[]( size_t i_index )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_index < {{ context.elementSize }} );
@@ -68,7 +68,7 @@ public:
     }
 
     /// Element-wise index write accessor.
-    const {{ context.elementType.className }}& operator[]( size_t i_index ) const
+    inline const {{ context.elementType.className }}& operator[]( size_t i_index ) const
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_index < {{ context.elementSize }} );
@@ -79,7 +79,7 @@ public:
     // Arithmetic Operator Overloading.
     //
 
-    {{ context.className }} operator+( const {{ context.className }}& i_vector ) const
+    inline {{ context.className }} operator+( const {{ context.className }}& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return {{ context.className }}(
@@ -93,7 +93,7 @@ public:
     }
 
     /// Addition assignment.
-    {{ context.className }}& operator+=( const {{ context.className }}& i_vector )
+    inline {{ context.className }}& operator+=( const {{ context.className }}& i_vector )
     {
         PBR_ASSERT( !HasNans() );
 {% for index in range(context.elementSize) -%}
@@ -103,7 +103,7 @@ public:
     }
 
     /// Subtraction.
-    {{ context.className }} operator-( const {{ context.className }}& i_vector ) const
+    inline {{ context.className }} operator-( const {{ context.className }}& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return {{ context.className }}(
@@ -117,7 +117,7 @@ public:
     }
 
     /// Unary negation.
-    {{ context.className }} operator-() const
+    inline {{ context.className }} operator-() const
     {
         PBR_ASSERT( !HasNans() );
         return {{ context.className }}(
@@ -130,7 +130,7 @@ public:
         );
     }
 
-    {{ context.className }}& operator-=( const {{ context.className }}& i_vector )
+    inline {{ context.className }}& operator-=( const {{ context.className }}& i_vector )
     {
         PBR_ASSERT( !HasNans() );
 {% for index in range(context.elementSize) -%}
@@ -139,7 +139,7 @@ public:
         return *this;
     }
 
-    {{ context.className }}& operator*=( const {{ context.elementType.className }}& i_scalar )
+    inline {{ context.className }}& operator*=( const {{ context.elementType.className }}& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
 {% for index in range(context.elementSize) -%}
@@ -148,7 +148,7 @@ public:
         return *this;
     }
 
-    {{ context.className }} operator/( const {{ context.elementType.className }}& i_scalar ) const
+    inline {{ context.className }} operator/( const {{ context.elementType.className }}& i_scalar ) const
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
@@ -164,13 +164,13 @@ public:
     }
 
 {%- if context.dims|length == 2 -%}
-    const {{ context.elementType.className }}& operator()( size_t i_row, size_t i_column ) const
+    inline const {{ context.elementType.className }}& operator()( size_t i_row, size_t i_column ) const
     {
         return m_elements[ i_row * {{ context.dims[ 0 ] }} + i_column ];
     }
 {%- endif %}
 
-    {{ context.className }}& operator/=( const {{ context.elementType.className }}& i_scalar )
+    inline {{ context.className }}& operator/=( const {{ context.elementType.className }}& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
@@ -182,7 +182,7 @@ public:
     }
 
 {%- if context.dims|length == 1 and context.elementSize <= 4 -%}
-    {{ context.elementType.className }} X() const
+    inline {{ context.elementType.className }} X() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 0 ];
@@ -190,7 +190,7 @@ public:
 {%- endif %}
 
 {%- if context.dims|length == 1 and context.elementSize >= 2 and context.elementSize <= 4 -%}
-    {{ context.elementType.className }} Y() const
+    inline {{ context.elementType.className }} Y() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 1 ];
@@ -198,7 +198,7 @@ public:
 {%- endif %}
 
 {%- if context.dims|length == 1 and context.elementSize >= 3 and context.elementSize <= 4 -%}
-    {{ context.elementType.className }} Z() const
+    inline {{ context.elementType.className }} Z() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 2 ];
@@ -206,7 +206,7 @@ public:
 {%- endif %}
 
 {%- if context.dims|length == 1 and context.elementSize == 4 %}
-    {{ context.elementType.className }} W() const
+    inline {{ context.elementType.className }} W() const
     {
         PBR_ASSERT( !HasNans() );
         return m_elements[ 3 ];
@@ -214,7 +214,7 @@ public:
 {%- endif %}
 
     /// Comparison operator
-    bool operator==( const {{context.className}}& i_vector ) const
+    inline bool operator==( const {{context.className}}& i_vector ) const
     {
         return
 {% for index in range(context.elementSize) -%}
@@ -227,13 +227,13 @@ public:
     }
 
     /// Get the number of elements in this vector.
-    static size_t GetElementSize()
+    inline static size_t GetElementSize()
     {
         return {{ context.elementSize }};
     }
 
     /// Are any of the element values NaNs?
-    bool HasNans() const
+    inline bool HasNans() const
     {
         return
 {% for index in range(context.elementSize) -%}
@@ -246,7 +246,7 @@ public:
     }
 
     /// Get the string representation.  For debugging purposes.
-    std::string ToString()
+    inline std::string ToString() const
     {
         std::stringstream ss;
         ss << "{{ context.className }}( ";
@@ -271,7 +271,7 @@ private:
     };
 };
 
-{{ context.className }} operator*( const {{ context.className }}& i_vector, const {{ context.elementType.className }}& i_scalar )
+inline {{ context.className }} operator*( const {{ context.className }}& i_vector, const {{ context.elementType.className }}& i_scalar )
 {
     PBR_ASSERT( !i_vector.HasNans() );
     return {{ context.className }}(
@@ -284,7 +284,7 @@ private:
     );
 }
 
-{{ context.className }} operator*( const {{ context.elementType.className }}& i_scalar, const {{ context.className }}& i_vector )
+inline {{ context.className }} operator*( const {{ context.elementType.className }}& i_scalar, const {{ context.className }}& i_vector )
 {
     PBR_ASSERT( !i_vector.HasNans() );
     return {{ context.className }}(

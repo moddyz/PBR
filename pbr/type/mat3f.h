@@ -62,7 +62,7 @@ public:
 #endif
 
     /// Element-wise index read accessor.
-    float& operator[]( size_t i_index )
+    inline float& operator[]( size_t i_index )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_index < 9 );
@@ -70,7 +70,7 @@ public:
     }
 
     /// Element-wise index write accessor.
-    const float& operator[]( size_t i_index ) const
+    inline const float& operator[]( size_t i_index ) const
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_index < 9 );
@@ -81,7 +81,7 @@ public:
     // Arithmetic Operator Overloading.
     //
 
-    Mat3f operator+( const Mat3f& i_vector ) const
+    inline Mat3f operator+( const Mat3f& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return Mat3f( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
@@ -96,7 +96,7 @@ public:
     }
 
     /// Addition assignment.
-    Mat3f& operator+=( const Mat3f& i_vector )
+    inline Mat3f& operator+=( const Mat3f& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
@@ -112,7 +112,7 @@ public:
     }
 
     /// Subtraction.
-    Mat3f operator-( const Mat3f& i_vector ) const
+    inline Mat3f operator-( const Mat3f& i_vector ) const
     {
         PBR_ASSERT( !HasNans() );
         return Mat3f( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
@@ -127,7 +127,7 @@ public:
     }
 
     /// Unary negation.
-    Mat3f operator-() const
+    inline Mat3f operator-() const
     {
         PBR_ASSERT( !HasNans() );
         return Mat3f( -m_elements[ 0 ],
@@ -141,7 +141,7 @@ public:
                       -m_elements[ 8 ] );
     }
 
-    Mat3f& operator-=( const Mat3f& i_vector )
+    inline Mat3f& operator-=( const Mat3f& i_vector )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
@@ -156,7 +156,7 @@ public:
         return *this;
     }
 
-    Mat3f& operator*=( const float& i_scalar )
+    inline Mat3f& operator*=( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         m_elements[ 0 ] *= i_scalar;
@@ -171,7 +171,7 @@ public:
         return *this;
     }
 
-    Mat3f operator/( const float& i_scalar ) const
+    inline Mat3f operator/( const float& i_scalar ) const
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
@@ -186,12 +186,12 @@ public:
                       m_elements[ 7 ] * reciprocal,
                       m_elements[ 8 ] * reciprocal );
     }
-    const float& operator()( size_t i_row, size_t i_column ) const
+    inline const float& operator()( size_t i_row, size_t i_column ) const
     {
         return m_elements[ i_row * 3 + i_column ];
     }
 
-    Mat3f& operator/=( const float& i_scalar )
+    inline Mat3f& operator/=( const float& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
         PBR_ASSERT( i_scalar != 0.0 );
@@ -209,7 +209,7 @@ public:
     }
 
     /// Comparison operator
-    bool operator==( const Mat3f& i_vector ) const
+    inline bool operator==( const Mat3f& i_vector ) const
     {
         return m_elements[ 0 ] == i_vector.m_elements[ 0 ] && m_elements[ 1 ] == i_vector.m_elements[ 1 ] &&
                m_elements[ 2 ] == i_vector.m_elements[ 2 ] && m_elements[ 3 ] == i_vector.m_elements[ 3 ] &&
@@ -219,13 +219,13 @@ public:
     }
 
     /// Get the number of elements in this vector.
-    static size_t GetElementSize()
+    inline static size_t GetElementSize()
     {
         return 9;
     }
 
     /// Are any of the element values NaNs?
-    bool HasNans() const
+    inline bool HasNans() const
     {
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] ) ||
                std::isnan( m_elements[ 3 ] ) || std::isnan( m_elements[ 4 ] ) || std::isnan( m_elements[ 5 ] ) ||
@@ -233,7 +233,7 @@ public:
     }
 
     /// Get the string representation.  For debugging purposes.
-    std::string ToString()
+    inline std::string ToString() const
     {
         std::stringstream ss;
         ss << "Mat3f( ";
@@ -262,7 +262,7 @@ private:
     float m_elements[ 9 ] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 };
 
-Mat3f operator*( const Mat3f& i_vector, const float& i_scalar )
+inline Mat3f operator*( const Mat3f& i_vector, const float& i_scalar )
 {
     PBR_ASSERT( !i_vector.HasNans() );
     return Mat3f( i_vector[ 0 ] * i_scalar,
@@ -276,7 +276,7 @@ Mat3f operator*( const Mat3f& i_vector, const float& i_scalar )
                   i_vector[ 8 ] * i_scalar );
 }
 
-Mat3f operator*( const float& i_scalar, const Mat3f& i_vector )
+inline Mat3f operator*( const float& i_scalar, const Mat3f& i_vector )
 {
     PBR_ASSERT( !i_vector.HasNans() );
     return Mat3f( i_vector[ 0 ] * i_scalar,
