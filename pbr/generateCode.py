@@ -376,6 +376,10 @@ def GenBoundsCompositeTypes():
                 "<limits>",
             ]
         )
+
+        # Cache composite type into global COMPOSITE_TYPES, to be queried in function generation in a later stage.
+        COMPOSITE_TYPES[compositeType.className] = compositeType
+
         filePaths.append(GenCompositeType(compositeType))
 
     return filePaths
@@ -527,58 +531,6 @@ class FunctionGroup:
         self.kwargs = kwargs
 
 
-FUNCTION_GROUPS = [
-    FunctionGroup([
-        "crossProduct.h",
-        "coordinateSystem.h",
-        "rayPosition.h",
-    ],
-    vectorTypes=[
-        VectorType((3,), PODType(FLOAT)),
-    ]),
-    FunctionGroup([
-        "dotProduct.h",
-        "length.h",
-        "lengthSquared.h",
-        "distance.h",
-        "distanceSquared.h",
-        "normalise.h",
-        "faceForward.h",
-    ],
-    vectorTypes=[
-        VectorType((2,), PODType(FLOAT)),
-        VectorType((3,), PODType(FLOAT)),
-        VectorType((4,), PODType(FLOAT)),
-    ]),
-    FunctionGroup([
-        "lerp.h",
-    ],
-    types=[
-        PODType(FLOAT),
-        VectorType((2,), PODType(FLOAT)),
-        VectorType((3,), PODType(FLOAT)),
-        VectorType((4,), PODType(FLOAT)),
-    ]),
-    FunctionGroup([
-        "min.h",
-        "max.h",
-        "floor.h",
-        "ceil.h",
-        "abs.h",
-    ],
-    types=[
-        PODType(INT),
-        PODType(FLOAT),
-        VectorType((2,), PODType(FLOAT)),
-        VectorType((3,), PODType(FLOAT)),
-        VectorType((4,), PODType(FLOAT)),
-        VectorType((2,), PODType(INT)),
-        VectorType((3,), PODType(INT)),
-        VectorType((4,), PODType(INT)),
-    ]),
-]
-
-
 def GenFunctions():
     """
     Generate code for templatized function.
@@ -586,9 +538,69 @@ def GenFunctions():
     Returns:
         list: file paths to the generated files.
     """
+    functionGroups = [
+        FunctionGroup([
+            "crossProduct.h",
+            "coordinateSystem.h",
+            "rayPosition.h",
+        ],
+        vectorTypes=[
+            VectorType((3,), PODType(FLOAT)),
+        ]),
+        FunctionGroup([
+            "dotProduct.h",
+            "length.h",
+            "lengthSquared.h",
+            "distance.h",
+            "distanceSquared.h",
+            "normalise.h",
+            "faceForward.h",
+        ],
+        vectorTypes=[
+            VectorType((2,), PODType(FLOAT)),
+            VectorType((3,), PODType(FLOAT)),
+            VectorType((4,), PODType(FLOAT)),
+        ]),
+        FunctionGroup([
+            "lerp.h",
+        ],
+        types=[
+            PODType(FLOAT),
+            VectorType((2,), PODType(FLOAT)),
+            VectorType((3,), PODType(FLOAT)),
+            VectorType((4,), PODType(FLOAT)),
+        ]),
+        FunctionGroup([
+            "min.h",
+            "max.h",
+            "floor.h",
+            "ceil.h",
+            "abs.h",
+        ],
+        types=[
+            PODType(INT),
+            PODType(FLOAT),
+            VectorType((2,), PODType(FLOAT)),
+            VectorType((3,), PODType(FLOAT)),
+            VectorType((4,), PODType(FLOAT)),
+            VectorType((2,), PODType(INT)),
+            VectorType((3,), PODType(INT)),
+            VectorType((4,), PODType(INT)),
+        ]),
+        FunctionGroup([
+            "boundsUnion.h",
+        ],
+        types=[
+            COMPOSITE_TYPES["Bounds2i"],
+            COMPOSITE_TYPES["Bounds2f"],
+            COMPOSITE_TYPES["Bounds3i"],
+            COMPOSITE_TYPES["Bounds3f"],
+        ]),
+    ]
+
     filePaths = []
 
-    for functionGroup in FUNCTION_GROUPS:
+    for functionGroup in functionGroups:
         for f in functionGroup.files:
             filePath = GenFunction(f, **functionGroup.kwargs)
             filePaths.append(filePath)
