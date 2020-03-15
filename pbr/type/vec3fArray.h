@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <pbr/type/vec3f.h>
 
 PBR_NAMESPACE_BEGIN

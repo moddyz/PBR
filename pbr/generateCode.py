@@ -457,16 +457,6 @@ def GenVectorTypes():
         filePaths.append(filePath)
         headerFileNames.append(vectorType.headerFileName)
 
-    # Generate aggregation cpp source.
-    includePaths = [os.path.join(PROJECT_DIR, TYPE_DIR, fileName) for fileName in headerFileNames]
-    aggregateCode = GenerateCode(
-        AggregateIncludesCpp(includePaths),
-        GetCodeGenTemplate('aggregateIncludes.cpp')
-    )
-    aggregateCppPath = os.path.join(os.path.abspath(TYPE_DIR), "vectorTypes.cpp")
-    WriteFile(aggregateCppPath, aggregateCode)
-    filePaths.append(aggregateCppPath)
-
     return filePaths
 
 
@@ -482,6 +472,17 @@ def GenTypes():
     filePaths = GenVectorTypes()
     filePaths += GenArrayTypes()
     filePaths += GenCompositeTypes()
+
+    # Generate aggregation cpp source.
+    includePaths = [os.path.join(PROJECT_DIR, TYPE_DIR, os.path.split(filePath)[1]) for filePath in filePaths]
+    aggregateCode = GenerateCode(
+        AggregateIncludesCpp(includePaths),
+        GetCodeGenTemplate('aggregateIncludes.cpp')
+    )
+    aggregateCppPath = os.path.join(os.path.abspath(TYPE_DIR), "allTypes.cpp")
+    WriteFile(aggregateCppPath, aggregateCode)
+    filePaths.append(aggregateCppPath)
+
     return filePaths
 
 #
@@ -605,6 +606,16 @@ def GenFunctions():
         for f in functionGroup.files:
             filePath = GenFunction(f, **functionGroup.kwargs)
             filePaths.append(filePath)
+
+    # Generate aggregation cpp source.
+    includePaths = [os.path.join(PROJECT_DIR, FUNCTION_DIR, os.path.split(filePath)[1]) for filePath in filePaths]
+    aggregateCode = GenerateCode(
+        AggregateIncludesCpp(includePaths),
+        GetCodeGenTemplate('aggregateIncludes.cpp')
+    )
+    aggregateCppPath = os.path.join(os.path.abspath(FUNCTION_DIR), "allFunctions.cpp")
+    WriteFile(aggregateCppPath, aggregateCode)
+    filePaths.append(aggregateCppPath)
 
     return filePaths
 

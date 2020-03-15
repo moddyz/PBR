@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 {% if context.elementType.isVector %}
 #include <pbr/type/{{ context.elementType.headerFileName }}>
 {%- endif %}
