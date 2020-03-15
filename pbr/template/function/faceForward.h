@@ -22,7 +22,7 @@ inline void FnFaceForward( const {{ vectorType.className }}& i_normal,
 {
     PBR_ASSERT_NORMALISED( i_normal );
 
-    {{ vectorType.elementType }} product = 0.0f;
+    {{ vectorType.elementType.className }} product = 0.0f;
     FnDotProduct( i_normal, i_direction, product );
     o_faceForwardNormal = product >= 0 ? i_normal : -i_normal;
 }

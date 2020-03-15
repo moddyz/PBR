@@ -16,7 +16,7 @@ PBR_NAMESPACE_BEGIN
 PBR_API
 inline void FnNormalise( const {{ vectorType.className }}& i_vector, {{ vectorType.className }}& o_normalised )
 {
-    {{ vectorType.elementType }} length;
+    {{ vectorType.elementType.className }} length;
     FnLength( i_vector, length );
     o_normalised = i_vector / length;
 }

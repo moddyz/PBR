@@ -11,7 +11,7 @@ PBR_NAMESPACE_BEGIN
 {% for vectorType in context.vectorTypes %}
 /// Compute the squared length of a vector.
 PBR_API
-inline void FnLengthSquared( const {{ vectorType.className }}& i_vector, {{ vectorType.elementType }}& o_lengthSquared )
+inline void FnLengthSquared( const {{ vectorType.className }}& i_vector, {{ vectorType.elementType.className }}& o_lengthSquared )
 {
     o_lengthSquared = 0;
 {% for index in range(vectorType.elementSize) -%}

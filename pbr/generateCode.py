@@ -151,6 +151,7 @@ class DataType:
 class ScalarType(DataType):
 
     def __init__(self, typeName):
+        assert(isinstance(typeName, str))
         self._typeName = typeName
 
     @property
@@ -180,7 +181,7 @@ class VectorType(DataType):
 
     def __init__(self, dims, elementType):
         assert(isinstance(dims, tuple))
-        assert(isinstance(elementType, str))
+        assert(isinstance(elementType, ScalarType))
         self.dims = dims
         self.elementType = elementType
 
@@ -198,7 +199,7 @@ class VectorType(DataType):
         return "{prefix}{dims}{elementType}".format(
             prefix=prefix,
             dims=str(self.dims[0]),
-            elementType=self.elementType[0]
+            elementType=self.elementType.className[0]
         )
 
     @property
@@ -211,7 +212,7 @@ class VectorType(DataType):
         return "{prefix}{dims}{elementType}.h".format(
             prefix=prefix,
             dims=str(self.dims[0]),
-            elementType=self.elementType[0]
+            elementType=self.elementType.className[0]
         )
 
     @property
@@ -225,6 +226,7 @@ class ArrayType(DataType):
     """
 
     def __init__(self, elementType):
+        assert(isinstance(elementType, DataType))
         self.elementType = elementType
 
     @property
@@ -279,6 +281,8 @@ class CompositeType(DataType):
     """
 
     def __init__(self, name, elements, extraIncludes=None):
+        for element in elements:
+            assert(isinstance(element.type, DataType))
         self._name = name
         self.elements = elements
         self.elementSize = len(self.elements)
@@ -328,14 +332,14 @@ def GenBoundsCompositeTypes():
     filePaths = []
 
     for vectorType in [
-        VectorType((2,), FLOAT),
-        VectorType((3,), FLOAT),
-        VectorType((2,), INT),
-        VectorType((3,), INT)
+        VectorType((2,), ScalarType(FLOAT)),
+        VectorType((3,), ScalarType(FLOAT)),
+        VectorType((2,), ScalarType(INT)),
+        VectorType((3,), ScalarType(INT))
     ]:
         compositeTypeName = "bounds{dims}{elementType}".format(
             dims=str(vectorType.dims[0]),
-            elementType=vectorType.elementType[0]
+            elementType=vectorType.elementType.className[0]
         )
 
         # Min default value.
@@ -344,7 +348,7 @@ def GenBoundsCompositeTypes():
         )
         for index in range(vectorType.dims[0]):
             minDefaultValue += "std::numeric_limits< {vectorElementType} >::max()".format(
-                vectorElementType=vectorType.elementType
+                vectorElementType=vectorType.elementType.className
             )
             if index + 1 < vectorType.dims[0]:
                 minDefaultValue += ","
@@ -356,7 +360,7 @@ def GenBoundsCompositeTypes():
         )
         for index in range(vectorType.dims[0]):
             maxDefaultValue += "std::numeric_limits< {vectorElementType} >::min()".format(
-                vectorElementType=vectorType.elementType
+                vectorElementType=vectorType.elementType.className
             )
             if index + 1 < vectorType.dims[0]:
                 maxDefaultValue += ","
@@ -419,16 +423,16 @@ def GenArrayTypes():
 
 VECTOR_TYPES = [
     # Single-index vector types.
-    VectorType((2,), INT),
-    VectorType((3,), INT),
-    VectorType((4,), INT),
-    VectorType((2,), FLOAT),
-    VectorType((3,), FLOAT),
-    VectorType((4,), FLOAT),
+    VectorType((2,), ScalarType(INT)),
+    VectorType((3,), ScalarType(INT)),
+    VectorType((4,), ScalarType(INT)),
+    VectorType((2,), ScalarType(FLOAT)),
+    VectorType((3,), ScalarType(FLOAT)),
+    VectorType((4,), ScalarType(FLOAT)),
 
     # Matrix types.
-    VectorType((3,3), FLOAT),
-    VectorType((4,4), FLOAT),
+    VectorType((3,3), ScalarType(FLOAT)),
+    VectorType((4,4), ScalarType(FLOAT)),
 ]
 
 
@@ -530,7 +534,7 @@ FUNCTION_GROUPS = [
         "rayPosition.h",
     ],
     vectorTypes=[
-        VectorType((3,), FLOAT),
+        VectorType((3,), ScalarType(FLOAT)),
     ]),
     FunctionGroup([
         "dotProduct.h",
@@ -542,18 +546,18 @@ FUNCTION_GROUPS = [
         "faceForward.h",
     ],
     vectorTypes=[
-        VectorType((2,), FLOAT),
-        VectorType((3,), FLOAT),
-        VectorType((4,), FLOAT),
+        VectorType((2,), ScalarType(FLOAT)),
+        VectorType((3,), ScalarType(FLOAT)),
+        VectorType((4,), ScalarType(FLOAT)),
     ]),
     FunctionGroup([
         "lerp.h",
     ],
     types=[
         ScalarType(FLOAT),
-        VectorType((2,), FLOAT),
-        VectorType((3,), FLOAT),
-        VectorType((4,), FLOAT),
+        VectorType((2,), ScalarType(FLOAT)),
+        VectorType((3,), ScalarType(FLOAT)),
+        VectorType((4,), ScalarType(FLOAT)),
     ]),
     FunctionGroup([
         "min.h",
@@ -565,12 +569,12 @@ FUNCTION_GROUPS = [
     types=[
         ScalarType(INT),
         ScalarType(FLOAT),
-        VectorType((2,), FLOAT),
-        VectorType((3,), FLOAT),
-        VectorType((4,), FLOAT),
-        VectorType((2,), INT),
-        VectorType((3,), INT),
-        VectorType((4,), INT),
+        VectorType((2,), ScalarType(FLOAT)),
+        VectorType((3,), ScalarType(FLOAT)),
+        VectorType((4,), ScalarType(FLOAT)),
+        VectorType((2,), ScalarType(INT)),
+        VectorType((3,), ScalarType(INT)),
+        VectorType((4,), ScalarType(INT)),
     ]),
 ]
 

@@ -16,7 +16,7 @@ PBR_NAMESPACE_BEGIN
 PBR_API
 inline void FnDistanceSquared( const {{ vectorType.className }}& i_vectorA,
                                const {{ vectorType.className }}& i_vectorB,
-                               {{ vectorType.elementType }}& o_distanceSquared )
+                               {{ vectorType.elementType.className }}& o_distanceSquared )
 {
     {{ vectorType.className }} diffVector = i_vectorA - i_vectorB;
     FnLengthSquared( diffVector, o_distanceSquared );
