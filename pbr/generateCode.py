@@ -31,7 +31,7 @@ TYPES_CLASS_PREFIX = ""
 # Kinds of arithmetic operators.
 ARITHMETIC_OPERATORS = ['+', '-', '*', '/']
 
-# Scalar types we are interested in generating code for.  Double is omitted for the time being.
+# POD types we are interested in generating code for.  Double is omitted for the time being.
 FLOAT = "float"
 INT = "int"
 
@@ -148,7 +148,7 @@ class DataType:
         return False
 
 
-class ScalarType(DataType):
+class PODType(DataType):
 
     def __init__(self, typeName):
         assert(isinstance(typeName, str))
@@ -167,9 +167,9 @@ class ScalarType(DataType):
         return True
 
 
-SCALAR_TYPES = [
-    ScalarType(FLOAT),
-    ScalarType(INT)
+POD_TYPES = [
+    PODType(FLOAT),
+    PODType(INT)
 ]
 
 
@@ -181,7 +181,7 @@ class VectorType(DataType):
 
     def __init__(self, dims, elementType):
         assert(isinstance(dims, tuple))
-        assert(isinstance(elementType, ScalarType))
+        assert(isinstance(elementType, PODType))
         self.dims = dims
         self.elementType = elementType
 
@@ -272,7 +272,7 @@ class CompositeType(DataType):
     """
     Code generation for an C++ composite data type.
     A composite type is a structure composed of one or more elements.
-    Each element can be of type scalar, vector, array, or another composite.
+    Each element can be of type pod, vector, array, or another composite.
 
     Args:
         name (str): name of the composite type.
@@ -332,10 +332,10 @@ def GenBoundsCompositeTypes():
     filePaths = []
 
     for vectorType in [
-        VectorType((2,), ScalarType(FLOAT)),
-        VectorType((3,), ScalarType(FLOAT)),
-        VectorType((2,), ScalarType(INT)),
-        VectorType((3,), ScalarType(INT))
+        VectorType((2,), PODType(FLOAT)),
+        VectorType((3,), PODType(FLOAT)),
+        VectorType((2,), PODType(INT)),
+        VectorType((3,), PODType(INT))
     ]:
         compositeTypeName = "bounds{dims}{elementType}".format(
             dims=str(vectorType.dims[0]),
@@ -402,8 +402,8 @@ def GenArrayTypes():
     """
     # Build ArrayType(s)
     arrayTypes = []
-    for scalarType in SCALAR_TYPES:
-        arrayType = ArrayType(scalarType)
+    for podType in POD_TYPES:
+        arrayType = ArrayType(podType)
         arrayTypes.append(arrayType)
 
     for vectorType in VECTOR_TYPES:
@@ -423,16 +423,16 @@ def GenArrayTypes():
 
 VECTOR_TYPES = [
     # Single-index vector types.
-    VectorType((2,), ScalarType(INT)),
-    VectorType((3,), ScalarType(INT)),
-    VectorType((4,), ScalarType(INT)),
-    VectorType((2,), ScalarType(FLOAT)),
-    VectorType((3,), ScalarType(FLOAT)),
-    VectorType((4,), ScalarType(FLOAT)),
+    VectorType((2,), PODType(INT)),
+    VectorType((3,), PODType(INT)),
+    VectorType((4,), PODType(INT)),
+    VectorType((2,), PODType(FLOAT)),
+    VectorType((3,), PODType(FLOAT)),
+    VectorType((4,), PODType(FLOAT)),
 
     # Matrix types.
-    VectorType((3,3), ScalarType(FLOAT)),
-    VectorType((4,4), ScalarType(FLOAT)),
+    VectorType((3,3), PODType(FLOAT)),
+    VectorType((4,4), PODType(FLOAT)),
 ]
 
 
@@ -470,7 +470,7 @@ def GenTypes():
     """
     Top-level entry point for generating all data type source files.
     Vectors and matrices types will be generated.
-    Array types of scalar, vectors, and matrices will also be generated.
+    Array types of pod, vectors, and matrices will also be generated.
 
     Returns:
         list: paths to of generated source files.
@@ -534,7 +534,7 @@ FUNCTION_GROUPS = [
         "rayPosition.h",
     ],
     vectorTypes=[
-        VectorType((3,), ScalarType(FLOAT)),
+        VectorType((3,), PODType(FLOAT)),
     ]),
     FunctionGroup([
         "dotProduct.h",
@@ -546,18 +546,18 @@ FUNCTION_GROUPS = [
         "faceForward.h",
     ],
     vectorTypes=[
-        VectorType((2,), ScalarType(FLOAT)),
-        VectorType((3,), ScalarType(FLOAT)),
-        VectorType((4,), ScalarType(FLOAT)),
+        VectorType((2,), PODType(FLOAT)),
+        VectorType((3,), PODType(FLOAT)),
+        VectorType((4,), PODType(FLOAT)),
     ]),
     FunctionGroup([
         "lerp.h",
     ],
     types=[
-        ScalarType(FLOAT),
-        VectorType((2,), ScalarType(FLOAT)),
-        VectorType((3,), ScalarType(FLOAT)),
-        VectorType((4,), ScalarType(FLOAT)),
+        PODType(FLOAT),
+        VectorType((2,), PODType(FLOAT)),
+        VectorType((3,), PODType(FLOAT)),
+        VectorType((4,), PODType(FLOAT)),
     ]),
     FunctionGroup([
         "min.h",
@@ -567,14 +567,14 @@ FUNCTION_GROUPS = [
         "abs.h",
     ],
     types=[
-        ScalarType(INT),
-        ScalarType(FLOAT),
-        VectorType((2,), ScalarType(FLOAT)),
-        VectorType((3,), ScalarType(FLOAT)),
-        VectorType((4,), ScalarType(FLOAT)),
-        VectorType((2,), ScalarType(INT)),
-        VectorType((3,), ScalarType(INT)),
-        VectorType((4,), ScalarType(INT)),
+        PODType(INT),
+        PODType(FLOAT),
+        VectorType((2,), PODType(FLOAT)),
+        VectorType((3,), PODType(FLOAT)),
+        VectorType((4,), PODType(FLOAT)),
+        VectorType((2,), PODType(INT)),
+        VectorType((3,), PODType(INT)),
+        VectorType((4,), PODType(INT)),
     ]),
 ]
 
