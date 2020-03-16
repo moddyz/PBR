@@ -595,6 +595,7 @@ def GenFunctions():
             "boundsUnion.h",
             "boundsIntersection.h",
             "boundsOverlap.h",
+            "pointInsideBounds.h",
         ],
         types=[
             COMPOSITE_TYPES["Bounds2i"],

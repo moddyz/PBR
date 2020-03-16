@@ -8,6 +8,7 @@
 #include <pbr/function/boundsIntersection.h>
 #include <pbr/function/boundsOverlap.h>
 #include <pbr/function/boundsUnion.h>
+#include <pbr/function/pointInsideBounds.h>
 #include <pbr/function/rayPosition.h>
 
 TEST_CASE( "rayPosition" )
@@ -48,9 +49,26 @@ TEST_CASE( "boundsOverlap" )
     // Does overlap.
     bool boundsOverlap;
     pbr::FnBoundsOverlap( boundsA, boundsB, boundsOverlap );
+    CHECK( boundsOverlap );
 
     // Does not overlap.
     pbr::FnBoundsOverlap( boundsA, boundsC, boundsOverlap );
     CHECK( !boundsOverlap );
+}
+
+TEST_CASE( "pointInsideBounds" )
+{
+    pbr::Bounds3f bounds( pbr::Vec3f( 0.0, 0.0, 0.0 ), pbr::Vec3f( 1.0, 1.0, 1.0 ) );
+    pbr::Vec3f pointA( 0.5, 0.5, 0.5 );
+    pbr::Vec3f pointB( 1.5, 1.5, 1.5 );
+
+    // Point is inside bounds.
+    bool inside;
+    pbr::FnPointInsideBounds( pointA, bounds, inside );
+    CHECK( inside );
+
+    // Point is not inside bounds.
+    pbr::FnPointInsideBounds( pointB, bounds, inside );
+    CHECK( !inside );
 }
 
