@@ -1,5 +1,6 @@
 #include <pbr/function/abs.h>
 #include <pbr/function/boundsIntersection.h>
+#include <pbr/function/boundsOverlap.h>
 #include <pbr/function/boundsUnion.h>
 #include <pbr/function/ceil.h>
 #include <pbr/function/coordinateSystem.h>

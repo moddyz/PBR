@@ -6,6 +6,7 @@
 #include <pbr/type/vec3f.h>
 
 #include <pbr/function/boundsIntersection.h>
+#include <pbr/function/boundsOverlap.h>
 #include <pbr/function/boundsUnion.h>
 #include <pbr/function/rayPosition.h>
 
@@ -36,5 +37,20 @@ TEST_CASE( "boundsIntersection" )
     pbr::FnBoundsIntersection( boundsA, boundsB, boundsIntersection );
     CHECK( boundsIntersection.Min() == pbr::Vec3f( 0.0, 0.0, 1.0 ) );
     CHECK( boundsIntersection.Max() == pbr::Vec3f( 1.0, 1.0, 1.0 ) );
+}
+
+TEST_CASE( "boundsOverlap" )
+{
+    pbr::Bounds3f boundsA( pbr::Vec3f( 0.0, 0.0, 0.0 ), pbr::Vec3f( 1.0, 1.0, 1.0 ) );
+    pbr::Bounds3f boundsB( pbr::Vec3f( -1.0, -5.0, 1.0 ), pbr::Vec3f( 5.0, 1.0, 5.0 ) );
+    pbr::Bounds3f boundsC( pbr::Vec3f( -2.0, -2.0, -2.0 ), pbr::Vec3f( -1.0, -1.0, -1.0 ) );
+
+    // Does overlap.
+    bool boundsOverlap;
+    pbr::FnBoundsOverlap( boundsA, boundsB, boundsOverlap );
+
+    // Does not overlap.
+    pbr::FnBoundsOverlap( boundsA, boundsC, boundsOverlap );
+    CHECK( !boundsOverlap );
 }
 

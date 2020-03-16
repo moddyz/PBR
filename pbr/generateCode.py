@@ -594,6 +594,7 @@ def GenFunctions():
         FunctionGroup([
             "boundsUnion.h",
             "boundsIntersection.h",
+            "boundsOverlap.h",
         ],
         types=[
             COMPOSITE_TYPES["Bounds2i"],
