@@ -10,6 +10,7 @@
 #include <pbr/function/boundsUnion.h>
 #include <pbr/function/pointInsideBounds.h>
 #include <pbr/function/pointInsideBoundsExclusive.h>
+#include <pbr/function/boundsExpand.h>
 #include <pbr/function/rayPosition.h>
 
 TEST_CASE( "rayPosition" )
@@ -97,4 +98,13 @@ TEST_CASE( "pointInsideBoundsExclusive" )
     // Point is on bounds boundary (Not OK!).
     pbr::FnPointInsideBoundsExclusive( pointC, bounds, inside );
     CHECK( !inside );
+}
+
+TEST_CASE( "boundsExpand" )
+{
+    pbr::Bounds3f bounds( pbr::Vec3f( 0.0, 0.0, 0.0 ), pbr::Vec3f( 1.0, 1.0, 1.0 ) );
+    pbr::Bounds3f expandedBounds;
+    pbr::FnBoundsExpand( bounds, 1.0f, expandedBounds );
+    CHECK( expandedBounds.Min() == pbr::Vec3f( -1.0, -1.0, -1.0 ) );
+    CHECK( expandedBounds.Max() == pbr::Vec3f( 2.0, 2.0, 2.0 ) );
 }
