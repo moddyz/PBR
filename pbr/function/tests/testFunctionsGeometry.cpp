@@ -60,9 +60,9 @@ TEST_CASE( "boundsOverlap" )
 TEST_CASE( "pointInsideBounds" )
 {
     pbr::Bounds3f bounds( pbr::Vec3f( 0.0, 0.0, 0.0 ), pbr::Vec3f( 1.0, 1.0, 1.0 ) );
-    pbr::Vec3f pointA( 0.5, 0.5, 0.5 );
-    pbr::Vec3f pointB( 1.5, 1.5, 1.5 );
-    pbr::Vec3f pointC( 1.0, 1.0, 1.0 );
+    pbr::Vec3f    pointA( 0.5, 0.5, 0.5 );
+    pbr::Vec3f    pointB( 1.5, 1.5, 1.5 );
+    pbr::Vec3f    pointC( 1.0, 1.0, 1.0 );
 
     // Point is inside bounds.
     bool inside;
@@ -81,9 +81,9 @@ TEST_CASE( "pointInsideBounds" )
 TEST_CASE( "pointInsideBoundsExclusive" )
 {
     pbr::Bounds3f bounds( pbr::Vec3f( 0.0, 0.0, 0.0 ), pbr::Vec3f( 1.0, 1.0, 1.0 ) );
-    pbr::Vec3f pointA( 0.5, 0.5, 0.5 );
-    pbr::Vec3f pointB( 1.5, 1.5, 1.5 );
-    pbr::Vec3f pointC( 1.0, 1.0, 1.0 );
+    pbr::Vec3f    pointA( 0.5, 0.5, 0.5 );
+    pbr::Vec3f    pointB( 1.5, 1.5, 1.5 );
+    pbr::Vec3f    pointC( 1.0, 1.0, 1.0 );
 
     // Point is inside bounds.
     bool inside;

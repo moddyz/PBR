@@ -4,9 +4,9 @@
 
 /// Cross-platform export directives.
 
-#if defined(PBR_WINDOWS)
+#if defined( PBR_WINDOWS )
 /// Windows platform requires explicit directive for external linkage.
-#define PBR_EXPORT __declspec( dllexport )
+#    define PBR_EXPORT __declspec( dllexport )
 #else
-#define PBR_EXPORT
+#    define PBR_EXPORT
 #endif

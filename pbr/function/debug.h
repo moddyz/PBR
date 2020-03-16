@@ -22,4 +22,3 @@
 #else
 #    define PBR_ASSERT_NORMALISED( vector ) void()
 #endif
-
