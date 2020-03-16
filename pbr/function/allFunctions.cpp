@@ -17,4 +17,5 @@
 #include <pbr/function/min.h>
 #include <pbr/function/normalise.h>
 #include <pbr/function/pointInsideBounds.h>
+#include <pbr/function/pointInsideBoundsExclusive.h>
 #include <pbr/function/rayPosition.h>

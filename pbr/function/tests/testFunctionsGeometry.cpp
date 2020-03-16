@@ -9,6 +9,7 @@
 #include <pbr/function/boundsOverlap.h>
 #include <pbr/function/boundsUnion.h>
 #include <pbr/function/pointInsideBounds.h>
+#include <pbr/function/pointInsideBoundsExclusive.h>
 #include <pbr/function/rayPosition.h>
 
 TEST_CASE( "rayPosition" )
@@ -61,6 +62,7 @@ TEST_CASE( "pointInsideBounds" )
     pbr::Bounds3f bounds( pbr::Vec3f( 0.0, 0.0, 0.0 ), pbr::Vec3f( 1.0, 1.0, 1.0 ) );
     pbr::Vec3f pointA( 0.5, 0.5, 0.5 );
     pbr::Vec3f pointB( 1.5, 1.5, 1.5 );
+    pbr::Vec3f pointC( 1.0, 1.0, 1.0 );
 
     // Point is inside bounds.
     bool inside;
@@ -70,5 +72,29 @@ TEST_CASE( "pointInsideBounds" )
     // Point is not inside bounds.
     pbr::FnPointInsideBounds( pointB, bounds, inside );
     CHECK( !inside );
+
+    // Point is on bounds boundary (OK!).
+    pbr::FnPointInsideBounds( pointC, bounds, inside );
+    CHECK( inside );
 }
 
+TEST_CASE( "pointInsideBoundsExclusive" )
+{
+    pbr::Bounds3f bounds( pbr::Vec3f( 0.0, 0.0, 0.0 ), pbr::Vec3f( 1.0, 1.0, 1.0 ) );
+    pbr::Vec3f pointA( 0.5, 0.5, 0.5 );
+    pbr::Vec3f pointB( 1.5, 1.5, 1.5 );
+    pbr::Vec3f pointC( 1.0, 1.0, 1.0 );
+
+    // Point is inside bounds.
+    bool inside;
+    pbr::FnPointInsideBoundsExclusive( pointA, bounds, inside );
+    CHECK( inside );
+
+    // Point is not inside bounds.
+    pbr::FnPointInsideBoundsExclusive( pointB, bounds, inside );
+    CHECK( !inside );
+
+    // Point is on bounds boundary (Not OK!).
+    pbr::FnPointInsideBoundsExclusive( pointC, bounds, inside );
+    CHECK( !inside );
+}
