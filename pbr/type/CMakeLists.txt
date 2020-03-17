@@ -9,3 +9,7 @@ pbr_library(${PACKAGE_NAME}
     LIBRARIES
         pbr_tool
 )
+
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
