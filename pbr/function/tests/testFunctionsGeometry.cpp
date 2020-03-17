@@ -8,6 +8,7 @@
 #include <pbr/function/boundsDiagonal.h>
 #include <pbr/function/boundsExpand.h>
 #include <pbr/function/boundsIntersection.h>
+#include <pbr/function/boundsOffset.h>
 #include <pbr/function/boundsOverlap.h>
 #include <pbr/function/boundsSurfaceArea.h>
 #include <pbr/function/boundsUnion.h>
@@ -134,4 +135,13 @@ TEST_CASE( "boundsVolume" )
     float         volume;
     pbr::FnBoundsVolume( bounds, volume );
     CHECK( volume == 8.0 );
+}
+
+TEST_CASE( "boundsOffset" )
+{
+    pbr::Bounds3f bounds( pbr::Vec3f( -1.0, -1.0, -1.0 ), pbr::Vec3f( 1.0, 1.0, 1.0 ) );
+    pbr::Vec3f    point( 0.0, 0.0, 0.0 );
+    pbr::Vec3f    offset;
+    pbr::FnBoundsOffset( bounds, point, offset );
+    CHECK( offset == pbr::Vec3f( 0.5, 0.5, 0.5 ) );
 }

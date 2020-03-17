@@ -616,6 +616,13 @@ def GenFunctions():
             COMPOSITE_TYPES["Bounds3i"],
             COMPOSITE_TYPES["Bounds3f"],
         ]),
+        FunctionGroup([
+            "boundsOffset.h",
+        ],
+        types=[
+            COMPOSITE_TYPES["Bounds2f"],
+            COMPOSITE_TYPES["Bounds3f"],
+        ]),
     ]
 
     filePaths = []
