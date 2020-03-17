@@ -8,6 +8,7 @@
 #include <pbr/function/boundsDiagonal.h>
 #include <pbr/function/boundsExpand.h>
 #include <pbr/function/boundsIntersection.h>
+#include <pbr/function/boundsMaxExtent.h>
 #include <pbr/function/boundsOffset.h>
 #include <pbr/function/boundsOverlap.h>
 #include <pbr/function/boundsSurfaceArea.h>
@@ -144,4 +145,12 @@ TEST_CASE( "boundsOffset" )
     pbr::Vec3f    offset;
     pbr::FnBoundsOffset( bounds, point, offset );
     CHECK( offset == pbr::Vec3f( 0.5, 0.5, 0.5 ) );
+}
+
+TEST_CASE( "boundsMaxExtent" )
+{
+    pbr::Bounds3f bounds( pbr::Vec3f( 0.0, 0.0, 0.0 ), pbr::Vec3f( 1.0, 2.0, 3.0 ) );
+    size_t        maxExtentIndex;
+    pbr::FnBoundsMaxExtent( bounds, maxExtentIndex );
+    CHECK( maxExtentIndex == 2 );
 }

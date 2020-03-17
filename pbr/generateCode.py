@@ -611,6 +611,7 @@ def GenFunctions():
         FunctionGroup([
             "boundsSurfaceArea.h",
             "boundsVolume.h",
+            "boundsMaxExtent.h",
         ],
         types=[
             COMPOSITE_TYPES["Bounds3i"],
