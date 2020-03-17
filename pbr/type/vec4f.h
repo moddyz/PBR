@@ -172,6 +172,12 @@ public:
                m_elements[ 2 ] == i_vector.m_elements[ 2 ] && m_elements[ 3 ] == i_vector.m_elements[ 3 ];
     }
 
+    /// Not equal operator
+    inline bool operator!=( const Vec4f& i_vector ) const
+    {
+        return !( ( *this ) == i_vector );
+    }
+
     /// Get the number of elements in this vector.
     inline static size_t GetElementSize()
     {

@@ -291,6 +291,12 @@ public:
                m_elements[ 14 ] == i_vector.m_elements[ 14 ] && m_elements[ 15 ] == i_vector.m_elements[ 15 ];
     }
 
+    /// Not equal operator
+    inline bool operator!=( const Mat4f& i_vector ) const
+    {
+        return !( ( *this ) == i_vector );
+    }
+
     /// Get the number of elements in this vector.
     inline static size_t GetElementSize()
     {

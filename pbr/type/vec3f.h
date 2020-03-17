@@ -158,6 +158,12 @@ public:
                m_elements[ 2 ] == i_vector.m_elements[ 2 ];
     }
 
+    /// Not equal operator
+    inline bool operator!=( const Vec3f& i_vector ) const
+    {
+        return !( ( *this ) == i_vector );
+    }
+
     /// Get the number of elements in this vector.
     inline static size_t GetElementSize()
     {
