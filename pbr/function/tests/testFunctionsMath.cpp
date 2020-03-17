@@ -101,6 +101,11 @@ TEST_CASE( "lerp" )
     pbr::Vec3f interpolated;
     pbr::FnLerp( 0.5, a, b, interpolated );
     CHECK( interpolated == pbr::Vec3f( 2.0, 2.0, 2.0 ) );
+
+    pbr::Vec3f factor( 0.5, 0.25, 1.0 );
+    pbr::Bounds3f bounds( pbr::Vec3f( 0.0, 0.0, 0.0 ), pbr::Vec3f( 1.0, 1.0, 1.0 ) );
+    pbr::FnLerp( factor, bounds, interpolated );
+    CHECK( interpolated == pbr::Vec3f( 0.5, 0.25, 1.0 ) );
 }
 
 TEST_CASE( "min" )

@@ -3,7 +3,7 @@
 #include <pbr/api.h>
 
 {% for dataType in context.types -%}
-{% if dataType.isVector -%}
+{% if dataType.isVector or dataType.isComposite -%}
 #include <pbr/type/{{ dataType.headerFileName }}>
 {%- endif %}
 {% endfor %}
@@ -19,6 +19,7 @@
 PBR_NAMESPACE_BEGIN
 
 {% for dataType in context.types %}
+{% if dataType.isScalar or dataType.isVector %}
 PBR_API
 inline void FnLerp( const float& i_factor,
                     const {{ dataType.className }}& i_a,
@@ -30,6 +31,25 @@ inline void FnLerp( const float& i_factor,
                     i_factor );
     o_interpolated = ( ( 1.0f - i_factor ) * i_a ) + ( i_factor * i_b );
 }
+{% elif dataType.isComposite %}
+inline void FnLerp( const {{ dataType.elements[0].type.className }}& i_factor,
+                    const {{ dataType.className }}& i_bounds,
+                    {{ dataType.elements[0].type.className }}& o_interpolated )
+{
+{% for index in range(dataType.elements[0].type.elementSize) -%}
+    PBR_ASSERT_MSG( i_factor[ {{ index }} ] >= 0.0f && i_factor[ {{ index }} ]  <= 1.0f,
+                    "Expected i_factor[ {{ index }} ] between [0,1], got %f\n",
+                    i_factor[ {{ index }} ] );
+{%- endfor %}
+
+{% for index in range(dataType.elements[0].type.elementSize) -%}
+    FnLerp( i_factor[ {{ index }} ],
+            i_bounds.Min()[ {{ index }} ],
+            i_bounds.Max()[ {{ index }} ],
+            o_interpolated[ {{ index }} ] );
+{%- endfor %}
+}
+{% endif %}
 {% endfor %}
 
 PBR_NAMESPACE_END

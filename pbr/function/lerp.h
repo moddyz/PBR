@@ -2,6 +2,8 @@
 
 #include <pbr/api.h>
 
+#include <pbr/type/bounds2f.h>
+#include <pbr/type/bounds3f.h>
 #include <pbr/type/vec2f.h>
 #include <pbr/type/vec3f.h>
 #include <pbr/type/vec4f.h>
@@ -42,6 +44,36 @@ inline void FnLerp( const float& i_factor, const Vec4f& i_a, const Vec4f& i_b, V
 {
     PBR_ASSERT_MSG( i_factor >= 0.0f && i_factor <= 1.0f, "Expected i_factor between [0,1], got %f\n", i_factor );
     o_interpolated = ( ( 1.0f - i_factor ) * i_a ) + ( i_factor * i_b );
+}
+
+inline void FnLerp( const Vec2f& i_factor, const Bounds2f& i_bounds, Vec2f& o_interpolated )
+{
+    PBR_ASSERT_MSG( i_factor[ 0 ] >= 0.0f && i_factor[ 0 ] <= 1.0f,
+                    "Expected i_factor[ 0 ] between [0,1], got %f\n",
+                    i_factor[ 0 ] );
+    PBR_ASSERT_MSG( i_factor[ 1 ] >= 0.0f && i_factor[ 1 ] <= 1.0f,
+                    "Expected i_factor[ 1 ] between [0,1], got %f\n",
+                    i_factor[ 1 ] );
+
+    FnLerp( i_factor[ 0 ], i_bounds.Min()[ 0 ], i_bounds.Max()[ 0 ], o_interpolated[ 0 ] );
+    FnLerp( i_factor[ 1 ], i_bounds.Min()[ 1 ], i_bounds.Max()[ 1 ], o_interpolated[ 1 ] );
+}
+
+inline void FnLerp( const Vec3f& i_factor, const Bounds3f& i_bounds, Vec3f& o_interpolated )
+{
+    PBR_ASSERT_MSG( i_factor[ 0 ] >= 0.0f && i_factor[ 0 ] <= 1.0f,
+                    "Expected i_factor[ 0 ] between [0,1], got %f\n",
+                    i_factor[ 0 ] );
+    PBR_ASSERT_MSG( i_factor[ 1 ] >= 0.0f && i_factor[ 1 ] <= 1.0f,
+                    "Expected i_factor[ 1 ] between [0,1], got %f\n",
+                    i_factor[ 1 ] );
+    PBR_ASSERT_MSG( i_factor[ 2 ] >= 0.0f && i_factor[ 2 ] <= 1.0f,
+                    "Expected i_factor[ 2 ] between [0,1], got %f\n",
+                    i_factor[ 2 ] );
+
+    FnLerp( i_factor[ 0 ], i_bounds.Min()[ 0 ], i_bounds.Max()[ 0 ], o_interpolated[ 0 ] );
+    FnLerp( i_factor[ 1 ], i_bounds.Min()[ 1 ], i_bounds.Max()[ 1 ], o_interpolated[ 1 ] );
+    FnLerp( i_factor[ 2 ], i_bounds.Min()[ 2 ], i_bounds.Max()[ 2 ], o_interpolated[ 2 ] );
 }
 
 PBR_NAMESPACE_END

@@ -573,6 +573,8 @@ def GenFunctions():
             VectorType((2,), PODType(FLOAT)),
             VectorType((3,), PODType(FLOAT)),
             VectorType((4,), PODType(FLOAT)),
+            COMPOSITE_TYPES["Bounds2f"],
+            COMPOSITE_TYPES["Bounds3f"],
         ]),
         FunctionGroup([
             "min.h",
