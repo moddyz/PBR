@@ -11,6 +11,13 @@ PBR_NAMESPACE_BEGIN
 /// Can be used to iterate over range of vectors from \ref i_begin to \ref i_end.
 /// The iterator does not visit components equal to those of \ref i_end.
 ///
+/// Usage:
+/// pbr::Bounds2i bounds( pbr::Vec2i( 0, 0 ), pbr::Vec2i( 10, 10 ) );
+/// for ( const pbr::Vec2i& point : bounds )
+/// {
+///     ...do something with point...
+/// }
+///
 class PBR_API Vec2iRange final
 {
 public:
