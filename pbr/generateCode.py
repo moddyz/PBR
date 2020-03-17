@@ -598,6 +598,7 @@ def GenFunctions():
             "pointInsideBounds.h",
             "pointInsideBoundsExclusive.h",
             "boundsExpand.h",
+            "boundsDiagonal.h",
         ],
         types=[
             COMPOSITE_TYPES["Bounds2i"],

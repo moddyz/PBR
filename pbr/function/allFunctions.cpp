@@ -1,4 +1,5 @@
 #include <pbr/function/abs.h>
+#include <pbr/function/boundsDiagonal.h>
 #include <pbr/function/boundsExpand.h>
 #include <pbr/function/boundsIntersection.h>
 #include <pbr/function/boundsOverlap.h>

@@ -12,6 +12,7 @@
 #include <pbr/function/pointInsideBoundsExclusive.h>
 #include <pbr/function/boundsExpand.h>
 #include <pbr/function/rayPosition.h>
+#include <pbr/function/boundsDiagonal.h>
 
 TEST_CASE( "rayPosition" )
 {
@@ -107,4 +108,12 @@ TEST_CASE( "boundsExpand" )
     pbr::FnBoundsExpand( bounds, 1.0f, expandedBounds );
     CHECK( expandedBounds.Min() == pbr::Vec3f( -1.0, -1.0, -1.0 ) );
     CHECK( expandedBounds.Max() == pbr::Vec3f( 2.0, 2.0, 2.0 ) );
+}
+
+TEST_CASE( "boundsDiagonal" )
+{
+    pbr::Bounds3f bounds( pbr::Vec3f( -1.0, -1.0, -1.0 ), pbr::Vec3f( 1.0, 1.0, 1.0 ) );
+    pbr::Vec3f diagonal;
+    pbr::FnBoundsDiagonal( bounds, diagonal );
+    CHECK( diagonal == pbr::Vec3f( 2.0, 2.0, 2.0 ) );
 }
