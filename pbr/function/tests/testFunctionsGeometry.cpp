@@ -5,14 +5,16 @@
 
 #include <pbr/type/vec3f.h>
 
+#include <pbr/function/boundsDiagonal.h>
+#include <pbr/function/boundsExpand.h>
 #include <pbr/function/boundsIntersection.h>
 #include <pbr/function/boundsOverlap.h>
+#include <pbr/function/boundsSurfaceArea.h>
 #include <pbr/function/boundsUnion.h>
+#include <pbr/function/boundsVolume.h>
 #include <pbr/function/pointInsideBounds.h>
 #include <pbr/function/pointInsideBoundsExclusive.h>
-#include <pbr/function/boundsExpand.h>
 #include <pbr/function/rayPosition.h>
-#include <pbr/function/boundsDiagonal.h>
 
 TEST_CASE( "rayPosition" )
 {
@@ -113,7 +115,23 @@ TEST_CASE( "boundsExpand" )
 TEST_CASE( "boundsDiagonal" )
 {
     pbr::Bounds3f bounds( pbr::Vec3f( -1.0, -1.0, -1.0 ), pbr::Vec3f( 1.0, 1.0, 1.0 ) );
-    pbr::Vec3f diagonal;
+    pbr::Vec3f    diagonal;
     pbr::FnBoundsDiagonal( bounds, diagonal );
     CHECK( diagonal == pbr::Vec3f( 2.0, 2.0, 2.0 ) );
+}
+
+TEST_CASE( "boundsSurfaceArea" )
+{
+    pbr::Bounds3f bounds( pbr::Vec3f( -1.0, -1.0, -1.0 ), pbr::Vec3f( 1.0, 1.0, 1.0 ) );
+    float         surfaceArea;
+    pbr::FnBoundsSurfaceArea( bounds, surfaceArea );
+    CHECK( surfaceArea == 12.0 );
+}
+
+TEST_CASE( "boundsVolume" )
+{
+    pbr::Bounds3f bounds( pbr::Vec3f( -1.0, -1.0, -1.0 ), pbr::Vec3f( 1.0, 1.0, 1.0 ) );
+    float         volume;
+    pbr::FnBoundsVolume( bounds, volume );
+    CHECK( volume == 8.0 );
 }

@@ -606,6 +606,14 @@ def GenFunctions():
             COMPOSITE_TYPES["Bounds3i"],
             COMPOSITE_TYPES["Bounds3f"],
         ]),
+        FunctionGroup([
+            "boundsSurfaceArea.h",
+            "boundsVolume.h",
+        ],
+        types=[
+            COMPOSITE_TYPES["Bounds3i"],
+            COMPOSITE_TYPES["Bounds3f"],
+        ]),
     ]
 
     filePaths = []

@@ -3,7 +3,9 @@
 #include <pbr/function/boundsExpand.h>
 #include <pbr/function/boundsIntersection.h>
 #include <pbr/function/boundsOverlap.h>
+#include <pbr/function/boundsSurfaceArea.h>
 #include <pbr/function/boundsUnion.h>
+#include <pbr/function/boundsVolume.h>
 #include <pbr/function/ceil.h>
 #include <pbr/function/coordinateSystem.h>
 #include <pbr/function/crossProduct.h>
