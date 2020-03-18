@@ -14,14 +14,14 @@
 #include <pbr/function/dotProduct.h>
 #include <pbr/function/faceForward.h>
 #include <pbr/function/floor.h>
-#include <pbr/function/isIdentityMatrix.h>
+#include <pbr/function/matrixIsIdentity.h>
 #include <pbr/function/length.h>
 #include <pbr/function/lengthSquared.h>
 #include <pbr/function/lerp.h>
 #include <pbr/function/max.h>
 #include <pbr/function/min.h>
 #include <pbr/function/normalise.h>
-#include <pbr/function/setIdentityMatrix.h>
+#include <pbr/function/matrixSetIdentity.h>
 
 TEST_CASE( "dotProduct" )
 {
@@ -165,23 +165,23 @@ TEST_CASE( "faceForward" )
     CHECK( forward == pbr::Vec3f( -1, -1, -1 ) );
 }
 
-TEST_CASE( "setIdentityMatrix" )
+TEST_CASE( "matrixSetIdentity" )
 {
     pbr::Mat4f matrix;
-    pbr::FnSetIdentityMatrix( matrix );
+    pbr::FnMatrixSetIdentity( matrix );
     CHECK( matrix == pbr::Mat4f( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
 
-TEST_CASE( "isIdentityMatrix" )
+TEST_CASE( "matrixIsIdentity" )
 {
     pbr::Mat4f matrixA( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
     pbr::Mat4f matrixB( 1.0, 0.0, 0.0, 0.0, 6.0, 7.0, 0.0, 0.0, 0.0, 0.0, 1.0, 7.0, -4.0, 5.0, 0.0, 1.0 );
     bool       isIdentity = false;
 
-    pbr::FnIsIdentityMatrix( matrixA, isIdentity );
+    pbr::FnMatrixIsIdentity( matrixA, isIdentity );
     CHECK( isIdentity );
 
-    pbr::FnIsIdentityMatrix( matrixB, isIdentity );
+    pbr::FnMatrixIsIdentity( matrixB, isIdentity );
     CHECK( !isIdentity );
 }
 

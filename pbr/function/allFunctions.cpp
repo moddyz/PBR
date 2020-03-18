@@ -16,14 +16,14 @@
 #include <pbr/function/dotProduct.h>
 #include <pbr/function/faceForward.h>
 #include <pbr/function/floor.h>
-#include <pbr/function/isIdentityMatrix.h>
 #include <pbr/function/length.h>
 #include <pbr/function/lengthSquared.h>
 #include <pbr/function/lerp.h>
+#include <pbr/function/matrixIsIdentity.h>
+#include <pbr/function/matrixSetIdentity.h>
 #include <pbr/function/max.h>
 #include <pbr/function/min.h>
 #include <pbr/function/normalise.h>
 #include <pbr/function/pointInsideBounds.h>
 #include <pbr/function/pointInsideBoundsExclusive.h>
 #include <pbr/function/rayPosition.h>
-#include <pbr/function/setIdentityMatrix.h>

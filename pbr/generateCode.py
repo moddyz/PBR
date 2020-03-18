@@ -625,8 +625,8 @@ def GenFunctions():
             COMPOSITE_TYPES["Bounds3f"],
         ]),
         FunctionGroup([
-            "setIdentityMatrix.h",
-            "isIdentityMatrix.h",
+            "matrixSetIdentity.h",
+            "matrixIsIdentity.h",
         ],
         types=[
             VectorType((3,3), PODType(FLOAT)),
