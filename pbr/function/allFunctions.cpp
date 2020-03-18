@@ -16,7 +16,7 @@
 #include <pbr/function/dotProduct.h>
 #include <pbr/function/faceForward.h>
 #include <pbr/function/floor.h>
-#include <pbr/function/isIdentity.h>
+#include <pbr/function/isIdentityMatrix.h>
 #include <pbr/function/length.h>
 #include <pbr/function/lengthSquared.h>
 #include <pbr/function/lerp.h>
@@ -26,4 +26,4 @@
 #include <pbr/function/pointInsideBounds.h>
 #include <pbr/function/pointInsideBoundsExclusive.h>
 #include <pbr/function/rayPosition.h>
-#include <pbr/function/setIdentity.h>
+#include <pbr/function/setIdentityMatrix.h>
