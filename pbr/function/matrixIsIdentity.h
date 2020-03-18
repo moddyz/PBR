@@ -5,7 +5,7 @@
 #include <pbr/type/mat3f.h>
 #include <pbr/type/mat4f.h>
 
-/// Sets the identity matrix on the output argument.
+/// Checks if the input is an identity matrix.
 
 PBR_NAMESPACE_BEGIN
 

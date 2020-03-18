@@ -14,14 +14,15 @@
 #include <pbr/function/dotProduct.h>
 #include <pbr/function/faceForward.h>
 #include <pbr/function/floor.h>
-#include <pbr/function/matrixIsIdentity.h>
 #include <pbr/function/length.h>
 #include <pbr/function/lengthSquared.h>
 #include <pbr/function/lerp.h>
+#include <pbr/function/matrixIsIdentity.h>
+#include <pbr/function/matrixSetIdentity.h>
+#include <pbr/function/matrixTranspose.h>
 #include <pbr/function/max.h>
 #include <pbr/function/min.h>
 #include <pbr/function/normalise.h>
-#include <pbr/function/matrixSetIdentity.h>
 
 TEST_CASE( "dotProduct" )
 {
@@ -155,14 +156,15 @@ TEST_CASE( "abs" )
 TEST_CASE( "faceForward" )
 {
     pbr::Vec3f normal( 1, 1, 1 );
+    pbr::FnNormalise( normal, normal );
     pbr::Vec3f positionHemisphere( 3, 4, 5 );
     pbr::Vec3f forward;
     pbr::FnFaceForward( normal, positionHemisphere, forward );
-    CHECK( forward == pbr::Vec3f( 1, 1, 1 ) );
+    CHECK( forward == normal );
 
     pbr::Vec3f negativeHemisphere( -3, 4, -5 );
     pbr::FnFaceForward( normal, negativeHemisphere, forward );
-    CHECK( forward == pbr::Vec3f( -1, -1, -1 ) );
+    CHECK( forward == -normal );
 }
 
 TEST_CASE( "matrixSetIdentity" )
@@ -185,3 +187,10 @@ TEST_CASE( "matrixIsIdentity" )
     CHECK( !isIdentity );
 }
 
+TEST_CASE( "matrixTranspose" )
+{
+    pbr::Mat4f matrix( 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 4.0, 4.0, 4.0, 4.0 );
+    pbr::Mat4f transposedMatrix;
+    pbr::FnMatrixTranspose( matrix, transposedMatrix );
+    CHECK( transposedMatrix == pbr::Mat4f( 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0 ) );
+}

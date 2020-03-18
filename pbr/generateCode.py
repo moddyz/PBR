@@ -627,6 +627,7 @@ def GenFunctions():
         FunctionGroup([
             "matrixSetIdentity.h",
             "matrixIsIdentity.h",
+            "matrixTranspose.h",
         ],
         types=[
             VectorType((3,3), PODType(FLOAT)),

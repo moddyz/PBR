@@ -6,28 +6,25 @@
 #include <pbr/type/{{ matrixType.headerFileName }}>
 {% endfor %}
 
-/// Checks if the input is an identity matrix.
+/// Tranpose the input matrix.
 
 PBR_NAMESPACE_BEGIN
 
 {% for matrixType in context.types %}
 PBR_API
-inline void FnMatrixIsIdentity( const {{ matrixType.className }}& i_matrix, bool& o_isIdentity )
+inline void FnMatrixTranspose( const {{ matrixType.className }}& i_matrix,
+                               {{ matrixType.className }}& o_transposedMatrix )
 {
-    o_isIdentity =
+    o_transposedMatrix = {{ matrixType.className }}(
 {% for row in range(matrixType.dims[0]) -%}
 {% for col in range(matrixType.dims[1]) -%}
-{% if row == col -%}
-    i_matrix( {{ row }}, {{ col }} ) == 1.0
-{%- else -%}
-    i_matrix( {{ row }}, {{ col }} ) == 0.0
-{%- endif %}
+    i_matrix( {{ col }}, {{ row }} )
 {% if row + 1 < matrixType.dims[0] or col + 1 < matrixType.dims[ 1 ] -%}
-    &&
+    ,
 {%- endif %}
 {%- endfor -%}
 {%- endfor -%}
-    ;
+    );
 }
 {% endfor %}
 
