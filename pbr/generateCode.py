@@ -624,6 +624,14 @@ def GenFunctions():
             COMPOSITE_TYPES["Bounds2f"],
             COMPOSITE_TYPES["Bounds3f"],
         ]),
+        FunctionGroup([
+            "setIdentity.h",
+            "isIdentity.h",
+        ],
+        types=[
+            VectorType((3,3), PODType(FLOAT)),
+            VectorType((4,4), PODType(FLOAT)),
+        ]),
     ]
 
     filePaths = []
