@@ -253,6 +253,10 @@ public:
     {
         return m_elements[ i_row * 4 + i_column ];
     }
+    inline float& operator()( size_t i_row, size_t i_column )
+    {
+        return m_elements[ i_row * 4 + i_column ];
+    }
 
     inline Mat4f& operator/=( const float& i_scalar )
     {

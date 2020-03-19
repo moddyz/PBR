@@ -170,6 +170,14 @@ public:
     }
 {%- endif %}
 
+
+{%- if context.dims|length == 2 -%}
+    inline {{ context.elementType.className }}& operator()( size_t i_row, size_t i_column )
+    {
+        return m_elements[ i_row * {{ context.dims[ 0 ] }} + i_column ];
+    }
+{%- endif %}
+
     inline {{ context.className }}& operator/=( const {{ context.elementType.className }}& i_scalar )
     {
         PBR_ASSERT( !HasNans() );
