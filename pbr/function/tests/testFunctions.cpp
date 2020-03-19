@@ -27,6 +27,7 @@
 #include <pbr/function/lerp.h>
 #include <pbr/function/matrixIsIdentity.h>
 #include <pbr/function/matrixSetIdentity.h>
+#include <pbr/function/matrixSetRotateX.h>
 #include <pbr/function/matrixSetScale.h>
 #include <pbr/function/matrixSetTranslate.h>
 #include <pbr/function/matrixTranspose.h>
@@ -223,8 +224,16 @@ TEST_CASE( "matrixSetScale" )
     pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
     pbr::Vec3f scale( 2.0, 3.0, 4.0 );
     pbr::FnMatrixSetScale( scale, matrix );
-    PBR_LOG_INFO( "%s\n", matrix.ToString().c_str() );
     CHECK( matrix == pbr::Mat4f( 2.0, 0.0, 0.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 0.0, 4.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
+}
+
+TEST_CASE( "matrixSetRotateX" )
+{
+    pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
+    float degrees = 90.0f;
+    pbr::FnMatrixSetRotateX( degrees, matrix );
+    PBR_LOG_INFO( "%s\n", matrix.ToString().c_str() );
+    CHECK( matrix == pbr::Mat4f( 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
 
 TEST_CASE( "rayPosition" )
