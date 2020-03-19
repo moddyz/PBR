@@ -21,6 +21,7 @@
 #include <pbr/function/lerp.h>
 #include <pbr/function/matrixIsIdentity.h>
 #include <pbr/function/matrixSetIdentity.h>
+#include <pbr/function/matrixSetScale.h>
 #include <pbr/function/matrixSetTranslate.h>
 #include <pbr/function/matrixTranspose.h>
 #include <pbr/function/max.h>

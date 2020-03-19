@@ -635,6 +635,7 @@ def GenFunctions():
         ]),
         FunctionGroup([
             "matrixSetTranslate.h",
+            "matrixSetScale.h",
         ],
         types=[
             (VectorType((2,), PODType(FLOAT)), VectorType((3,3), PODType(FLOAT))),

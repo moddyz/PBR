@@ -27,6 +27,7 @@
 #include <pbr/function/matrixIsIdentity.h>
 #include <pbr/function/matrixSetIdentity.h>
 #include <pbr/function/matrixSetTranslate.h>
+#include <pbr/function/matrixSetScale.h>
 #include <pbr/function/matrixTranspose.h>
 #include <pbr/function/max.h>
 #include <pbr/function/min.h>
@@ -214,6 +215,16 @@ TEST_CASE( "matrixSetTranslate" )
     pbr::FnMatrixSetTranslate( translate, matrix );
     CHECK( matrix == pbr::Mat4f( 1.0, 0.0, 0.0, 2.0, 0.0, 1.0, 0.0, 3.0, 0.0, 0.0, 1.0, 4.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
+
+TEST_CASE( "matrixSetScale" )
+{
+    pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
+    pbr::Vec3f scale( 2.0, 3.0, 4.0 );
+    pbr::FnMatrixSetScale( scale, matrix );
+    PBR_LOG_INFO( "%s\n", matrix.ToString().c_str() );
+    CHECK( matrix == pbr::Mat4f( 2.0, 0.0, 0.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 0.0, 4.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
+}
+
 
 TEST_CASE( "rayPosition" )
 {
