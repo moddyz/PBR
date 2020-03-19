@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include <pbr/api.h>
+#include <pbr/tool/almost.h>
 #include <pbr/tool/assert.h>
 
 PBR_NAMESPACE_BEGIN
@@ -154,8 +155,9 @@ public:
     /// Comparison operator
     inline bool operator==( const Vec3f& i_vector ) const
     {
-        return m_elements[ 0 ] == i_vector.m_elements[ 0 ] && m_elements[ 1 ] == i_vector.m_elements[ 1 ] &&
-               m_elements[ 2 ] == i_vector.m_elements[ 2 ];
+        return TlAlmostEqual( m_elements[ 0 ], i_vector.m_elements[ 0 ] ) &&
+               TlAlmostEqual( m_elements[ 1 ], i_vector.m_elements[ 1 ] ) &&
+               TlAlmostEqual( m_elements[ 2 ], i_vector.m_elements[ 2 ] );
     }
 
     /// Not equal operator

@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include <pbr/api.h>
+#include <pbr/tool/almost.h>
 #include <pbr/tool/assert.h>
 
 PBR_NAMESPACE_BEGIN
@@ -215,11 +216,15 @@ public:
     /// Comparison operator
     inline bool operator==( const Mat3f& i_vector ) const
     {
-        return m_elements[ 0 ] == i_vector.m_elements[ 0 ] && m_elements[ 1 ] == i_vector.m_elements[ 1 ] &&
-               m_elements[ 2 ] == i_vector.m_elements[ 2 ] && m_elements[ 3 ] == i_vector.m_elements[ 3 ] &&
-               m_elements[ 4 ] == i_vector.m_elements[ 4 ] && m_elements[ 5 ] == i_vector.m_elements[ 5 ] &&
-               m_elements[ 6 ] == i_vector.m_elements[ 6 ] && m_elements[ 7 ] == i_vector.m_elements[ 7 ] &&
-               m_elements[ 8 ] == i_vector.m_elements[ 8 ];
+        return TlAlmostEqual( m_elements[ 0 ], i_vector.m_elements[ 0 ] ) &&
+               TlAlmostEqual( m_elements[ 1 ], i_vector.m_elements[ 1 ] ) &&
+               TlAlmostEqual( m_elements[ 2 ], i_vector.m_elements[ 2 ] ) &&
+               TlAlmostEqual( m_elements[ 3 ], i_vector.m_elements[ 3 ] ) &&
+               TlAlmostEqual( m_elements[ 4 ], i_vector.m_elements[ 4 ] ) &&
+               TlAlmostEqual( m_elements[ 5 ], i_vector.m_elements[ 5 ] ) &&
+               TlAlmostEqual( m_elements[ 6 ], i_vector.m_elements[ 6 ] ) &&
+               TlAlmostEqual( m_elements[ 7 ], i_vector.m_elements[ 7 ] ) &&
+               TlAlmostEqual( m_elements[ 8 ], i_vector.m_elements[ 8 ] );
     }
 
     /// Not equal operator

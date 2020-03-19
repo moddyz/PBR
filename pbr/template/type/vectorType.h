@@ -6,6 +6,9 @@
 
 #include <pbr/api.h>
 #include <pbr/tool/assert.h>
+{% if context.elementType.className != "int" -%}
+#include <pbr/tool/almost.h>
+{%- endif %}
 
 PBR_NAMESPACE_BEGIN
 
@@ -226,7 +229,11 @@ public:
     {
         return
 {% for index in range(context.elementSize) -%}
+{% if context.elementType.className == "int" -%}
         m_elements[ {{ index }} ] == i_vector.m_elements[ {{ index }} ]
+{%- else -%}
+        TlAlmostEqual( m_elements[ {{ index }} ], i_vector.m_elements[ {{ index }} ] )
+{%- endif %}
 {%- if index + 1 < context.elementSize -%}
         &&
 {% endif %}
