@@ -17,10 +17,8 @@ inline void FnMatrixSetTranslate( const {{ vectorType.className }}& i_translate,
 {
 {% for row in range(matrixType.dims[0]) -%}
 {% for col in range(matrixType.dims[1]) -%}
-{% if col + 1 == matrixType.dims[1] -%}
-{% if row + 1 < matrixType.dims[0] -%}
+{% if row + 1 < matrixType.dims[0] and col + 1 == matrixType.dims[1] -%}
     o_matrix( {{ row }}, {{ col }} ) = i_translate[ {{ row }} ];
-{%- endif %}
 {%- endif %}
 {%- endfor -%}
 {%- endfor -%}
