@@ -633,6 +633,13 @@ def GenFunctions():
             VectorType((3,3), PODType(FLOAT)),
             VectorType((4,4), PODType(FLOAT)),
         ]),
+        FunctionGroup([
+            "matrixSetTranslate.h",
+        ],
+        types=[
+            (VectorType((2,), PODType(FLOAT)), VectorType((3,3), PODType(FLOAT))),
+            (VectorType((3,), PODType(FLOAT)), VectorType((4,4), PODType(FLOAT))),
+        ]),
     ]
 
     filePaths = []

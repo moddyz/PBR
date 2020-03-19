@@ -20,6 +20,7 @@
 #include <pbr/function/matrixIsIdentity.h>
 #include <pbr/function/matrixSetIdentity.h>
 #include <pbr/function/matrixTranspose.h>
+#include <pbr/function/matrixSetTranslate.h>
 #include <pbr/function/max.h>
 #include <pbr/function/min.h>
 #include <pbr/function/normalise.h>
@@ -192,5 +193,14 @@ TEST_CASE( "matrixTranspose" )
     pbr::Mat4f matrix( 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 4.0, 4.0, 4.0, 4.0 );
     pbr::Mat4f transposedMatrix;
     pbr::FnMatrixTranspose( matrix, transposedMatrix );
-    CHECK( transposedMatrix == pbr::Mat4f( 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0 ) );
+    CHECK( transposedMatrix ==
+           pbr::Mat4f( 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0 ) );
+}
+
+TEST_CASE( "matrixSetTranslate" )
+{
+    pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
+    pbr::Vec3f translate( 2.0, 3.0, 4.0 );
+    pbr::FnMatrixSetTranslate( translate, matrix );
+    CHECK( matrix == pbr::Mat4f( 1.0, 0.0, 0.0, 2.0, 0.0, 1.0, 0.0, 3.0, 0.0, 0.0, 1.0, 4.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
