@@ -598,7 +598,6 @@ def GenFunctions():
             "radiansToDegrees.h",
         ],
         types=[
-            PODType(INT),
             PODType(FLOAT),
         ]),
         FunctionGroup([
