@@ -594,6 +594,14 @@ def GenFunctions():
             VectorType((4,), PODType(INT)),
         ]),
         FunctionGroup([
+            "degreesToRadians.h",
+            "radiansToDegrees.h",
+        ],
+        types=[
+            PODType(INT),
+            PODType(FLOAT),
+        ]),
+        FunctionGroup([
             "boundsUnion.h",
             "boundsIntersection.h",
             "boundsOverlap.h",

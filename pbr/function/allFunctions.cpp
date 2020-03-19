@@ -11,6 +11,7 @@
 #include <pbr/function/ceil.h>
 #include <pbr/function/coordinateSystem.h>
 #include <pbr/function/crossProduct.h>
+#include <pbr/function/degreesToRadians.h>
 #include <pbr/function/distance.h>
 #include <pbr/function/distanceSquared.h>
 #include <pbr/function/dotProduct.h>
@@ -29,4 +30,5 @@
 #include <pbr/function/normalise.h>
 #include <pbr/function/pointInsideBounds.h>
 #include <pbr/function/pointInsideBoundsExclusive.h>
+#include <pbr/function/radiansToDegrees.h>
 #include <pbr/function/rayPosition.h>

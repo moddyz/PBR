@@ -16,6 +16,7 @@
 #include <pbr/function/ceil.h>
 #include <pbr/function/coordinateSystem.h>
 #include <pbr/function/crossProduct.h>
+#include <pbr/function/degreesToRadians.h>
 #include <pbr/function/distance.h>
 #include <pbr/function/distanceSquared.h>
 #include <pbr/function/dotProduct.h>
@@ -26,14 +27,15 @@
 #include <pbr/function/lerp.h>
 #include <pbr/function/matrixIsIdentity.h>
 #include <pbr/function/matrixSetIdentity.h>
-#include <pbr/function/matrixSetTranslate.h>
 #include <pbr/function/matrixSetScale.h>
+#include <pbr/function/matrixSetTranslate.h>
 #include <pbr/function/matrixTranspose.h>
 #include <pbr/function/max.h>
 #include <pbr/function/min.h>
 #include <pbr/function/normalise.h>
 #include <pbr/function/pointInsideBounds.h>
 #include <pbr/function/pointInsideBoundsExclusive.h>
+#include <pbr/function/radiansToDegrees.h>
 #include <pbr/function/rayPosition.h>
 
 TEST_CASE( "dotProduct" )
@@ -225,7 +227,6 @@ TEST_CASE( "matrixSetScale" )
     CHECK( matrix == pbr::Mat4f( 2.0, 0.0, 0.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 0.0, 4.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
 
-
 TEST_CASE( "rayPosition" )
 {
     pbr::Vec3f origin( 1.0, 0.0, 2.0 );
@@ -361,4 +362,20 @@ TEST_CASE( "boundsMaxExtent" )
     size_t        maxExtentIndex;
     pbr::FnBoundsMaxExtent( bounds, maxExtentIndex );
     CHECK( maxExtentIndex == 2 );
+}
+
+TEST_CASE( "radiansToDegrees" )
+{
+    float degrees = 90.0f;
+    float radians;
+    pbr::FnDegreesToRadians( degrees, radians );
+    CHECK( radians == Approx( 1.5707963267948966 ) );
+}
+
+TEST_CASE( "degreesToRadians" )
+{
+    float radians = 1.5707963267948966f;
+    float degrees;
+    pbr::FnRadiansToDegrees( radians, degrees );
+    CHECK( degrees == Approx( 90.0f ) );
 }
