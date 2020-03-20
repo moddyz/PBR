@@ -650,6 +650,8 @@ def GenFunctions():
         ]),
         FunctionGroup([
             "matrixSetRotateX.h",
+            "matrixSetRotateY.h",
+            "matrixSetRotateZ.h",
         ],
         types=[
             VectorType((4,4), PODType(FLOAT)),

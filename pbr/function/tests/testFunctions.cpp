@@ -28,6 +28,8 @@
 #include <pbr/function/matrixIsIdentity.h>
 #include <pbr/function/matrixSetIdentity.h>
 #include <pbr/function/matrixSetRotateX.h>
+#include <pbr/function/matrixSetRotateY.h>
+#include <pbr/function/matrixSetRotateZ.h>
 #include <pbr/function/matrixSetScale.h>
 #include <pbr/function/matrixSetTranslate.h>
 #include <pbr/function/matrixTranspose.h>
@@ -230,10 +232,26 @@ TEST_CASE( "matrixSetScale" )
 TEST_CASE( "matrixSetRotateX" )
 {
     pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
-    float degrees = 90.0f;
+    float      degrees = 90.0f;
     pbr::FnMatrixSetRotateX( degrees, matrix );
     PBR_LOG_INFO( "%s\n", matrix.ToString().c_str() );
     CHECK( matrix == pbr::Mat4f( 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
+}
+
+TEST_CASE( "matrixSetRotateY" )
+{
+    pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
+    float      degrees = 90.0f;
+    pbr::FnMatrixSetRotateY( degrees, matrix );
+    CHECK( matrix == pbr::Mat4f( 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
+}
+
+TEST_CASE( "matrixSetRotateZ" )
+{
+    pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
+    float      degrees = 90.0f;
+    pbr::FnMatrixSetRotateZ( degrees, matrix );
+    CHECK( matrix == pbr::Mat4f( 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
 
 TEST_CASE( "rayPosition" )

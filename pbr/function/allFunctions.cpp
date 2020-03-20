@@ -23,6 +23,8 @@
 #include <pbr/function/matrixIsIdentity.h>
 #include <pbr/function/matrixSetIdentity.h>
 #include <pbr/function/matrixSetRotateX.h>
+#include <pbr/function/matrixSetRotateY.h>
+#include <pbr/function/matrixSetRotateZ.h>
 #include <pbr/function/matrixSetScale.h>
 #include <pbr/function/matrixSetTranslate.h>
 #include <pbr/function/matrixTranspose.h>
