@@ -6,6 +6,8 @@
 
 #include <pxr/imaging/hd/camera.h>
 #include <pxr/imaging/hd/rprim.h>
+#include <pxr/imaging/hd/bprim.h>
+#include <pxr/imaging/hd/sprim.h>
 
 PXR_NAMESPACE_USING_DIRECTIVE
 
@@ -16,7 +18,7 @@ const TfTokenVector HdPbrRenderDelegate::s_supportedRprimTypes = {
     HdPrimTypeTokens->mesh,
 };
 const TfTokenVector HdPbrRenderDelegate::s_supportedSprimTypes = {HdPrimTypeTokens->camera};
-const TfTokenVector HdPbrRenderDelegate::s_supportedBprimTypes = {};
+const TfTokenVector HdPbrRenderDelegate::s_supportedBprimTypes = {HdPrimTypeTokens->renderBuffer};
 
 HdPbrRenderDelegate::HdPbrRenderDelegate()
     : HdRenderDelegate()
@@ -127,24 +129,40 @@ HdSprim* HdPbrRenderDelegate::CreateFallbackSprim( const TfToken& i_typeId )
 
 void HdPbrRenderDelegate::DestroySprim( HdSprim* o_sprim )
 {
-    TF_CODING_ERROR( "Destroy Sprim not supported" );
+    delete o_sprim;
 }
 
 HdBprim* HdPbrRenderDelegate::CreateBprim( const TfToken& i_typeId, const SdfPath& i_bprimId )
 {
-    TF_CODING_ERROR( "Unknown Bprim type=%s id=%s", i_typeId.GetText(), i_bprimId.GetText() );
+    if ( i_typeId == HdPrimTypeTokens->renderBuffer )
+    {
+        return new HdPbrRenderBuffer( i_bprimId );
+    }
+    else
+    {
+        TF_CODING_ERROR( "Unknown Bprim Type %s", i_typeId.GetText() );
+    }
+
     return nullptr;
 }
 
 HdBprim* HdPbrRenderDelegate::CreateFallbackBprim( const TfToken& i_typeId )
 {
-    TF_CODING_ERROR( "Creating unknown fallback bprim type=%s", i_typeId.GetText() );
+    if ( i_typeId == HdPrimTypeTokens->renderBuffer )
+    {
+        return new HdPbrRenderBuffer( SdfPath::EmptyPath() );
+    }
+    else
+    {
+        TF_CODING_ERROR( "Unknown Bprim Type %s", i_typeId.GetText() );
+    }
+
     return nullptr;
 }
 
 void HdPbrRenderDelegate::DestroyBprim( HdBprim* o_bprim )
 {
-    TF_CODING_ERROR( "Destroy Bprim not supported" );
+    delete o_bprim;
 }
 
 HdInstancer*
@@ -161,9 +179,8 @@ void HdPbrRenderDelegate::DestroyInstancer( HdInstancer* instancer )
 
 void HdPbrRenderDelegate::_Setup()
 {
-    m_renderParam = std::unique_ptr< HdPbrRenderParam >( new HdPbrRenderParam() );
+    m_renderParam      = std::unique_ptr< HdPbrRenderParam >( new HdPbrRenderParam() );
     m_resourceRegistry = boost::shared_ptr< HdResourceRegistry >( new HdResourceRegistry() );
 }
-
 
 } // namespace pbr
