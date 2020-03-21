@@ -27,6 +27,7 @@
 #include <pbr/function/lerp.h>
 #include <pbr/function/matrixIsIdentity.h>
 #include <pbr/function/matrixSetIdentity.h>
+#include <pbr/function/matrixSetRotate.h>
 #include <pbr/function/matrixSetRotateX.h>
 #include <pbr/function/matrixSetRotateY.h>
 #include <pbr/function/matrixSetRotateZ.h>
@@ -234,7 +235,6 @@ TEST_CASE( "matrixSetRotateX" )
     pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
     float      degrees = 90.0f;
     pbr::FnMatrixSetRotateX( degrees, matrix );
-    PBR_LOG_INFO( "%s\n", matrix.ToString().c_str() );
     CHECK( matrix == pbr::Mat4f( 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
 
@@ -251,6 +251,15 @@ TEST_CASE( "matrixSetRotateZ" )
     pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
     float      degrees = 90.0f;
     pbr::FnMatrixSetRotateZ( degrees, matrix );
+    CHECK( matrix == pbr::Mat4f( 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
+}
+
+TEST_CASE( "matrixSetRotate" )
+{
+    pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
+    float      degrees = 90.0f;
+    pbr::Vec3f axis( 0.0, 0.0, 1.0 );
+    pbr::FnMatrixSetRotate( degrees, axis, matrix );
     CHECK( matrix == pbr::Mat4f( 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
 

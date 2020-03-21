@@ -22,6 +22,7 @@
 #include <pbr/function/lerp.h>
 #include <pbr/function/matrixIsIdentity.h>
 #include <pbr/function/matrixSetIdentity.h>
+#include <pbr/function/matrixSetRotate.h>
 #include <pbr/function/matrixSetRotateX.h>
 #include <pbr/function/matrixSetRotateY.h>
 #include <pbr/function/matrixSetRotateZ.h>

@@ -656,6 +656,12 @@ def GenFunctions():
         types=[
             VectorType((4,4), PODType(FLOAT)),
         ]),
+        FunctionGroup([
+            "matrixSetRotate.h",
+        ],
+        types=[
+            (VectorType((3,), PODType(FLOAT)), VectorType((4,4), PODType(FLOAT))),
+        ]),
     ]
 
     filePaths = []
