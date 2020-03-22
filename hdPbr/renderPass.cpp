@@ -62,7 +62,6 @@ void HdPbrRenderPass::_Execute( const HdRenderPassStateSharedPtr& i_renderPassSt
                     for ( size_t c = 0; c < componentCount; ++c )
                     {
                         float value = ( float ) x / ( float ) renderBuffer->GetWidth();
-                        printf( "Writing pixel at ( %u, %u ) = %f\n", x, y, value );
                         dst[ c ] = ( uint8_t )( value * 255.0f );
                     }
                 }

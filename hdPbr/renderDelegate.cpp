@@ -184,10 +184,6 @@ HdAovDescriptor HdPbrRenderDelegate::GetDefaultAovDescriptor( const TfToken& i_a
     {
         return HdAovDescriptor( HdFormatUNorm8Vec4, true, VtValue( GfVec4f( 0.0f ) ) );
     }
-    else
-    {
-        TF_CODING_ERROR( "Unknown aov name=%s", i_aovName.GetText() );
-    }
 
     return HdAovDescriptor();
 }
