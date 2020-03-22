@@ -18,7 +18,10 @@ find_package(USD REQUIRED)
 find_package(OpenSubdiv REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(TBB REQUIRED)
-find_package(Boost REQUIRED)
+find_package(Boost
+    COMPONENTS
+        python
+    REQUIRED)
 find_package(PythonLibs 2.7 REQUIRED)
 
 list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake/macros")
