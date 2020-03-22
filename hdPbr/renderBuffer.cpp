@@ -20,6 +20,8 @@ bool HdPbrRenderBuffer::Allocate( const GfVec3i& i_dimensions, HdFormat i_format
     m_format     = i_format;
     m_buffer.resize( m_dimensions[ 0 ] * m_dimensions[ 1 ] * m_dimensions[ 2 ] * HdDataSizeOfFormat( i_format ) );
 
+    printf( "Resizing buffer %s to %lu\n", GetId().GetText(), m_buffer.size() );
+
     return true;
 }
 

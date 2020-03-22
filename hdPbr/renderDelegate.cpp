@@ -1,12 +1,13 @@
 #include <hdPbr/debugCodes.h>
 #include <hdPbr/mesh.h>
+#include <hdPbr/renderBuffer.h>
 #include <hdPbr/renderDelegate.h>
 #include <hdPbr/renderParam.h>
 #include <hdPbr/renderPass.h>
 
+#include <pxr/imaging/hd/bprim.h>
 #include <pxr/imaging/hd/camera.h>
 #include <pxr/imaging/hd/rprim.h>
-#include <pxr/imaging/hd/bprim.h>
 #include <pxr/imaging/hd/sprim.h>
 
 PXR_NAMESPACE_USING_DIRECTIVE
@@ -175,6 +176,20 @@ HdPbrRenderDelegate::CreateInstancer( HdSceneDelegate* i_delegate, const SdfPath
 void HdPbrRenderDelegate::DestroyInstancer( HdInstancer* instancer )
 {
     TF_CODING_ERROR( "Destroy instancer not supported" );
+}
+
+HdAovDescriptor HdPbrRenderDelegate::GetDefaultAovDescriptor( const TfToken& i_aovName ) const
+{
+    if ( i_aovName == HdAovTokens->color )
+    {
+        return HdAovDescriptor( HdFormatUNorm8Vec4, true, VtValue( GfVec4f( 0.0f ) ) );
+    }
+    else
+    {
+        TF_CODING_ERROR( "Unknown aov name=%s", i_aovName.GetText() );
+    }
+
+    return HdAovDescriptor();
 }
 
 void HdPbrRenderDelegate::_Setup()

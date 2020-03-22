@@ -40,8 +40,8 @@ target_link_libraries(${PACKAGE_NAME}
 
 target_link_libraries(${PACKAGE_NAME}
     PRIVATE
+        ${Boost_PYTHON_LIBRARY}
         ${PYTHON_LIBRARIES}
-        ${Boost_LIBRARIES}
         ${TBB_tbb_LIBRARY}
         ar
         arch

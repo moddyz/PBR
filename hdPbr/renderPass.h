@@ -1,10 +1,9 @@
 #pragma once
 
 #include <pxr/imaging/hd/renderPass.h>
+#include <pxr/base/gf/matrix4d.h>
 
 #include <pbr/api.h>
-
-#include <hdPbr/renderBuffer.h>
 
 PBR_NAMESPACE_BEGIN
 
@@ -17,6 +16,8 @@ public:
     HdPbrRenderPass( pxr::HdRenderIndex* io_index, const pxr::HdRprimCollection& i_collection );
     virtual ~HdPbrRenderPass();
 
+
+
 protected:
     /// Draw the scene with the bound renderpass state.
     ///
@@ -25,13 +26,18 @@ protected:
     virtual void _Execute( const pxr::HdRenderPassStateSharedPtr& i_renderPassState,
                            const pxr::TfTokenVector&              i_renderTags ) override;
 
-private:
-    /// Cached width & height of the viewport, which we are rendering into.
-    uint32_t m_width = 0;
-    uint32_t m_height = 0;
+    /// Determine whether the sample buffer has enough samples, to be considered final.
+    virtual bool IsConverged() const override;
 
-    /// Color buffer to render RGB pixels into.
-    HdPbrRenderBuffer m_colorBuffer;
+private:
+    // The view matrix: world space to camera space
+    pxr::GfMatrix4d m_viewMatrix;
+
+    // The projection matrix: camera space to NDC space
+    pxr::GfMatrix4d m_projMatrix;
+
+    // Is converged?
+    bool m_converged = false;
 };
 
 PBR_NAMESPACE_END

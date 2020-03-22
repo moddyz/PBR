@@ -83,6 +83,10 @@ public:
     /// Do work.
     virtual void CommitResources( pxr::HdChangeTracker* tracker ) override;
 
+    /// Return the AOV description for \param i_aovName.
+    /// This will be used to initialize the aov buffers.
+    virtual pxr::HdAovDescriptor GetDefaultAovDescriptor( const pxr::TfToken& i_aovName ) const override;
+
 private:
     /// Setup routine (used in both constructors).
     void _Setup();
