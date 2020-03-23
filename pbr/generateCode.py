@@ -658,6 +658,7 @@ def GenFunctions():
         ]),
         FunctionGroup([
             "setRotate.h",
+            "lookAt.h",
         ],
         types=[
             (VectorType((3,), PODType(FLOAT)), VectorType((4,4), PODType(FLOAT))),

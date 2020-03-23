@@ -22,10 +22,18 @@
 #include <pbr/function/dotProduct.h>
 #include <pbr/function/faceForward.h>
 #include <pbr/function/floor.h>
+#include <pbr/function/isIdentity.h>
 #include <pbr/function/length.h>
 #include <pbr/function/lengthSquared.h>
 #include <pbr/function/lerp.h>
-#include <pbr/function/isIdentity.h>
+#include <pbr/function/lookAt.h>
+#include <pbr/function/max.h>
+#include <pbr/function/min.h>
+#include <pbr/function/normalise.h>
+#include <pbr/function/pointInsideBounds.h>
+#include <pbr/function/pointInsideBoundsExclusive.h>
+#include <pbr/function/radiansToDegrees.h>
+#include <pbr/function/rayPosition.h>
 #include <pbr/function/setIdentity.h>
 #include <pbr/function/setRotate.h>
 #include <pbr/function/setRotateX.h>
@@ -34,13 +42,6 @@
 #include <pbr/function/setScale.h>
 #include <pbr/function/setTranslate.h>
 #include <pbr/function/transpose.h>
-#include <pbr/function/max.h>
-#include <pbr/function/min.h>
-#include <pbr/function/normalise.h>
-#include <pbr/function/pointInsideBounds.h>
-#include <pbr/function/pointInsideBoundsExclusive.h>
-#include <pbr/function/radiansToDegrees.h>
-#include <pbr/function/rayPosition.h>
 
 TEST_CASE( "dotProduct" )
 {
@@ -127,6 +128,23 @@ TEST_CASE( "lerp" )
     pbr::Bounds3f bounds( pbr::Vec3f( 0.0, 0.0, 0.0 ), pbr::Vec3f( 1.0, 1.0, 1.0 ) );
     pbr::FnLerp( factor, bounds, interpolated );
     CHECK( interpolated == pbr::Vec3f( 0.5, 0.25, 1.0 ) );
+}
+
+TEST_CASE( "lookAt" )
+{
+    pbr::Vec3f position( 2.0, 4.0, 3.0 );
+    pbr::Vec3f lookAt( 2.0, 4.0, 5.0 );
+    pbr::Vec3f up( 0.0, 1.0, 0.0 );
+
+    pbr::Mat4f matrix;
+    FnLookAt( position, lookAt, up, matrix );
+
+    CHECK( matrix == pbr::Mat4f( 1.0, 0.0, 0.0, 2.0,
+                                 0.0, 1.0, 0.0, 4.0,
+                                 0.0, 0.0, 1.0, 3.0,
+                                 0.0, 0.0, 0.0, 1.0 ) );
+
+    printf( "Matrix: %s\n", matrix.ToString().c_str() );
 }
 
 TEST_CASE( "min" )
