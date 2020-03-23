@@ -13,7 +13,7 @@
 PBR_NAMESPACE_BEGIN
 
 PBR_API
-inline void FnMatrixSetRotate( const float& i_degrees, const Vec3f& i_axis, Mat4f& o_matrix )
+inline void FnSetRotate( const float& i_degrees, const Vec3f& i_axis, Mat4f& o_matrix )
 {
     // Axis must be normalised.
     Vec3f normAxis;

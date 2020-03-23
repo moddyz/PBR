@@ -6,19 +6,22 @@
 #include <pbr/type/{{ matrixType.headerFileName }}>
 {% endfor %}
 
-/// Tranpose the input matrix.
+/// Sets the identity matrix on the output argument.
 
 PBR_NAMESPACE_BEGIN
 
 {% for matrixType in context.types %}
 PBR_API
-inline void FnMatrixTranspose( const {{ matrixType.className }}& i_matrix,
-                               {{ matrixType.className }}& o_transposedMatrix )
+inline void FnSetIdentity( {{ matrixType.className }}& o_identityMatrix )
 {
-    o_transposedMatrix = {{ matrixType.className }}(
+    o_identityMatrix = {{ matrixType.className }}(
 {% for row in range(matrixType.dims[0]) -%}
 {% for col in range(matrixType.dims[1]) -%}
-    i_matrix( {{ col }}, {{ row }} )
+{% if row == col -%}
+    1.0
+{%- else -%}
+    0.0
+{%- endif %}
 {% if row + 1 < matrixType.dims[0] or col + 1 < matrixType.dims[ 1 ] -%}
     ,
 {%- endif %}

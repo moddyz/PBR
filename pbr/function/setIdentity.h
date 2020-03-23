@@ -10,13 +10,13 @@
 PBR_NAMESPACE_BEGIN
 
 PBR_API
-inline void FnMatrixSetIdentity( Mat3f& o_identityMatrix )
+inline void FnSetIdentity( Mat3f& o_identityMatrix )
 {
     o_identityMatrix = Mat3f( 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0 );
 }
 
 PBR_API
-inline void FnMatrixSetIdentity( Mat4f& o_identityMatrix )
+inline void FnSetIdentity( Mat4f& o_identityMatrix )
 {
     o_identityMatrix = Mat4f( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
 }

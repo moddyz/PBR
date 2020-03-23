@@ -12,14 +12,14 @@
 PBR_NAMESPACE_BEGIN
 
 PBR_API
-inline void FnMatrixSetTranslate( const Vec2f& i_translate, Mat3f& o_matrix )
+inline void FnSetTranslate( const Vec2f& i_translate, Mat3f& o_matrix )
 {
     o_matrix( 0, 2 ) = i_translate[ 0 ];
     o_matrix( 1, 2 ) = i_translate[ 1 ];
 }
 
 PBR_API
-inline void FnMatrixSetTranslate( const Vec3f& i_translate, Mat4f& o_matrix )
+inline void FnSetTranslate( const Vec3f& i_translate, Mat4f& o_matrix )
 {
     o_matrix( 0, 3 ) = i_translate[ 0 ];
     o_matrix( 1, 3 ) = i_translate[ 1 ];

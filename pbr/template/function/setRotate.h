@@ -16,7 +16,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for vectorType, matrixType in context.types %}
 PBR_API
-inline void FnMatrixSetRotate( const {{ matrixType.elementType.className }}& i_degrees,
+inline void FnSetRotate( const {{ matrixType.elementType.className }}& i_degrees,
                                const {{ vectorType.className }}& i_axis,
                                {{ matrixType.className }}& o_matrix )
 {

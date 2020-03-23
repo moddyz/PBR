@@ -14,7 +14,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for matrixType in context.types %}
 PBR_API
-inline void FnMatrixSetRotateZ( const {{ matrixType.elementType.className }}& i_degrees, {{ matrixType.className }}& o_matrix )
+inline void FnSetRotateZ( const {{ matrixType.elementType.className }}& i_degrees, {{ matrixType.className }}& o_matrix )
 {
     {{ matrixType.elementType.className }} radians;
     FnDegreesToRadians( i_degrees, radians );

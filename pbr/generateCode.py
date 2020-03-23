@@ -632,32 +632,32 @@ def GenFunctions():
             COMPOSITE_TYPES["Bounds3f"],
         ]),
         FunctionGroup([
-            "matrixSetIdentity.h",
-            "matrixIsIdentity.h",
-            "matrixTranspose.h",
+            "setIdentity.h",
+            "isIdentity.h",
+            "transpose.h",
         ],
         types=[
             VectorType((3,3), PODType(FLOAT)),
             VectorType((4,4), PODType(FLOAT)),
         ]),
         FunctionGroup([
-            "matrixSetTranslate.h",
-            "matrixSetScale.h",
+            "setTranslate.h",
+            "setScale.h",
         ],
         types=[
             (VectorType((2,), PODType(FLOAT)), VectorType((3,3), PODType(FLOAT))),
             (VectorType((3,), PODType(FLOAT)), VectorType((4,4), PODType(FLOAT))),
         ]),
         FunctionGroup([
-            "matrixSetRotateX.h",
-            "matrixSetRotateY.h",
-            "matrixSetRotateZ.h",
+            "setRotateX.h",
+            "setRotateY.h",
+            "setRotateZ.h",
         ],
         types=[
             VectorType((4,4), PODType(FLOAT)),
         ]),
         FunctionGroup([
-            "matrixSetRotate.h",
+            "setRotate.h",
         ],
         types=[
             (VectorType((3,), PODType(FLOAT)), VectorType((4,4), PODType(FLOAT))),

@@ -8,21 +8,21 @@
 
 #include <pbr/function/degreesToRadians.h>
 
-/// Sets a X-axis rotate transformation on a matrix.
+/// Sets a Y-axis rotate transformation on a matrix.
 
 PBR_NAMESPACE_BEGIN
 
 {% for matrixType in context.types %}
 PBR_API
-inline void FnMatrixSetRotateX( const {{ matrixType.elementType.className }}& i_degrees, {{ matrixType.className }}& o_matrix )
+inline void FnSetRotateY( const {{ matrixType.elementType.className }}& i_degrees, {{ matrixType.className }}& o_matrix )
 {
     {{ matrixType.elementType.className }} radians;
     FnDegreesToRadians( i_degrees, radians );
     {{ matrixType.elementType.className }} sine = std::sin( radians );
     {{ matrixType.elementType.className }} cosine = std::cos( radians );
-    o_matrix( 1, 1 ) = cosine;
-    o_matrix( 1, 2 ) = -sine;
-    o_matrix( 2, 1 ) = sine;
+    o_matrix( 0, 0 ) = cosine;
+    o_matrix( 0, 2 ) = sine;
+    o_matrix( 2, 0 ) = -sine;
     o_matrix( 2, 2 ) = cosine;
 }
 {% endfor %}

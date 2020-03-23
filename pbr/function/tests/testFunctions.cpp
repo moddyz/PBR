@@ -25,15 +25,15 @@
 #include <pbr/function/length.h>
 #include <pbr/function/lengthSquared.h>
 #include <pbr/function/lerp.h>
-#include <pbr/function/matrixIsIdentity.h>
-#include <pbr/function/matrixSetIdentity.h>
-#include <pbr/function/matrixSetRotate.h>
-#include <pbr/function/matrixSetRotateX.h>
-#include <pbr/function/matrixSetRotateY.h>
-#include <pbr/function/matrixSetRotateZ.h>
-#include <pbr/function/matrixSetScale.h>
-#include <pbr/function/matrixSetTranslate.h>
-#include <pbr/function/matrixTranspose.h>
+#include <pbr/function/isIdentity.h>
+#include <pbr/function/setIdentity.h>
+#include <pbr/function/setRotate.h>
+#include <pbr/function/setRotateX.h>
+#include <pbr/function/setRotateY.h>
+#include <pbr/function/setRotateZ.h>
+#include <pbr/function/setScale.h>
+#include <pbr/function/setTranslate.h>
+#include <pbr/function/transpose.h>
 #include <pbr/function/max.h>
 #include <pbr/function/min.h>
 #include <pbr/function/normalise.h>
@@ -185,81 +185,81 @@ TEST_CASE( "faceForward" )
     CHECK( forward == -normal );
 }
 
-TEST_CASE( "matrixSetIdentity" )
+TEST_CASE( "setIdentity" )
 {
     pbr::Mat4f matrix;
-    pbr::FnMatrixSetIdentity( matrix );
+    pbr::FnSetIdentity( matrix );
     CHECK( matrix == pbr::Mat4f( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
 
-TEST_CASE( "matrixIsIdentity" )
+TEST_CASE( "isIdentity" )
 {
     pbr::Mat4f matrixA( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
     pbr::Mat4f matrixB( 1.0, 0.0, 0.0, 0.0, 6.0, 7.0, 0.0, 0.0, 0.0, 0.0, 1.0, 7.0, -4.0, 5.0, 0.0, 1.0 );
     bool       isIdentity = false;
 
-    pbr::FnMatrixIsIdentity( matrixA, isIdentity );
+    pbr::FnIsIdentity( matrixA, isIdentity );
     CHECK( isIdentity );
 
-    pbr::FnMatrixIsIdentity( matrixB, isIdentity );
+    pbr::FnIsIdentity( matrixB, isIdentity );
     CHECK( !isIdentity );
 }
 
-TEST_CASE( "matrixTranspose" )
+TEST_CASE( "transpose" )
 {
     pbr::Mat4f matrix( 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 4.0, 4.0, 4.0, 4.0 );
     pbr::Mat4f transposedMatrix;
-    pbr::FnMatrixTranspose( matrix, transposedMatrix );
+    pbr::FnTranspose( matrix, transposedMatrix );
     CHECK( transposedMatrix ==
            pbr::Mat4f( 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0 ) );
 }
 
-TEST_CASE( "matrixSetTranslate" )
+TEST_CASE( "setTranslate" )
 {
     pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
     pbr::Vec3f translate( 2.0, 3.0, 4.0 );
-    pbr::FnMatrixSetTranslate( translate, matrix );
+    pbr::FnSetTranslate( translate, matrix );
     CHECK( matrix == pbr::Mat4f( 1.0, 0.0, 0.0, 2.0, 0.0, 1.0, 0.0, 3.0, 0.0, 0.0, 1.0, 4.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
 
-TEST_CASE( "matrixSetScale" )
+TEST_CASE( "setScale" )
 {
     pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
     pbr::Vec3f scale( 2.0, 3.0, 4.0 );
-    pbr::FnMatrixSetScale( scale, matrix );
+    pbr::FnSetScale( scale, matrix );
     CHECK( matrix == pbr::Mat4f( 2.0, 0.0, 0.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 0.0, 4.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
 
-TEST_CASE( "matrixSetRotateX" )
+TEST_CASE( "setRotateX" )
 {
     pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
     float      degrees = 90.0f;
-    pbr::FnMatrixSetRotateX( degrees, matrix );
+    pbr::FnSetRotateX( degrees, matrix );
     CHECK( matrix == pbr::Mat4f( 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
 
-TEST_CASE( "matrixSetRotateY" )
+TEST_CASE( "setRotateY" )
 {
     pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
     float      degrees = 90.0f;
-    pbr::FnMatrixSetRotateY( degrees, matrix );
+    pbr::FnSetRotateY( degrees, matrix );
     CHECK( matrix == pbr::Mat4f( 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
 
-TEST_CASE( "matrixSetRotateZ" )
+TEST_CASE( "setRotateZ" )
 {
     pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
     float      degrees = 90.0f;
-    pbr::FnMatrixSetRotateZ( degrees, matrix );
+    pbr::FnSetRotateZ( degrees, matrix );
     CHECK( matrix == pbr::Mat4f( 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
 
-TEST_CASE( "matrixSetRotate" )
+TEST_CASE( "setRotate" )
 {
     pbr::Mat4f matrix( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 );
     float      degrees = 90.0f;
     pbr::Vec3f axis( 0.0, 0.0, 1.0 );
-    pbr::FnMatrixSetRotate( degrees, axis, matrix );
+    pbr::FnSetRotate( degrees, axis, matrix );
     CHECK( matrix == pbr::Mat4f( 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
 

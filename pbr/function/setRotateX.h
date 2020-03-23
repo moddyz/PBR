@@ -11,7 +11,7 @@
 PBR_NAMESPACE_BEGIN
 
 PBR_API
-inline void FnMatrixSetRotateX( const float& i_degrees, Mat4f& o_matrix )
+inline void FnSetRotateX( const float& i_degrees, Mat4f& o_matrix )
 {
     float radians;
     FnDegreesToRadians( i_degrees, radians );

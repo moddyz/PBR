@@ -10,7 +10,7 @@
 PBR_NAMESPACE_BEGIN
 
 PBR_API
-inline void FnMatrixIsIdentity( const Mat3f& i_matrix, bool& o_isIdentity )
+inline void FnIsIdentity( const Mat3f& i_matrix, bool& o_isIdentity )
 {
     o_isIdentity = i_matrix( 0, 0 ) == 1.0 && i_matrix( 0, 1 ) == 0.0 && i_matrix( 0, 2 ) == 0.0 &&
                    i_matrix( 1, 0 ) == 0.0 && i_matrix( 1, 1 ) == 1.0 && i_matrix( 1, 2 ) == 0.0 &&
@@ -18,7 +18,7 @@ inline void FnMatrixIsIdentity( const Mat3f& i_matrix, bool& o_isIdentity )
 }
 
 PBR_API
-inline void FnMatrixIsIdentity( const Mat4f& i_matrix, bool& o_isIdentity )
+inline void FnIsIdentity( const Mat4f& i_matrix, bool& o_isIdentity )
 {
     o_isIdentity =
         i_matrix( 0, 0 ) == 1.0 && i_matrix( 0, 1 ) == 0.0 && i_matrix( 0, 2 ) == 0.0 && i_matrix( 0, 3 ) == 0.0 &&
