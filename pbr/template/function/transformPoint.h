@@ -17,8 +17,12 @@ inline void FnTransformPoint( const {{ vectorType.className }}& i_point,
                               const {{ matrixType.className }}& i_matrix,
                               {{ vectorType.className }}& o_point )
 {
-{% for index in range(vectorType.elementSize) -%}
+{% for index in range(vectorType.elementSize + 1) -%}
+{%- if index == 3 -%}
+    {{vectorType.elementType.className }} homogenousWeight =
+{%- else -%}
     {{vectorType.elementType.className }} element{{ index }} =
+{%- endif -%}
 {%- for col in range(matrixType.dims[1]) -%}
 {%- if col < 3 -%}
     i_point[ {{ col }} ] * i_matrix( {{ index }}, {{ col }} ) +
@@ -26,15 +30,6 @@ inline void FnTransformPoint( const {{ vectorType.className }}& i_point,
     i_matrix( {{ index }}, {{ col }} );
 {%- endif -%}
 {%- endfor -%}
-{%- endfor -%}
-
-    {{vectorType.elementType.className }} homogenousWeight =
-{%- for col in range(matrixType.dims[1]) -%}
-{%- if col < 3 -%}
-    i_point[ {{ col }} ] * i_matrix( 3, {{ col }} ) +
-{%- else -%}
-    i_matrix( 3, {{ col }} );
-{%- endif -%}
 {%- endfor -%}
 
     if ( homogenousWeight == 1.0 )
