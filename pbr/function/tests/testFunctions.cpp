@@ -42,6 +42,7 @@
 #include <pbr/function/setScale.h>
 #include <pbr/function/setTranslate.h>
 #include <pbr/function/transformPoint.h>
+#include <pbr/function/transformVector.h>
 #include <pbr/function/transpose.h>
 
 TEST_CASE( "dotProduct" )
@@ -243,6 +244,21 @@ TEST_CASE( "transformPoint" )
 
     // Check.
     CHECK( point == pbr::Vec3f( 1.0f, 5.0f, 9.0f ) );
+}
+
+TEST_CASE( "transformVector" )
+{
+    // Construct transformation matrix.
+    pbr::Mat4f matrix;
+    pbr::FnSetIdentity( matrix );
+    pbr::FnSetTranslate( pbr::Vec3f( 1.0f, 5.0f, 9.0f ), matrix );
+
+    // Transform vector.
+    pbr::Vec3f vector;
+    pbr::FnTransformPoint( vector, matrix, vector );
+
+    // Check.
+    CHECK( vector == pbr::Vec3f( 1.0f, 5.0f, 9.0f ) );
 }
 
 TEST_CASE( "setTranslate" )

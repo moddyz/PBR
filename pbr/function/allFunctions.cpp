@@ -37,4 +37,5 @@
 #include <pbr/function/setScale.h>
 #include <pbr/function/setTranslate.h>
 #include <pbr/function/transformPoint.h>
+#include <pbr/function/transformVector.h>
 #include <pbr/function/transpose.h>
