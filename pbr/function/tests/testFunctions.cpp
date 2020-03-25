@@ -41,6 +41,7 @@
 #include <pbr/function/setRotateZ.h>
 #include <pbr/function/setScale.h>
 #include <pbr/function/setTranslate.h>
+#include <pbr/function/transformPoint.h>
 #include <pbr/function/transpose.h>
 
 TEST_CASE( "dotProduct" )
@@ -139,10 +140,7 @@ TEST_CASE( "lookAt" )
     pbr::Mat4f matrix;
     FnLookAt( position, lookAt, up, matrix );
 
-    CHECK( matrix == pbr::Mat4f( 1.0, 0.0, 0.0, 2.0,
-                                 0.0, 1.0, 0.0, 4.0,
-                                 0.0, 0.0, 1.0, 3.0,
-                                 0.0, 0.0, 0.0, 1.0 ) );
+    CHECK( matrix == pbr::Mat4f( 1.0, 0.0, 0.0, 2.0, 0.0, 1.0, 0.0, 4.0, 0.0, 0.0, 1.0, 3.0, 0.0, 0.0, 0.0, 1.0 ) );
 
     printf( "Matrix: %s\n", matrix.ToString().c_str() );
 }
@@ -230,6 +228,21 @@ TEST_CASE( "transpose" )
     pbr::FnTranspose( matrix, transposedMatrix );
     CHECK( transposedMatrix ==
            pbr::Mat4f( 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0 ) );
+}
+
+TEST_CASE( "transformPoint" )
+{
+    // Construct transformation matrix.
+    pbr::Mat4f matrix;
+    pbr::FnSetIdentity( matrix );
+    pbr::FnSetTranslate( pbr::Vec3f( 1.0f, 5.0f, 9.0f ), matrix );
+
+    // Transform point.
+    pbr::Vec3f point;
+    pbr::FnTransformPoint( point, matrix, point );
+
+    // Check.
+    CHECK( point == pbr::Vec3f( 1.0f, 5.0f, 9.0f ) );
 }
 
 TEST_CASE( "setTranslate" )

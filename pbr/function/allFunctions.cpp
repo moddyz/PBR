@@ -36,4 +36,5 @@
 #include <pbr/function/setRotateZ.h>
 #include <pbr/function/setScale.h>
 #include <pbr/function/setTranslate.h>
+#include <pbr/function/transformPoint.h>
 #include <pbr/function/transpose.h>
