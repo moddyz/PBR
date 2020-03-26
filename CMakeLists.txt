@@ -33,9 +33,9 @@ set(CMAKE_CXX_FLAGS_DEBUG "-DPBR_DEBUG")
 
 if(BUILD_TESTING)
     enable_testing()
-    add_subdirectory(thirdparty)
 endif()
 
 # Build targets.
+add_subdirectory(thirdparty)
 add_subdirectory(pbr)
 add_subdirectory(hdPbr)
