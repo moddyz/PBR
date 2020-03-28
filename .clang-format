@@ -20,7 +20,6 @@ CompactNamespaces: false
 ContinuationIndentWidth: 4
 FixNamespaceComments: true
 IndentCaseLabels: false
-IndentPPDirectives: AfterHash
 IndentWidth: 4
 IndentWrappedFunctionNames: false
 KeepEmptyLinesAtTheStartOfBlocks: false
@@ -43,5 +42,6 @@ SpacesInSquareBrackets: true
 Standard: Cpp11
 
 # clang-11
+# IndentPPDirectives: AfterHash
 # AlignConsecutiveMacros: true
 # AlignEscapedNewLines: Right

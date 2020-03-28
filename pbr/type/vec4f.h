@@ -169,10 +169,10 @@ public:
     /// Comparison operator
     inline bool operator==( const Vec4f& i_vector ) const
     {
-        return TlAlmostEqual( m_elements[ 0 ], i_vector.m_elements[ 0 ] ) &&
-               TlAlmostEqual( m_elements[ 1 ], i_vector.m_elements[ 1 ] ) &&
-               TlAlmostEqual( m_elements[ 2 ], i_vector.m_elements[ 2 ] ) &&
-               TlAlmostEqual( m_elements[ 3 ], i_vector.m_elements[ 3 ] );
+        return AlmostEqual( m_elements[ 0 ], i_vector.m_elements[ 0 ] ) &&
+               AlmostEqual( m_elements[ 1 ], i_vector.m_elements[ 1 ] ) &&
+               AlmostEqual( m_elements[ 2 ], i_vector.m_elements[ 2 ] ) &&
+               AlmostEqual( m_elements[ 3 ], i_vector.m_elements[ 3 ] );
     }
 
     /// Not equal operator

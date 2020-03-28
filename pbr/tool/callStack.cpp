@@ -10,7 +10,7 @@
 
 PBR_NAMESPACE_BEGIN
 
-void TlCallStackPrint()
+void CallStackPrint()
 {
     backward::StackTrace stackTrace;
     stackTrace.load_here( 32 );
@@ -21,13 +21,13 @@ void TlCallStackPrint()
     printer.print( stackTrace, stderr );
 }
 
-void TlCallStackPrint( const char* i_expression )
+void CallStackPrint( const char* i_expression )
 {
     PBR_LOG_ERROR( "PBR_ASSERT failed for expression: %s\n", "foo" );
-    TlCallStackPrint();
+    CallStackPrint();
 }
 
-void TlCallStackPrint( const char* i_expression, const char* i_format, ... )
+void CallStackPrint( const char* i_expression, const char* i_format, ... )
 {
     std::stringstream ss;
     ss << "PBR_ASSERT failed for expression: " << i_expression << ", " << i_format << "\n";
@@ -37,7 +37,7 @@ void TlCallStackPrint( const char* i_expression, const char* i_format, ... )
     PBR_LOG_ERROR( ss.str().c_str(), args );
     va_end( args );
 
-    TlCallStackPrint();
+    CallStackPrint();
 }
 
 PBR_NAMESPACE_END

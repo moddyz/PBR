@@ -10,17 +10,17 @@
 /// In Release builds, the PBR_ASSERT macro will be pre-processed away in Release builds.
 
 #ifdef PBR_DEBUG
-#    define PBR_ASSERT( expr )                                                                                         \
-        if ( !( expr ) )                                                                                               \
-        {                                                                                                              \
-            pbr::TlCallStackPrint( #expr );                                                                            \
-        }
-#    define PBR_ASSERT_MSG( expr, format, ... )                                                                        \
-        if ( !( expr ) )                                                                                               \
-        {                                                                                                              \
-            pbr::TlCallStackPrint( #expr, format, ##__VA_ARGS__ );                                                     \
-        }
+#define PBR_ASSERT( expr )                                                                                             \
+    if ( !( expr ) )                                                                                                   \
+    {                                                                                                                  \
+        pbr::CallStackPrint( #expr );                                                                                  \
+    }
+#define PBR_ASSERT_MSG( expr, format, ... )                                                                            \
+    if ( !( expr ) )                                                                                                   \
+    {                                                                                                                  \
+        pbr::CallStackPrint( #expr, format, ##__VA_ARGS__ );                                                           \
+    }
 #else
-#    define PBR_ASSERT( expr, ... ) void()
-#    define PBR_ASSERT_MSG( expr, format, ... ) void()
+#define PBR_ASSERT( expr, ... ) void()
+#define PBR_ASSERT_MSG( expr, format, ... ) void()
 #endif

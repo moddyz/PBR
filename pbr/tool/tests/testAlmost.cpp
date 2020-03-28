@@ -3,7 +3,7 @@
 
 #include <pbr/tool/almost.h>
 
-TEST_CASE( "TlAlmostEqual" )
+TEST_CASE( "AlmostEqual" )
 {
-    CHECK( pbr::TlAlmostEqual( 1.000001f, 1.0f ) );
+    CHECK( pbr::AlmostEqual( 1.000001f, 1.0f ) );
 }

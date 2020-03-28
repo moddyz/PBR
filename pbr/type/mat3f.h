@@ -216,15 +216,15 @@ public:
     /// Comparison operator
     inline bool operator==( const Mat3f& i_vector ) const
     {
-        return TlAlmostEqual( m_elements[ 0 ], i_vector.m_elements[ 0 ] ) &&
-               TlAlmostEqual( m_elements[ 1 ], i_vector.m_elements[ 1 ] ) &&
-               TlAlmostEqual( m_elements[ 2 ], i_vector.m_elements[ 2 ] ) &&
-               TlAlmostEqual( m_elements[ 3 ], i_vector.m_elements[ 3 ] ) &&
-               TlAlmostEqual( m_elements[ 4 ], i_vector.m_elements[ 4 ] ) &&
-               TlAlmostEqual( m_elements[ 5 ], i_vector.m_elements[ 5 ] ) &&
-               TlAlmostEqual( m_elements[ 6 ], i_vector.m_elements[ 6 ] ) &&
-               TlAlmostEqual( m_elements[ 7 ], i_vector.m_elements[ 7 ] ) &&
-               TlAlmostEqual( m_elements[ 8 ], i_vector.m_elements[ 8 ] );
+        return AlmostEqual( m_elements[ 0 ], i_vector.m_elements[ 0 ] ) &&
+               AlmostEqual( m_elements[ 1 ], i_vector.m_elements[ 1 ] ) &&
+               AlmostEqual( m_elements[ 2 ], i_vector.m_elements[ 2 ] ) &&
+               AlmostEqual( m_elements[ 3 ], i_vector.m_elements[ 3 ] ) &&
+               AlmostEqual( m_elements[ 4 ], i_vector.m_elements[ 4 ] ) &&
+               AlmostEqual( m_elements[ 5 ], i_vector.m_elements[ 5 ] ) &&
+               AlmostEqual( m_elements[ 6 ], i_vector.m_elements[ 6 ] ) &&
+               AlmostEqual( m_elements[ 7 ], i_vector.m_elements[ 7 ] ) &&
+               AlmostEqual( m_elements[ 8 ], i_vector.m_elements[ 8 ] );
     }
 
     /// Not equal operator

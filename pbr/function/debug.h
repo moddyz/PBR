@@ -18,7 +18,7 @@
         typedef typename VectorT::ElementType                   ScalarT;                                               \
         ScalarT                                                 length;                                                \
         ::pbr::Length( vector, length );                                                                             \
-        PBR_ASSERT( ::pbr::TlAlmostEqual( length, 1.0f ) );
+        PBR_ASSERT( ::pbr::AlmostEqual( length, 1.0f ) );
 #else
 #    define PBR_ASSERT_NORMALISED( vector ) void()
 #endif

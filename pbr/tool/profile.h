@@ -17,26 +17,26 @@
 /// PBR_PROFILE( "SomeString" ) is the same thing as PBR_PROFILE_FUNC, except it allows the developer to
 /// specify an arbiturary string to publish in the record.
 
-#define _PBR_SCOPED_PROFILE( file, line, string ) pbr::TlScopedProfile profile##line( file, line, string );
+#define _PBR_SCOPED_PROFILE( file, line, string ) pbr::ScopedProfile profile##line( file, line, string );
 #define PBR_PROFILE( string ) _PBR_SCOPED_PROFILE( __FILE__, __LINE__, string )
 #define PBR_PROFILE_FUNCTION() _PBR_SCOPED_PROFILE( __FILE__, __LINE__, __PRETTY_FUNCTION__ )
 
 PBR_NAMESPACE_BEGIN
 
 /// Fwd declaration.
-class TlProfileRecord;
+class ProfileRecord;
 
-/// TlProfile records the timing on Start() and Stop().
+/// Profile records the timing on Start() and Stop().
 /// It also includes metadata about the location in the source code and a user supplied string.
-class TlProfile
+class Profile
 {
 public:
-    explicit TlProfile( const char* i_file, uint32_t i_line, const char* i_string );
-    ~TlProfile() = default;
+    explicit Profile( const char* i_file, uint32_t i_line, const char* i_string );
+    ~Profile() = default;
 
     // Cannot be copied.
-    TlProfile( const TlProfile& i_profile ) = delete;
-    TlProfile& operator=( const TlProfile& i_profile ) = delete;
+    Profile( const Profile& i_profile ) = delete;
+    Profile& operator=( const Profile& i_profile ) = delete;
 
     /// Record the starting time.
     PBR_API
@@ -48,34 +48,34 @@ public:
 
 private:
     /// The profile record to author timings and metadata into.
-    /// This memory is not owned by the TlProfile instance itself, but by the internal global record store.
-    TlProfileRecord* m_profileRecord = nullptr;
+    /// This memory is not owned by the Profile instance itself, but by the internal global record store.
+    ProfileRecord* m_profileRecord = nullptr;
 };
 
-/// Similar to the TlProfile, but does require explicit Start() and Stop() for timings.
-/// Instead, the lifetime of a TlScopedProfile object determines the timings.
-/// The constructor and destructor will call TlProfile::Start() and TlProfile::Stop() respectively.
-class TlScopedProfile final : public TlProfile
+/// Similar to the Profile, but does require explicit Start() and Stop() for timings.
+/// Instead, the lifetime of a ScopedProfile object determines the timings.
+/// The constructor and destructor will call Profile::Start() and Profile::Stop() respectively.
+class ScopedProfile final : public Profile
 {
 public:
-    explicit TlScopedProfile( const char* i_file, uint32_t i_line, const char* i_string );
-    ~TlScopedProfile();
+    explicit ScopedProfile( const char* i_file, uint32_t i_line, const char* i_string );
+    ~ScopedProfile();
 
     // Cannot be copied.
-    TlScopedProfile( const TlScopedProfile& i_profile ) = delete;
-    TlScopedProfile& operator=( const TlScopedProfile& i_profile ) = delete;
+    ScopedProfile( const ScopedProfile& i_profile ) = delete;
+    ScopedProfile& operator=( const ScopedProfile& i_profile ) = delete;
 };
 
 /// Allocate memory used for profiling.
 ///
 /// \param i_capacity total number of records to allocate.  If the number of profile instances exceed this number,
 /// it will loop back to the initial record (oldest records will begin to be overwritten).
-void TlProfileSetup( size_t i_capacity );
+void ProfileSetup( size_t i_capacity );
 
 /// Deallocate memory used for profiling.
-void TlProfileTeardown();
+void ProfileTeardown();
 
 /// Print all profiled records.
-void TlProfilePrint();
+void ProfilePrint();
 
 PBR_NAMESPACE_END

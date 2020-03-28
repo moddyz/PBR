@@ -232,7 +232,7 @@ public:
 {% if context.elementType.className == "int" -%}
         m_elements[ {{ index }} ] == i_vector.m_elements[ {{ index }} ]
 {%- else -%}
-        TlAlmostEqual( m_elements[ {{ index }} ], i_vector.m_elements[ {{ index }} ] )
+        AlmostEqual( m_elements[ {{ index }} ], i_vector.m_elements[ {{ index }} ] )
 {%- endif %}
 {%- if index + 1 < context.elementSize -%}
         &&

@@ -34,22 +34,22 @@ timespec computeDuration( const timespec& i_start, const timespec& i_stop )
 PBR_NAMESPACE_BEGIN
 
 /// Singleton store of profile records.
-class TlProfileRecordStore final
+class ProfileRecordStore final
 {
 public:
-    TlProfileRecordStore( size_t i_recordCapacity )
+    ProfileRecordStore( size_t i_recordCapacity )
     {
         m_records.resize( i_recordCapacity );
     }
 
-    ~TlProfileRecordStore() = default;
+    ~ProfileRecordStore() = default;
 
     /// Cannot copy.
-    TlProfileRecordStore( const TlProfileRecordStore& ) = delete;
-    TlProfileRecordStore& operator=( const TlProfileRecordStore& ) = delete;
+    ProfileRecordStore( const ProfileRecordStore& ) = delete;
+    ProfileRecordStore& operator=( const ProfileRecordStore& ) = delete;
 
     /// Check out the next record to author timing and metadata into.
-    TlProfileRecord* CheckOut()
+    ProfileRecord* CheckOut()
     {
         int index = m_recordIndex.fetch_add( 1, std::memory_order_relaxed );
         if ( index >= m_records.size() )
@@ -71,7 +71,7 @@ public:
     }
 
     /// Return a reference to the records.
-    const std::vector< TlProfileRecord >& GetRecords() const
+    const std::vector< ProfileRecord >& GetRecords() const
     {
         return m_records;
     }
@@ -104,11 +104,11 @@ private:
     std::atomic_bool m_recordsLoopAround{false};
 
     /// Allocated records.
-    std::vector< TlProfileRecord > m_records;
+    std::vector< ProfileRecord > m_records;
 };
 
 /// Global singleton.
-static TlProfileRecordStore* g_profileRecordStore = nullptr;
+static ProfileRecordStore* g_profileRecordStore = nullptr;
 
 /// Global mutex to guard setup and teardown of store.
 static std::mutex g_profileRecordStoreMutex;
@@ -116,7 +116,7 @@ static std::mutex g_profileRecordStoreMutex;
 constexpr size_t c_profileRecordStringCapacity = 88;
 
 /// A single profile record.
-struct alignas( 128 ) TlProfileRecord
+struct alignas( 128 ) ProfileRecord
 {
     char     m_string[ c_profileRecordStringCapacity ]; // 88 bytes
     timespec m_start = {0, 0};                          // 104 bytes
@@ -145,18 +145,18 @@ struct alignas( 128 ) TlProfileRecord
     }
 };
 
-static_assert( sizeof( TlProfileRecord ) == 128 );
+static_assert( sizeof( ProfileRecord ) == 128 );
 
-void TlProfileSetup( size_t i_capacity )
+void ProfileSetup( size_t i_capacity )
 {
     const std::lock_guard< std::mutex > lock( g_profileRecordStoreMutex );
     if ( g_profileRecordStore == nullptr )
     {
-        g_profileRecordStore = new TlProfileRecordStore( i_capacity );
+        g_profileRecordStore = new ProfileRecordStore( i_capacity );
     }
 }
 
-void TlProfileTeardown()
+void ProfileTeardown()
 {
     const std::lock_guard< std::mutex > lock( g_profileRecordStoreMutex );
     if ( g_profileRecordStore != nullptr )
@@ -167,7 +167,7 @@ void TlProfileTeardown()
     }
 }
 
-void TlProfilePrint()
+void ProfilePrint()
 {
     const std::lock_guard< std::mutex > lock( g_profileRecordStoreMutex );
     if ( g_profileRecordStore == nullptr )
@@ -176,20 +176,18 @@ void TlProfilePrint()
         return;
     }
 
-    size_t                         recordsSize = g_profileRecordStore->GetRecordsSize();
-    std::vector< TlProfileRecord > records     = g_profileRecordStore->GetRecords();
-    std::sort( records.begin(),
-               records.begin() + recordsSize,
-               []( const TlProfileRecord& a, const TlProfileRecord& b ) {
-                   if ( a.m_start.tv_sec == b.m_start.tv_sec )
-                   {
-                       return a.m_start.tv_nsec < b.m_start.tv_nsec;
-                   }
-                   else
-                   {
-                       return a.m_start.tv_sec < b.m_start.tv_sec;
-                   }
-               } );
+    size_t                       recordsSize = g_profileRecordStore->GetRecordsSize();
+    std::vector< ProfileRecord > records     = g_profileRecordStore->GetRecords();
+    std::sort( records.begin(), records.begin() + recordsSize, []( const ProfileRecord& a, const ProfileRecord& b ) {
+        if ( a.m_start.tv_sec == b.m_start.tv_sec )
+        {
+            return a.m_start.tv_nsec < b.m_start.tv_nsec;
+        }
+        else
+        {
+            return a.m_start.tv_sec < b.m_start.tv_sec;
+        }
+    } );
 
     for ( size_t recordIndex = 0; recordIndex < recordsSize; ++recordIndex )
     {
@@ -197,7 +195,7 @@ void TlProfilePrint()
     }
 }
 
-TlProfile::TlProfile( const char* i_file, uint32_t i_line, const char* i_string )
+Profile::Profile( const char* i_file, uint32_t i_line, const char* i_string )
 {
     if ( g_profileRecordStore != nullptr )
     {
@@ -209,7 +207,7 @@ TlProfile::TlProfile( const char* i_file, uint32_t i_line, const char* i_string 
 /// Thread-local global for tracking stack position of this profile.
 static thread_local uint32_t c_profileStack = 0;
 
-void TlProfile::Start()
+void Profile::Start()
 {
     if ( m_profileRecord != nullptr )
     {
@@ -218,7 +216,7 @@ void TlProfile::Start()
     }
 }
 
-void TlProfile::Stop()
+void Profile::Stop()
 {
     if ( m_profileRecord != nullptr )
     {
@@ -227,13 +225,13 @@ void TlProfile::Stop()
     }
 }
 
-TlScopedProfile::TlScopedProfile( const char* i_file, uint32_t i_line, const char* i_string )
-    : TlProfile( i_file, i_line, i_string )
+ScopedProfile::ScopedProfile( const char* i_file, uint32_t i_line, const char* i_string )
+    : Profile( i_file, i_line, i_string )
 {
     Start();
 }
 
-TlScopedProfile::~TlScopedProfile()
+ScopedProfile::~ScopedProfile()
 {
     Stop();
 }

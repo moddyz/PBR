@@ -155,9 +155,9 @@ public:
     /// Comparison operator
     inline bool operator==( const Vec3f& i_vector ) const
     {
-        return TlAlmostEqual( m_elements[ 0 ], i_vector.m_elements[ 0 ] ) &&
-               TlAlmostEqual( m_elements[ 1 ], i_vector.m_elements[ 1 ] ) &&
-               TlAlmostEqual( m_elements[ 2 ], i_vector.m_elements[ 2 ] );
+        return AlmostEqual( m_elements[ 0 ], i_vector.m_elements[ 0 ] ) &&
+               AlmostEqual( m_elements[ 1 ], i_vector.m_elements[ 1 ] ) &&
+               AlmostEqual( m_elements[ 2 ], i_vector.m_elements[ 2 ] );
     }
 
     /// Not equal operator

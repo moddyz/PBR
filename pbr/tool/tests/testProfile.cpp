@@ -58,11 +58,11 @@ void testNestedProfile()
 
 TEST_CASE( "Profile" )
 {
-    pbr::TlProfileSetup( 1000000 );
+    pbr::ProfileSetup( 1000000 );
     testProfileFunction();
     testProfile();
     testThreading();
     testNestedProfile();
-    pbr::TlProfilePrint();
-    pbr::TlProfileTeardown();
+    pbr::ProfilePrint();
+    pbr::ProfileTeardown();
 }
