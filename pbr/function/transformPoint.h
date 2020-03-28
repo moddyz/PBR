@@ -10,7 +10,7 @@
 PBR_NAMESPACE_BEGIN
 
 PBR_API
-inline void FnTransformPoint( const Vec3f& i_point, const Mat4f& i_matrix, Vec3f& o_point )
+inline void TransformPoint( const Vec3f& i_point, const Mat4f& i_matrix, Vec3f& o_point )
 {
     float element0 = i_point[ 0 ] * i_matrix( 0, 0 ) + i_point[ 1 ] * i_matrix( 0, 1 ) +
                      i_point[ 2 ] * i_matrix( 0, 2 ) + i_matrix( 0, 3 );

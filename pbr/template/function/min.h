@@ -17,7 +17,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnMin( const {{ dataType.className }}& i_a,
+inline void Min( const {{ dataType.className }}& i_a,
                    const {{ dataType.className }}& i_b,
                    {{ dataType.className }}& o_min )
 {

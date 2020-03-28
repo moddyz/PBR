@@ -13,7 +13,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for vectorType, matrixType in context.types %}
 PBR_API
-inline void FnTransformVector( const {{ vectorType.className }}& i_vector,
+inline void TransformVector( const {{ vectorType.className }}& i_vector,
                                const {{ matrixType.className }}& i_matrix,
                                {{ vectorType.className }}& o_vector )
 {

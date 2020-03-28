@@ -16,17 +16,17 @@ PBR_NAMESPACE_BEGIN
 
 {% for vectorType, matrixType in context.types %}
 PBR_API
-inline void FnSetRotate( const {{ matrixType.elementType.className }}& i_degrees,
+inline void SetRotate( const {{ matrixType.elementType.className }}& i_degrees,
                                const {{ vectorType.className }}& i_axis,
                                {{ matrixType.className }}& o_matrix )
 {
     // Axis must be normalised.
     {{ vectorType.className }} normAxis;
-    FnNormalise( i_axis, normAxis );
+    Normalise( i_axis, normAxis );
 
     // Compute cosine and sine.
     {{ matrixType.elementType.className }} radians;
-    FnDegreesToRadians( i_degrees, radians );
+    DegreesToRadians( i_degrees, radians );
     {{ matrixType.elementType.className }} sinTheta = std::sin( radians );
     {{ matrixType.elementType.className }} cosTheta = std::cos( radians );
 

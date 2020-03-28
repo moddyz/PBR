@@ -11,7 +11,7 @@ PBR_NAMESPACE_BEGIN
 {% for vectorType in context.vectorTypes %}
 /// Compute the dot product of two {{ vectorType.className }}.
 PBR_API
-inline void FnDotProduct( const {{ vectorType.className }}& i_lhs,
+inline void DotProduct( const {{ vectorType.className }}& i_lhs,
                           const {{ vectorType.className }}& i_rhs,
                           {{ vectorType.elementType.className }}& o_product )
 {

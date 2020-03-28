@@ -13,15 +13,15 @@
 PBR_NAMESPACE_BEGIN
 
 PBR_API
-inline void FnSetRotate( const float& i_degrees, const Vec3f& i_axis, Mat4f& o_matrix )
+inline void SetRotate( const float& i_degrees, const Vec3f& i_axis, Mat4f& o_matrix )
 {
     // Axis must be normalised.
     Vec3f normAxis;
-    FnNormalise( i_axis, normAxis );
+    Normalise( i_axis, normAxis );
 
     // Compute cosine and sine.
     float radians;
-    FnDegreesToRadians( i_degrees, radians );
+    DegreesToRadians( i_degrees, radians );
     float sinTheta = std::sin( radians );
     float cosTheta = std::cos( radians );
 

@@ -10,7 +10,7 @@ PBR_NAMESPACE_BEGIN
 /// Compute the point relative to the corners of the bounding box, from the range (0, 0, 0) to (1, 1, 1).
 
 PBR_API
-inline void FnBoundsOffset( const Bounds2f& i_bounds, const Vec2f& i_point, Vec2f& o_offset )
+inline void BoundsOffset( const Bounds2f& i_bounds, const Vec2f& i_point, Vec2f& o_offset )
 {
     o_offset = i_point - i_bounds.Min();
 
@@ -26,7 +26,7 @@ inline void FnBoundsOffset( const Bounds2f& i_bounds, const Vec2f& i_point, Vec2
 }
 
 PBR_API
-inline void FnBoundsOffset( const Bounds3f& i_bounds, const Vec3f& i_point, Vec3f& o_offset )
+inline void BoundsOffset( const Bounds3f& i_bounds, const Vec3f& i_point, Vec3f& o_offset )
 {
     o_offset = i_point - i_bounds.Min();
 

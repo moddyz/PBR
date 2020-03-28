@@ -13,24 +13,24 @@ PBR_NAMESPACE_BEGIN
 /// Compute the distance between two points.
 
 PBR_API
-inline void FnDistance( const Vec2f& i_vectorA, const Vec2f& i_vectorB, float& o_distance )
+inline void Distance( const Vec2f& i_vectorA, const Vec2f& i_vectorB, float& o_distance )
 {
     Vec2f diffVector = i_vectorA - i_vectorB;
-    FnLength( diffVector, o_distance );
+    Length( diffVector, o_distance );
 }
 
 PBR_API
-inline void FnDistance( const Vec3f& i_vectorA, const Vec3f& i_vectorB, float& o_distance )
+inline void Distance( const Vec3f& i_vectorA, const Vec3f& i_vectorB, float& o_distance )
 {
     Vec3f diffVector = i_vectorA - i_vectorB;
-    FnLength( diffVector, o_distance );
+    Length( diffVector, o_distance );
 }
 
 PBR_API
-inline void FnDistance( const Vec4f& i_vectorA, const Vec4f& i_vectorB, float& o_distance )
+inline void Distance( const Vec4f& i_vectorA, const Vec4f& i_vectorB, float& o_distance )
 {
     Vec4f diffVector = i_vectorA - i_vectorB;
-    FnLength( diffVector, o_distance );
+    Length( diffVector, o_distance );
 }
 
 PBR_NAMESPACE_END

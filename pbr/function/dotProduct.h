@@ -10,7 +10,7 @@ PBR_NAMESPACE_BEGIN
 
 /// Compute the dot product of two Vec2f.
 PBR_API
-inline void FnDotProduct( const Vec2f& i_lhs, const Vec2f& i_rhs, float& o_product )
+inline void DotProduct( const Vec2f& i_lhs, const Vec2f& i_rhs, float& o_product )
 {
     o_product = 0;
     o_product += i_lhs[ 0 ] * i_rhs[ 0 ];
@@ -19,7 +19,7 @@ inline void FnDotProduct( const Vec2f& i_lhs, const Vec2f& i_rhs, float& o_produ
 
 /// Compute the dot product of two Vec3f.
 PBR_API
-inline void FnDotProduct( const Vec3f& i_lhs, const Vec3f& i_rhs, float& o_product )
+inline void DotProduct( const Vec3f& i_lhs, const Vec3f& i_rhs, float& o_product )
 {
     o_product = 0;
     o_product += i_lhs[ 0 ] * i_rhs[ 0 ];
@@ -29,7 +29,7 @@ inline void FnDotProduct( const Vec3f& i_lhs, const Vec3f& i_rhs, float& o_produ
 
 /// Compute the dot product of two Vec4f.
 PBR_API
-inline void FnDotProduct( const Vec4f& i_lhs, const Vec4f& i_rhs, float& o_product )
+inline void DotProduct( const Vec4f& i_lhs, const Vec4f& i_rhs, float& o_product )
 {
     o_product = 0;
     o_product += i_lhs[ 0 ] * i_rhs[ 0 ];

@@ -11,10 +11,10 @@
 PBR_NAMESPACE_BEGIN
 
 PBR_API
-inline void FnSetRotateX( const float& i_degrees, Mat4f& o_matrix )
+inline void SetRotateX( const float& i_degrees, Mat4f& o_matrix )
 {
     float radians;
-    FnDegreesToRadians( i_degrees, radians );
+    DegreesToRadians( i_degrees, radians );
     float sine       = std::sin( radians );
     float cosine     = std::cos( radians );
     o_matrix( 1, 1 ) = cosine;

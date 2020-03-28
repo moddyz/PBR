@@ -16,12 +16,12 @@ PBR_NAMESPACE_BEGIN
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnBoundsIntersection( const {{ dataType.className }}& i_boundsA,
+inline void BoundsIntersection( const {{ dataType.className }}& i_boundsA,
                                   const {{ dataType.className }}& i_boundsB,
                                   {{ dataType.className }}& o_intersection )
 {
-    FnMax( i_boundsA.Min(), i_boundsB.Min(), o_intersection.Min() );
-    FnMin( i_boundsA.Max(), i_boundsB.Max(), o_intersection.Max() );
+    Max( i_boundsA.Min(), i_boundsB.Min(), o_intersection.Min() );
+    Min( i_boundsA.Max(), i_boundsB.Max(), o_intersection.Max() );
 }
 {% endfor %}
 

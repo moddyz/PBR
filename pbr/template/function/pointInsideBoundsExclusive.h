@@ -12,7 +12,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnPointInsideBoundsExclusive( const {{ dataType.elements[0].type.className }}& i_point,
+inline void PointInsideBoundsExclusive( const {{ dataType.elements[0].type.className }}& i_point,
                                           const {{ dataType.className }}& i_bounds,
                                           bool& o_inside )
 {

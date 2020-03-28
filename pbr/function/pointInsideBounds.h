@@ -12,21 +12,21 @@ PBR_NAMESPACE_BEGIN
 /// Check if a point is inside a bounding box.
 
 PBR_API
-inline void FnPointInsideBounds( const Vec2i& i_point, const Bounds2i& i_bounds, bool& o_inside )
+inline void PointInsideBounds( const Vec2i& i_point, const Bounds2i& i_bounds, bool& o_inside )
 {
     o_inside = ( i_bounds.Min()[ 0 ] <= i_point[ 0 ] ) && ( i_bounds.Max()[ 0 ] >= i_point[ 0 ] ) &&
                ( i_bounds.Min()[ 1 ] <= i_point[ 1 ] ) && ( i_bounds.Max()[ 1 ] >= i_point[ 1 ] );
 }
 
 PBR_API
-inline void FnPointInsideBounds( const Vec2f& i_point, const Bounds2f& i_bounds, bool& o_inside )
+inline void PointInsideBounds( const Vec2f& i_point, const Bounds2f& i_bounds, bool& o_inside )
 {
     o_inside = ( i_bounds.Min()[ 0 ] <= i_point[ 0 ] ) && ( i_bounds.Max()[ 0 ] >= i_point[ 0 ] ) &&
                ( i_bounds.Min()[ 1 ] <= i_point[ 1 ] ) && ( i_bounds.Max()[ 1 ] >= i_point[ 1 ] );
 }
 
 PBR_API
-inline void FnPointInsideBounds( const Vec3i& i_point, const Bounds3i& i_bounds, bool& o_inside )
+inline void PointInsideBounds( const Vec3i& i_point, const Bounds3i& i_bounds, bool& o_inside )
 {
     o_inside = ( i_bounds.Min()[ 0 ] <= i_point[ 0 ] ) && ( i_bounds.Max()[ 0 ] >= i_point[ 0 ] ) &&
                ( i_bounds.Min()[ 1 ] <= i_point[ 1 ] ) && ( i_bounds.Max()[ 1 ] >= i_point[ 1 ] ) &&
@@ -34,7 +34,7 @@ inline void FnPointInsideBounds( const Vec3i& i_point, const Bounds3i& i_bounds,
 }
 
 PBR_API
-inline void FnPointInsideBounds( const Vec3f& i_point, const Bounds3f& i_bounds, bool& o_inside )
+inline void PointInsideBounds( const Vec3f& i_point, const Bounds3f& i_bounds, bool& o_inside )
 {
     o_inside = ( i_bounds.Min()[ 0 ] <= i_point[ 0 ] ) && ( i_bounds.Max()[ 0 ] >= i_point[ 0 ] ) &&
                ( i_bounds.Min()[ 1 ] <= i_point[ 1 ] ) && ( i_bounds.Max()[ 1 ] >= i_point[ 1 ] ) &&

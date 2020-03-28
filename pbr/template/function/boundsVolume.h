@@ -14,11 +14,11 @@ PBR_NAMESPACE_BEGIN
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnBoundsVolume( const {{ dataType.className }}& i_bounds,
+inline void BoundsVolume( const {{ dataType.className }}& i_bounds,
                             {{ dataType.elements[0].type.elementType.className }}& o_volume )
 {
     {{ dataType.elements[0].type.className }} diagonal;
-    FnBoundsDiagonal( i_bounds, diagonal );
+    BoundsDiagonal( i_bounds, diagonal );
     o_volume = diagonal.X() * diagonal.Y() * diagonal.Z();
 }
 {% endfor %}

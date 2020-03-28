@@ -7,7 +7,7 @@ mkdir -p build && cd build
 CMAKE_ARGS=\
 \ -DUSD_ROOT="/apps/usd/20.02/"\
 \ -DOPENSUBDIV_ROOT_DIR="/apps/opensubdiv/3.1.1"\
-\ -DTBB_ROOT_DIR="/apps/tbb/4.4.6"\
+\ -DTBB_ROOT_DIR="/apps/tbb/2017_U7"\
 \ -DBOOST_ROOT="/apps/boost/1.61.0"\
 \ -DGLEW_LOCATION="/apps/glew/2.0.0"\
 \ -DBUILD_TESTING="ON"\

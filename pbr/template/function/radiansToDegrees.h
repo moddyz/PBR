@@ -8,7 +8,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnRadiansToDegrees( const {{ dataType.className }}& i_radians,
+inline void RadiansToDegrees( const {{ dataType.className }}& i_radians,
                                 {{ dataType.className }}& o_degrees )
 {
     constexpr {{ dataType.className }} halfRatio = 180.0 / 3.14159265358979323846;

@@ -17,7 +17,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnCeil( const {{ dataType.className }}& i_value,
+inline void Ceil( const {{ dataType.className }}& i_value,
                     {{ dataType.className }}& o_ceiled )
 {
 {% if dataType.isScalar -%}

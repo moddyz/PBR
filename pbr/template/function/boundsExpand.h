@@ -12,7 +12,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnBoundsExpand( const {{ dataType.className }}& i_bounds,
+inline void BoundsExpand( const {{ dataType.className }}& i_bounds,
                             const {{ dataType.elements[0].type.elementType.className }}& i_factor,
                             {{ dataType.className }}& o_bounds )
 {

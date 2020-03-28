@@ -10,7 +10,7 @@
 PBR_NAMESPACE_BEGIN
 
 PBR_API
-inline void FnTranspose( const Mat3f& i_matrix, Mat3f& o_transposedMatrix )
+inline void Transpose( const Mat3f& i_matrix, Mat3f& o_transposedMatrix )
 {
     o_transposedMatrix = Mat3f( i_matrix( 0, 0 ),
                                 i_matrix( 1, 0 ),
@@ -24,7 +24,7 @@ inline void FnTranspose( const Mat3f& i_matrix, Mat3f& o_transposedMatrix )
 }
 
 PBR_API
-inline void FnTranspose( const Mat4f& i_matrix, Mat4f& o_transposedMatrix )
+inline void Transpose( const Mat4f& i_matrix, Mat4f& o_transposedMatrix )
 {
     o_transposedMatrix = Mat4f( i_matrix( 0, 0 ),
                                 i_matrix( 1, 0 ),

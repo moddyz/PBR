@@ -14,7 +14,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for vectorType in context.vectorTypes %}
 PBR_API
-inline void FnRayPosition( const {{ vectorType.className }}& i_origin,
+inline void RayPosition( const {{ vectorType.className }}& i_origin,
                            const {{ vectorType.className }}& i_direction,
                            const {{ vectorType.elementType.className }}& i_scale,
                            {{ vectorType.className }}& o_rayPosition )

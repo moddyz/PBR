@@ -12,7 +12,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnBoundsOffset( const {{ dataType.className }}& i_bounds,
+inline void BoundsOffset( const {{ dataType.className }}& i_bounds,
                             const {{ dataType.elements[0].type.className }}& i_point,
                             {{ dataType.elements[0].type.className }}& o_offset )
 {

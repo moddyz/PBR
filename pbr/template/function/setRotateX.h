@@ -14,10 +14,10 @@ PBR_NAMESPACE_BEGIN
 
 {% for matrixType in context.types %}
 PBR_API
-inline void FnSetRotateX( const {{ matrixType.elementType.className }}& i_degrees, {{ matrixType.className }}& o_matrix )
+inline void SetRotateX( const {{ matrixType.elementType.className }}& i_degrees, {{ matrixType.className }}& o_matrix )
 {
     {{ matrixType.elementType.className }} radians;
-    FnDegreesToRadians( i_degrees, radians );
+    DegreesToRadians( i_degrees, radians );
     {{ matrixType.elementType.className }} sine = std::sin( radians );
     {{ matrixType.elementType.className }} cosine = std::cos( radians );
     o_matrix( 1, 1 ) = cosine;

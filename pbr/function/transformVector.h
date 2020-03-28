@@ -10,7 +10,7 @@
 PBR_NAMESPACE_BEGIN
 
 PBR_API
-inline void FnTransformVector( const Vec3f& i_vector, const Mat4f& i_matrix, Vec3f& o_vector )
+inline void TransformVector( const Vec3f& i_vector, const Mat4f& i_matrix, Vec3f& o_vector )
 {
     o_vector[ 0 ] =
         i_vector[ 0 ] * i_matrix( 0, 0 ) + i_vector[ 1 ] * i_matrix( 0, 1 ) + i_vector[ 2 ] * i_matrix( 0, 2 );

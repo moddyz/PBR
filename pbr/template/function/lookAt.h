@@ -18,17 +18,17 @@ PBR_NAMESPACE_BEGIN
 
 {% for vectorType, matrixType in context.types -%}
 PBR_API
-inline void FnLookAt( const {{ vectorType.className }}& i_position,
+inline void LookAt( const {{ vectorType.className }}& i_position,
                       const {{ vectorType.className }}& i_lookAt,
                       const {{ vectorType.className }}& i_upVector,
                       {{ matrixType.className }}& o_matrix )
 {
-    FnSetTranslate( i_position, o_matrix );
+    SetTranslate( i_position, o_matrix );
     o_matrix( 3, 3 ) = 1.0;
 
     // Compute forward vector.
     {{ vectorType.className }} forward = i_lookAt - i_position;
-    FnNormalise( forward, forward );
+    Normalise( forward, forward );
 
     // Set forward as new Z-axis basis.
     o_matrix( 0, 2 ) = forward[ 0 ];
@@ -38,9 +38,9 @@ inline void FnLookAt( const {{ vectorType.className }}& i_position,
 
     // Compute right vector.
     {{ vectorType.className }} normUp, right;
-    FnNormalise( i_upVector, normUp );
-    FnCrossProduct( normUp, forward, right );
-    FnNormalise( right, right );
+    Normalise( i_upVector, normUp );
+    CrossProduct( normUp, forward, right );
+    Normalise( right, right );
 
     // Set right as new X-axis basis.
     o_matrix( 0, 0 ) = right[ 0 ];
@@ -51,7 +51,7 @@ inline void FnLookAt( const {{ vectorType.className }}& i_position,
     // Re-compute new up vector.
     // TODO: Explain why we have to do this.
     {{ vectorType.className }} newUp;
-    FnCrossProduct( forward, right, newUp );
+    CrossProduct( forward, right, newUp );
 
     // Set newUp as new X-axis basis.
     o_matrix( 0, 1 ) = newUp[ 0 ];

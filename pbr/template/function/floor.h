@@ -17,7 +17,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnFloor( const {{ dataType.className }}& i_value,
+inline void Floor( const {{ dataType.className }}& i_value,
                      {{ dataType.className }}& o_floored )
 {
 {% if dataType.isScalar -%}

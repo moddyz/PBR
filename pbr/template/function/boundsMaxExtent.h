@@ -14,11 +14,11 @@ PBR_NAMESPACE_BEGIN
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnBoundsMaxExtent( const {{ dataType.className }}& i_bounds,
+inline void BoundsMaxExtent( const {{ dataType.className }}& i_bounds,
                                size_t& o_maxExtentIndex )
 {
     {{ dataType.elements[0].type.className }} diagonal;
-    FnBoundsDiagonal( i_bounds, diagonal );
+    BoundsDiagonal( i_bounds, diagonal );
     if ( diagonal[ 0 ] > diagonal[ 1 ] && diagonal[ 0 ] > diagonal[ 2 ] )
     {
         o_maxExtentIndex = 0;

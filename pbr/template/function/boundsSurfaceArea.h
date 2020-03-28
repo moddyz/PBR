@@ -14,11 +14,11 @@ PBR_NAMESPACE_BEGIN
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnBoundsSurfaceArea( const {{ dataType.className }}& i_bounds,
+inline void BoundsSurfaceArea( const {{ dataType.className }}& i_bounds,
                                  {{ dataType.elements[0].type.elementType.className }}& o_surfaceArea )
 {
     {{ dataType.elements[0].type.className }} diagonal;
-    FnBoundsDiagonal( i_bounds, diagonal );
+    BoundsDiagonal( i_bounds, diagonal );
     o_surfaceArea = ( diagonal.X() * diagonal.Y() ) + ( diagonal.Y() * diagonal.Z() ) + ( diagonal.X() * diagonal.Z() );
 }
 {% endfor %}

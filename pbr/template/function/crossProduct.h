@@ -12,7 +12,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for vectorType in context.vectorTypes -%}
 PBR_API
-inline void FnCrossProduct( const {{ vectorType.className }}& i_lhs,
+inline void CrossProduct( const {{ vectorType.className }}& i_lhs,
                             const {{ vectorType.className }}& i_rhs,
                             {{ vectorType.className }}& o_product )
 {

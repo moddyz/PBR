@@ -12,7 +12,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for matrixType in context.types %}
 PBR_API
-inline void FnIsIdentity( const {{ matrixType.className }}& i_matrix, bool& o_isIdentity )
+inline void IsIdentity( const {{ matrixType.className }}& i_matrix, bool& o_isIdentity )
 {
     o_isIdentity =
 {% for row in range(matrixType.dims[0]) -%}

@@ -10,7 +10,7 @@ PBR_NAMESPACE_BEGIN
 
 /// Compute the squared length of a vector.
 PBR_API
-inline void FnLengthSquared( const Vec2f& i_vector, float& o_lengthSquared )
+inline void LengthSquared( const Vec2f& i_vector, float& o_lengthSquared )
 {
     o_lengthSquared = 0;
     o_lengthSquared += i_vector[ 0 ] * i_vector[ 0 ];
@@ -19,7 +19,7 @@ inline void FnLengthSquared( const Vec2f& i_vector, float& o_lengthSquared )
 
 /// Compute the squared length of a vector.
 PBR_API
-inline void FnLengthSquared( const Vec3f& i_vector, float& o_lengthSquared )
+inline void LengthSquared( const Vec3f& i_vector, float& o_lengthSquared )
 {
     o_lengthSquared = 0;
     o_lengthSquared += i_vector[ 0 ] * i_vector[ 0 ];
@@ -29,7 +29,7 @@ inline void FnLengthSquared( const Vec3f& i_vector, float& o_lengthSquared )
 
 /// Compute the squared length of a vector.
 PBR_API
-inline void FnLengthSquared( const Vec4f& i_vector, float& o_lengthSquared )
+inline void LengthSquared( const Vec4f& i_vector, float& o_lengthSquared )
 {
     o_lengthSquared = 0;
     o_lengthSquared += i_vector[ 0 ] * i_vector[ 0 ];

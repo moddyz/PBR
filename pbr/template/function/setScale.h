@@ -13,7 +13,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for vectorType, matrixType in context.types %}
 PBR_API
-inline void FnSetScale( const {{ vectorType.className }}& i_scale, {{ matrixType.className }}& o_matrix )
+inline void SetScale( const {{ vectorType.className }}& i_scale, {{ matrixType.className }}& o_matrix )
 {
 {% for row in range(matrixType.dims[0]) -%}
 {% for col in range(matrixType.dims[1]) -%}

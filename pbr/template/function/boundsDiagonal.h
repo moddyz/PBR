@@ -12,7 +12,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnBoundsDiagonal( const {{ dataType.className }}& i_bounds,
+inline void BoundsDiagonal( const {{ dataType.className }}& i_bounds,
                               {{ dataType.elements[0].type.className }}& o_diagonal )
 {
     o_diagonal = i_bounds.Max() - i_bounds.Min();

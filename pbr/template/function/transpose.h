@@ -12,7 +12,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for matrixType in context.types %}
 PBR_API
-inline void FnTranspose( const {{ matrixType.className }}& i_matrix,
+inline void Transpose( const {{ matrixType.className }}& i_matrix,
                                {{ matrixType.className }}& o_transposedMatrix )
 {
     o_transposedMatrix = {{ matrixType.className }}(

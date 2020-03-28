@@ -12,10 +12,10 @@ PBR_NAMESPACE_BEGIN
 /// Computes the index of the bounding box axes which is the longest.
 
 PBR_API
-inline void FnBoundsMaxExtent( const Bounds3i& i_bounds, size_t& o_maxExtentIndex )
+inline void BoundsMaxExtent( const Bounds3i& i_bounds, size_t& o_maxExtentIndex )
 {
     Vec3i diagonal;
-    FnBoundsDiagonal( i_bounds, diagonal );
+    BoundsDiagonal( i_bounds, diagonal );
     if ( diagonal[ 0 ] > diagonal[ 1 ] && diagonal[ 0 ] > diagonal[ 2 ] )
     {
         o_maxExtentIndex = 0;
@@ -34,10 +34,10 @@ inline void FnBoundsMaxExtent( const Bounds3i& i_bounds, size_t& o_maxExtentInde
 }
 
 PBR_API
-inline void FnBoundsMaxExtent( const Bounds3f& i_bounds, size_t& o_maxExtentIndex )
+inline void BoundsMaxExtent( const Bounds3f& i_bounds, size_t& o_maxExtentIndex )
 {
     Vec3f diagonal;
-    FnBoundsDiagonal( i_bounds, diagonal );
+    BoundsDiagonal( i_bounds, diagonal );
     if ( diagonal[ 0 ] > diagonal[ 1 ] && diagonal[ 0 ] > diagonal[ 2 ] )
     {
         o_maxExtentIndex = 0;

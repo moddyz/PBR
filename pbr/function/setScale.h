@@ -12,14 +12,14 @@
 PBR_NAMESPACE_BEGIN
 
 PBR_API
-inline void FnSetScale( const Vec2f& i_scale, Mat3f& o_matrix )
+inline void SetScale( const Vec2f& i_scale, Mat3f& o_matrix )
 {
     o_matrix( 0, 0 ) = i_scale[ 0 ];
     o_matrix( 1, 1 ) = i_scale[ 1 ];
 }
 
 PBR_API
-inline void FnSetScale( const Vec3f& i_scale, Mat4f& o_matrix )
+inline void SetScale( const Vec3f& i_scale, Mat4f& o_matrix )
 {
     o_matrix( 0, 0 ) = i_scale[ 0 ];
     o_matrix( 1, 1 ) = i_scale[ 1 ];

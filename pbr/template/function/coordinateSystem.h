@@ -19,7 +19,7 @@ PBR_NAMESPACE_BEGIN
 /// Compute a local coordinate system from \ref i_vector.
 /// The result is two new vectors, of which all three are mutually orthogonal.
 PBR_API
-inline void FnCoordinateSystem( const {{ vectorType.className }}& i_vector,
+inline void CoordinateSystem( const {{ vectorType.className }}& i_vector,
                                 {{ vectorType.className }}& o_vectorA,
                                 {{ vectorType.className }}& o_vectorB )
 {
@@ -38,10 +38,10 @@ inline void FnCoordinateSystem( const {{ vectorType.className }}& i_vector,
     {
         o_vectorA = {{vectorType.className}}( 0, i_vector.Z(), -i_vector.Y() );
     }
-    FnNormalise( o_vectorA, o_vectorA );
+    Normalise( o_vectorA, o_vectorA );
 
     // Compute the second output vector by via the cross product of the input & first output vector.
-    FnCrossProduct( i_vector, o_vectorA, o_vectorB );
+    CrossProduct( i_vector, o_vectorA, o_vectorB );
 }
 {%- endfor %}
 

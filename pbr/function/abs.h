@@ -17,26 +17,26 @@ PBR_NAMESPACE_BEGIN
 /// If the value type is a vector, the absolute value will be performed element-wise.
 
 PBR_API
-inline void FnAbs( const int& i_value, int& o_absoluteValue )
+inline void Abs( const int& i_value, int& o_absoluteValue )
 {
     o_absoluteValue = std::abs( i_value );
 }
 
 PBR_API
-inline void FnAbs( const float& i_value, float& o_absoluteValue )
+inline void Abs( const float& i_value, float& o_absoluteValue )
 {
     o_absoluteValue = std::abs( i_value );
 }
 
 PBR_API
-inline void FnAbs( const Vec2f& i_value, Vec2f& o_absoluteValue )
+inline void Abs( const Vec2f& i_value, Vec2f& o_absoluteValue )
 {
     o_absoluteValue[ 0 ] = std::abs( i_value[ 0 ] );
     o_absoluteValue[ 1 ] = std::abs( i_value[ 1 ] );
 }
 
 PBR_API
-inline void FnAbs( const Vec3f& i_value, Vec3f& o_absoluteValue )
+inline void Abs( const Vec3f& i_value, Vec3f& o_absoluteValue )
 {
     o_absoluteValue[ 0 ] = std::abs( i_value[ 0 ] );
     o_absoluteValue[ 1 ] = std::abs( i_value[ 1 ] );
@@ -44,7 +44,7 @@ inline void FnAbs( const Vec3f& i_value, Vec3f& o_absoluteValue )
 }
 
 PBR_API
-inline void FnAbs( const Vec4f& i_value, Vec4f& o_absoluteValue )
+inline void Abs( const Vec4f& i_value, Vec4f& o_absoluteValue )
 {
     o_absoluteValue[ 0 ] = std::abs( i_value[ 0 ] );
     o_absoluteValue[ 1 ] = std::abs( i_value[ 1 ] );
@@ -53,14 +53,14 @@ inline void FnAbs( const Vec4f& i_value, Vec4f& o_absoluteValue )
 }
 
 PBR_API
-inline void FnAbs( const Vec2i& i_value, Vec2i& o_absoluteValue )
+inline void Abs( const Vec2i& i_value, Vec2i& o_absoluteValue )
 {
     o_absoluteValue[ 0 ] = std::abs( i_value[ 0 ] );
     o_absoluteValue[ 1 ] = std::abs( i_value[ 1 ] );
 }
 
 PBR_API
-inline void FnAbs( const Vec3i& i_value, Vec3i& o_absoluteValue )
+inline void Abs( const Vec3i& i_value, Vec3i& o_absoluteValue )
 {
     o_absoluteValue[ 0 ] = std::abs( i_value[ 0 ] );
     o_absoluteValue[ 1 ] = std::abs( i_value[ 1 ] );
@@ -68,7 +68,7 @@ inline void FnAbs( const Vec3i& i_value, Vec3i& o_absoluteValue )
 }
 
 PBR_API
-inline void FnAbs( const Vec4i& i_value, Vec4i& o_absoluteValue )
+inline void Abs( const Vec4i& i_value, Vec4i& o_absoluteValue )
 {
     o_absoluteValue[ 0 ] = std::abs( i_value[ 0 ] );
     o_absoluteValue[ 1 ] = std::abs( i_value[ 1 ] );

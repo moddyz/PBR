@@ -17,7 +17,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnAbs( const {{ dataType.className }}& i_value,
+inline void Abs( const {{ dataType.className }}& i_value,
                     {{ dataType.className }}& o_absoluteValue )
 {
 {% if dataType.isScalar -%}

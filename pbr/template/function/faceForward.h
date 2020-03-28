@@ -16,14 +16,14 @@ PBR_NAMESPACE_BEGIN
 
 {% for vectorType in context.vectorTypes %}
 PBR_API
-inline void FnFaceForward( const {{ vectorType.className }}& i_normal,
+inline void FaceForward( const {{ vectorType.className }}& i_normal,
                            const {{ vectorType.className }}& i_direction,
                            {{ vectorType.className }}& o_faceForwardNormal )
 {
     PBR_ASSERT_NORMALISED( i_normal );
 
     {{ vectorType.elementType.className }} product = 0.0f;
-    FnDotProduct( i_normal, i_direction, product );
+    DotProduct( i_normal, i_direction, product );
     o_faceForwardNormal = product >= 0 ? i_normal : -i_normal;
 }
 {% endfor %}

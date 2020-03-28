@@ -15,14 +15,14 @@ PBR_NAMESPACE_BEGIN
 /// This is generally used to position and orient a camera in a scene.
 
 PBR_API
-inline void FnLookAt( const Vec3f& i_position, const Vec3f& i_lookAt, const Vec3f& i_upVector, Mat4f& o_matrix )
+inline void LookAt( const Vec3f& i_position, const Vec3f& i_lookAt, const Vec3f& i_upVector, Mat4f& o_matrix )
 {
-    FnSetTranslate( i_position, o_matrix );
+    SetTranslate( i_position, o_matrix );
     o_matrix( 3, 3 ) = 1.0;
 
     // Compute forward vector.
     Vec3f forward = i_lookAt - i_position;
-    FnNormalise( forward, forward );
+    Normalise( forward, forward );
 
     // Set forward as new Z-axis basis.
     o_matrix( 0, 2 ) = forward[ 0 ];
@@ -32,9 +32,9 @@ inline void FnLookAt( const Vec3f& i_position, const Vec3f& i_lookAt, const Vec3
 
     // Compute right vector.
     Vec3f normUp, right;
-    FnNormalise( i_upVector, normUp );
-    FnCrossProduct( normUp, forward, right );
-    FnNormalise( right, right );
+    Normalise( i_upVector, normUp );
+    CrossProduct( normUp, forward, right );
+    Normalise( right, right );
 
     // Set right as new X-axis basis.
     o_matrix( 0, 0 ) = right[ 0 ];
@@ -45,7 +45,7 @@ inline void FnLookAt( const Vec3f& i_position, const Vec3f& i_lookAt, const Vec3
     // Re-compute new up vector.
     // TODO: Explain why we have to do this.
     Vec3f newUp;
-    FnCrossProduct( forward, right, newUp );
+    CrossProduct( forward, right, newUp );
 
     // Set newUp as new X-axis basis.
     o_matrix( 0, 1 ) = newUp[ 0 ];

@@ -12,7 +12,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for dataType in context.types %}
 PBR_API
-inline void FnBoundsOverlap( const {{ dataType.className }}& i_boundsA,
+inline void BoundsOverlap( const {{ dataType.className }}& i_boundsA,
                              const {{ dataType.className }}& i_boundsB,
                              bool& o_overlaps )
 {

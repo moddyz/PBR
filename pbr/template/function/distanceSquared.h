@@ -14,12 +14,12 @@ PBR_NAMESPACE_BEGIN
 
 {% for vectorType in context.vectorTypes %}
 PBR_API
-inline void FnDistanceSquared( const {{ vectorType.className }}& i_vectorA,
+inline void DistanceSquared( const {{ vectorType.className }}& i_vectorA,
                                const {{ vectorType.className }}& i_vectorB,
                                {{ vectorType.elementType.className }}& o_distanceSquared )
 {
     {{ vectorType.className }} diffVector = i_vectorA - i_vectorB;
-    FnLengthSquared( diffVector, o_distanceSquared );
+    LengthSquared( diffVector, o_distanceSquared );
 }
 {% endfor %}
 

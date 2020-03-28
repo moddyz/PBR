@@ -21,7 +21,7 @@ PBR_NAMESPACE_BEGIN
 {% for dataType in context.types %}
 {% if dataType.isScalar or dataType.isVector %}
 PBR_API
-inline void FnLerp( const float& i_factor,
+inline void Lerp( const float& i_factor,
                     const {{ dataType.className }}& i_a,
                     const {{ dataType.className }}& i_b,
                     {{ dataType.className }}& o_interpolated )
@@ -32,7 +32,7 @@ inline void FnLerp( const float& i_factor,
     o_interpolated = ( ( 1.0f - i_factor ) * i_a ) + ( i_factor * i_b );
 }
 {% elif dataType.isComposite %}
-inline void FnLerp( const {{ dataType.elements[0].type.className }}& i_factor,
+inline void Lerp( const {{ dataType.elements[0].type.className }}& i_factor,
                     const {{ dataType.className }}& i_bounds,
                     {{ dataType.elements[0].type.className }}& o_interpolated )
 {
@@ -43,7 +43,7 @@ inline void FnLerp( const {{ dataType.elements[0].type.className }}& i_factor,
 {%- endfor %}
 
 {% for index in range(dataType.elements[0].type.elementSize) -%}
-    FnLerp( i_factor[ {{ index }} ],
+    Lerp( i_factor[ {{ index }} ],
             i_bounds.Min()[ {{ index }} ],
             i_bounds.Max()[ {{ index }} ],
             o_interpolated[ {{ index }} ] );

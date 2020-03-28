@@ -14,10 +14,10 @@ PBR_NAMESPACE_BEGIN
 
 {% for vectorType in context.vectorTypes %}
 PBR_API
-inline void FnNormalise( const {{ vectorType.className }}& i_vector, {{ vectorType.className }}& o_normalised )
+inline void Normalise( const {{ vectorType.className }}& i_vector, {{ vectorType.className }}& o_normalised )
 {
     {{ vectorType.elementType.className }} length;
-    FnLength( i_vector, length );
+    Length( i_vector, length );
     o_normalised = i_vector / length;
 }
 {% endfor %}

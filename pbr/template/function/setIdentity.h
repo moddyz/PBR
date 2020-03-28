@@ -12,7 +12,7 @@ PBR_NAMESPACE_BEGIN
 
 {% for matrixType in context.types %}
 PBR_API
-inline void FnSetIdentity( {{ matrixType.className }}& o_identityMatrix )
+inline void SetIdentity( {{ matrixType.className }}& o_identityMatrix )
 {
     o_identityMatrix = {{ matrixType.className }}(
 {% for row in range(matrixType.dims[0]) -%}
