@@ -142,8 +142,6 @@ TEST_CASE( "lookAt" )
     LookAt( position, lookAt, up, matrix );
 
     CHECK( matrix == pbr::Mat4f( 1.0, 0.0, 0.0, 2.0, 0.0, 1.0, 0.0, 4.0, 0.0, 0.0, 1.0, 3.0, 0.0, 0.0, 0.0, 1.0 ) );
-
-    printf( "Matrix: %s\n", matrix.ToString().c_str() );
 }
 
 TEST_CASE( "min" )
