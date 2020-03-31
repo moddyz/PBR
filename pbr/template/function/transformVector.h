@@ -14,11 +14,13 @@ PBR_NAMESPACE_BEGIN
 {% for vectorType, matrixType in context.types %}
 PBR_API
 inline void TransformVector( const {{ vectorType.className }}& i_vector,
-                               const {{ matrixType.className }}& i_matrix,
-                               {{ vectorType.className }}& o_vector )
+                             const {{ matrixType.className }}& i_matrix,
+                             {{ vectorType.className }}& o_vector )
 {
+
+    {{ vectorType.className }} vector;
 {% for index in range(vectorType.elementSize) -%}
-    o_vector[ {{ index }} ] =
+    vector[ {{ index }} ] =
 {%- for col in range(matrixType.dims[1] - 1) -%}
     i_vector[ {{ col }} ] * i_matrix( {{ index }}, {{ col }} )
 {%- if col + 2 < matrixType.dims[1] -%}
@@ -28,6 +30,8 @@ inline void TransformVector( const {{ vectorType.className }}& i_vector,
 {%- endif -%}
 {%- endfor -%}
 {%- endfor -%}
+
+    o_vector = vector;
 }
 {% endfor %}
 

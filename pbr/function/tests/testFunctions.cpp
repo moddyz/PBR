@@ -252,11 +252,11 @@ TEST_CASE( "transformVector" )
     pbr::SetTranslate( pbr::Vec3f( 1.0f, 5.0f, 9.0f ), matrix );
 
     // Transform vector.
-    pbr::Vec3f vector;
-    pbr::TransformPoint( vector, matrix, vector );
+    pbr::Vec3f vector( 0.0, 0.0, 0.0 );
+    pbr::TransformVector( vector, matrix, vector );
 
-    // Check.
-    CHECK( vector == pbr::Vec3f( 1.0f, 5.0f, 9.0f ) );
+    // Check. (translations do not affect vectors!)
+    CHECK( vector == pbr::Vec3f( 0.0, 0.0, 0.0 ) );
 }
 
 TEST_CASE( "setTranslate" )
