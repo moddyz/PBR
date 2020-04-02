@@ -22,6 +22,7 @@
 #include <pbr/function/lengthSquared.h>
 #include <pbr/function/lerp.h>
 #include <pbr/function/lookAt.h>
+#include <pbr/function/matrixProduct.h>
 #include <pbr/function/max.h>
 #include <pbr/function/min.h>
 #include <pbr/function/normalise.h>

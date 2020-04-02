@@ -27,6 +27,7 @@
 #include <pbr/function/lengthSquared.h>
 #include <pbr/function/lerp.h>
 #include <pbr/function/lookAt.h>
+#include <pbr/function/matrixProduct.h>
 #include <pbr/function/max.h>
 #include <pbr/function/min.h>
 #include <pbr/function/normalise.h>
@@ -205,6 +206,16 @@ TEST_CASE( "setIdentity" )
     pbr::Mat4f matrix;
     pbr::SetIdentity( matrix );
     CHECK( matrix == pbr::Mat4f( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
+}
+
+TEST_CASE( "matrixProduct" )
+{
+    pbr::Mat4f matrixA, matrixB, matrixC;
+    pbr::SetIdentity( matrixA );
+    pbr::SetIdentity( matrixB );
+
+    pbr::MatrixProduct( matrixA, matrixB, matrixC );
+    CHECK( matrixC == pbr::Mat4f( 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ) );
 }
 
 TEST_CASE( "isIdentity" )
