@@ -42,6 +42,7 @@
 #include <pbr/function/setRotateZ.h>
 #include <pbr/function/setScale.h>
 #include <pbr/function/setTranslate.h>
+#include <pbr/function/transformBounds.h>
 #include <pbr/function/transformPoint.h>
 #include <pbr/function/transformVector.h>
 #include <pbr/function/transpose.h>
@@ -238,6 +239,22 @@ TEST_CASE( "transpose" )
     pbr::Transpose( matrix, transposedMatrix );
     CHECK( transposedMatrix ==
            pbr::Mat4f( 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0 ) );
+}
+
+TEST_CASE( "transformBounds" )
+{
+    // Construct transformation matrix.
+    pbr::Mat4f matrix;
+    pbr::SetIdentity( matrix );
+    pbr::SetTranslate( pbr::Vec3f( 1.0f, 5.0f, 9.0f ), matrix );
+
+    // Transform point.
+    pbr::Bounds3f bounds( pbr::Vec3f( 0.0, 0.0, 0.0 ), pbr::Vec3f( 1.0, 1.0, 1.0 ) );
+    pbr::TransformBounds( matrix, bounds, bounds );
+
+    // Check.
+    CHECK( bounds.Min() == pbr::Vec3f( 1.0f, 5.0f, 9.0f ) );
+    CHECK( bounds.Max() == pbr::Vec3f( 2.0f, 6.0f, 10.0f ) );
 }
 
 TEST_CASE( "transformPoint" )

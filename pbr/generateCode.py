@@ -666,6 +666,12 @@ def GenFunctions():
         types=[
             (VectorType((3,), PODType(FLOAT)), VectorType((4,4), PODType(FLOAT))),
         ]),
+        FunctionGroup([
+            "transformBounds.h",
+        ],
+        types=[
+            (COMPOSITE_TYPES["Bounds3f"], VectorType((4,4), PODType(FLOAT))),
+        ]),
     ]
 
     filePaths = []
@@ -692,5 +698,3 @@ if __name__ == "__main__":
     filePaths = GenTypes()
     filePaths += GenFunctions()
     FormatCode(filePaths)
-
-
