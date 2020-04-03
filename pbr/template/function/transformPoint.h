@@ -13,9 +13,9 @@ PBR_NAMESPACE_BEGIN
 
 {% for vectorType, matrixType in context.types %}
 PBR_API
-inline void TransformPoint( const {{ vectorType.className }}& i_point,
-                              const {{ matrixType.className }}& i_matrix,
-                              {{ vectorType.className }}& o_point )
+inline void TransformPoint( const {{ matrixType.className }}& i_matrix,
+                            const {{ vectorType.className }}& i_point,
+                            {{ vectorType.className }}& o_point )
 {
 {% for index in range(vectorType.elementSize + 1) -%}
 {%- if index == 3 -%}

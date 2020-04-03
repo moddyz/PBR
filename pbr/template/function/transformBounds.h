@@ -19,8 +19,8 @@ inline void TransformBounds( const {{ matrixType.className }}& i_matrix,
                              const {{ boundsType.className }}& i_bounds,
                              {{ boundsType.className }}& o_bounds )
 {
-    TransformPoint( i_bounds.Min(), i_matrix, o_bounds.Min() );
-    TransformPoint( i_bounds.Max(), i_matrix, o_bounds.Max() );
+    TransformPoint( i_matrix, i_bounds.Min(), o_bounds.Min() );
+    TransformPoint( i_matrix, i_bounds.Max(), o_bounds.Max() );
 }
 {% endfor %}
 

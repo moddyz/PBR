@@ -266,7 +266,7 @@ TEST_CASE( "transformPoint" )
 
     // Transform point.
     pbr::Vec3f point;
-    pbr::TransformPoint( point, matrix, point );
+    pbr::TransformPoint( matrix, point, point );
 
     // Check.
     CHECK( point == pbr::Vec3f( 1.0f, 5.0f, 9.0f ) );
@@ -281,7 +281,7 @@ TEST_CASE( "transformVector" )
 
     // Transform vector.
     pbr::Vec3f vector( 0.0, 0.0, 0.0 );
-    pbr::TransformVector( vector, matrix, vector );
+    pbr::TransformVector( matrix, vector, vector );
 
     // Check. (translations do not affect vectors!)
     CHECK( vector == pbr::Vec3f( 0.0, 0.0, 0.0 ) );
