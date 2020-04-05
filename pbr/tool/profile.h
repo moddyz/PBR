@@ -32,7 +32,6 @@ class Profile
 {
 public:
     explicit Profile( const char* i_file, uint32_t i_line, const char* i_string );
-    ~Profile() = default;
 
     // Cannot be copied.
     Profile( const Profile& i_profile ) = delete;
@@ -59,7 +58,7 @@ class ScopedProfile final : public Profile
 {
 public:
     explicit ScopedProfile( const char* i_file, uint32_t i_line, const char* i_string );
-    ~ScopedProfile();
+    virtual ~ScopedProfile();
 
     // Cannot be copied.
     ScopedProfile( const ScopedProfile& i_profile ) = delete;
