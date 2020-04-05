@@ -28,14 +28,11 @@ FUNCTION_DIR = "function"
 # Prefix for the class names of types.
 TYPES_CLASS_PREFIX = ""
 
-# Kinds of arithmetic operators.
-ARITHMETIC_OPERATORS = ['+', '-', '*', '/']
-
 # POD types we are interested in generating code for.  Double is omitted for the time being.
 FLOAT = "float"
 INT = "int"
 
-# COMPOSITE_TYPES is a dict of key (composite type name) -> value (composite type object)
+# COMPOSITE_TYPES is a dict of type name (str) -> type object (CompositeType).
 # It is populated in GenCompositeTypes.
 COMPOSITE_TYPES = {}
 
