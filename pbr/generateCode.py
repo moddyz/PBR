@@ -32,9 +32,9 @@ TYPES_CLASS_PREFIX = ""
 FLOAT = "float"
 INT = "int"
 
-# COMPOSITE_TYPES is a dict of type name (str) -> type object (CompositeType).
+# TYPES is a dict of type name (str) -> type object (CompositeType).
 # It is populated in GenerateCompositeTypes.
-COMPOSITE_TYPES = {}
+TYPES = {}
 
 #
 # Utilities
@@ -73,7 +73,7 @@ def FormatCode(fileNames):
     RunCommand(command)
 
 
-def GetCodeGenTemplate(templateName):
+def GetTemplateFile(templateName):
     """
     Args:
         templateName (str): name of the template file.
@@ -303,7 +303,7 @@ class CompositeType(DataType):
         return True
 
 
-def GenCompositeType(compositeType):
+def GenerateCompositeType(compositeType):
     """
     Generate a single C++ composite type source file.
 
@@ -316,13 +316,13 @@ def GenCompositeType(compositeType):
     filePath = os.path.join(os.path.abspath(TYPE_DIR), compositeType.headerFileName)
     code = GenerateCode(
         compositeType,
-        GetCodeGenTemplate(os.path.join(TYPE_DIR, "compositeType.h"))
+        GetTemplateFile(os.path.join(TYPE_DIR, "compositeType.h"))
     )
     WriteFile(filePath, code)
     return filePath
 
 
-def GenBoundsCompositeTypes():
+def GenerateBoundsCompositeTypes():
     """
     Generate Bounds composite type source file.
 
@@ -377,10 +377,10 @@ def GenBoundsCompositeTypes():
             ]
         )
 
-        # Cache composite type into global COMPOSITE_TYPES, to be queried in function generation in a later stage.
-        COMPOSITE_TYPES[compositeType.className] = compositeType
+        # Cache composite type into global TYPES, to be queried in function generation in a later stage.
+        TYPES[compositeType.className] = compositeType
 
-        filePaths.append(GenCompositeType(compositeType))
+        filePaths.append(GenerateCompositeType(compositeType))
 
     return filePaths
 
@@ -393,7 +393,7 @@ def GenerateCompositeTypes():
         list: paths to generated source files.
     """
     filePaths = []
-    filePaths += GenBoundsCompositeTypes()
+    filePaths += GenerateBoundsCompositeTypes()
     return filePaths
 
 
@@ -418,7 +418,7 @@ def GenerateArrayTypes():
     filePaths = []
     for arrayType in arrayTypes:
         filePath = os.path.join(os.path.abspath(TYPE_DIR), arrayType.headerFileName)
-        code = GenerateCode(arrayType, GetCodeGenTemplate(os.path.join(TYPE_DIR, 'arrayType.h')))
+        code = GenerateCode(arrayType, GetTemplateFile(os.path.join(TYPE_DIR, 'arrayType.h')))
         WriteFile(filePath, code)
         filePaths.append(filePath)
 
@@ -451,7 +451,7 @@ def GenerateVectorTypes():
     filePaths = []
     headerFileNames = []
     for vectorType in VECTOR_TYPES:
-        code = GenerateCode(vectorType, GetCodeGenTemplate(os.path.join(TYPE_DIR, "vectorType.h")))
+        code = GenerateCode(vectorType, GetTemplateFile(os.path.join(TYPE_DIR, "vectorType.h")))
         filePath = os.path.join(os.path.abspath(TYPE_DIR), vectorType.headerFileName)
         WriteFile(filePath, code)
         filePaths.append(filePath)
@@ -477,7 +477,7 @@ def GenerateTypes():
     includePaths = [os.path.join(PROJECT_DIR, TYPE_DIR, os.path.split(filePath)[1]) for filePath in filePaths]
     aggregateCode = GenerateCode(
         AggregateIncludesCpp(includePaths),
-        GetCodeGenTemplate('aggregateIncludes.cpp')
+        GetTemplateFile('aggregateIncludes.cpp')
     )
     aggregateCppPath = os.path.join(os.path.abspath(TYPE_DIR), "allTypes.cpp")
     WriteFile(aggregateCppPath, aggregateCode)
@@ -506,7 +506,7 @@ def GenerateFunction(functionFileName, **kwargs):
     filePath = os.path.join(os.path.abspath(FUNCTION_DIR), functionFileName)
     code = GenerateCode(
         function,
-        GetCodeGenTemplate(os.path.join(FUNCTION_DIR, functionFileName))
+        GetTemplateFile(os.path.join(FUNCTION_DIR, functionFileName))
     )
     WriteFile(filePath, code)
 
@@ -570,8 +570,8 @@ def GenerateFunctions():
             VectorType((2,), PODType(FLOAT)),
             VectorType((3,), PODType(FLOAT)),
             VectorType((4,), PODType(FLOAT)),
-            COMPOSITE_TYPES["Bounds2f"],
-            COMPOSITE_TYPES["Bounds3f"],
+            TYPES["Bounds2f"],
+            TYPES["Bounds3f"],
         ]),
         FunctionGroup([
             "min.h",
@@ -607,10 +607,10 @@ def GenerateFunctions():
             "boundsDiagonal.h",
         ],
         types=[
-            COMPOSITE_TYPES["Bounds2i"],
-            COMPOSITE_TYPES["Bounds2f"],
-            COMPOSITE_TYPES["Bounds3i"],
-            COMPOSITE_TYPES["Bounds3f"],
+            TYPES["Bounds2i"],
+            TYPES["Bounds2f"],
+            TYPES["Bounds3i"],
+            TYPES["Bounds3f"],
         ]),
         FunctionGroup([
             "boundsSurfaceArea.h",
@@ -618,15 +618,15 @@ def GenerateFunctions():
             "boundsMaxExtent.h",
         ],
         types=[
-            COMPOSITE_TYPES["Bounds3i"],
-            COMPOSITE_TYPES["Bounds3f"],
+            TYPES["Bounds3i"],
+            TYPES["Bounds3f"],
         ]),
         FunctionGroup([
             "boundsOffset.h",
         ],
         types=[
-            COMPOSITE_TYPES["Bounds2f"],
-            COMPOSITE_TYPES["Bounds3f"],
+            TYPES["Bounds2f"],
+            TYPES["Bounds3f"],
         ]),
         FunctionGroup([
             "setIdentity.h",
@@ -667,7 +667,7 @@ def GenerateFunctions():
             "transformBounds.h",
         ],
         types=[
-            (COMPOSITE_TYPES["Bounds3f"], VectorType((4,4), PODType(FLOAT))),
+            (TYPES["Bounds3f"], VectorType((4,4), PODType(FLOAT))),
         ]),
     ]
 
@@ -682,7 +682,7 @@ def GenerateFunctions():
     includePaths = [os.path.join(PROJECT_DIR, FUNCTION_DIR, os.path.split(filePath)[1]) for filePath in filePaths]
     aggregateCode = GenerateCode(
         AggregateIncludesCpp(includePaths),
-        GetCodeGenTemplate('aggregateIncludes.cpp')
+        GetTemplateFile('aggregateIncludes.cpp')
     )
     aggregateCppPath = os.path.join(os.path.abspath(FUNCTION_DIR), "allFunctions.cpp")
     WriteFile(aggregateCppPath, aggregateCode)
