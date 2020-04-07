@@ -33,7 +33,7 @@ FLOAT = "float"
 INT = "int"
 
 # COMPOSITE_TYPES is a dict of type name (str) -> type object (CompositeType).
-# It is populated in GenCompositeTypes.
+# It is populated in GenerateCompositeTypes.
 COMPOSITE_TYPES = {}
 
 #
@@ -385,7 +385,7 @@ def GenBoundsCompositeTypes():
     return filePaths
 
 
-def GenCompositeTypes():
+def GenerateCompositeTypes():
     """
     Generate all composite type source files.
 
@@ -397,7 +397,7 @@ def GenCompositeTypes():
     return filePaths
 
 
-def GenArrayTypes():
+def GenerateArrayTypes():
     """
     Generate all array type source files.
 
@@ -440,7 +440,7 @@ VECTOR_TYPES = [
 ]
 
 
-def GenVectorTypes():
+def GenerateVectorTypes():
     """
     Generate all vector type source files.
 
@@ -460,7 +460,7 @@ def GenVectorTypes():
     return filePaths
 
 
-def GenTypes():
+def GenerateTypes():
     """
     Top-level entry point for generating all data type source files.
     Vectors and matrices types will be generated.
@@ -469,9 +469,9 @@ def GenTypes():
     Returns:
         list: paths to of generated source files.
     """
-    filePaths = GenVectorTypes()
-    filePaths += GenArrayTypes()
-    filePaths += GenCompositeTypes()
+    filePaths = GenerateVectorTypes()
+    filePaths += GenerateArrayTypes()
+    filePaths += GenerateCompositeTypes()
 
     # Generate aggregation cpp source.
     includePaths = [os.path.join(PROJECT_DIR, TYPE_DIR, os.path.split(filePath)[1]) for filePath in filePaths]
@@ -489,7 +489,7 @@ def GenTypes():
 # Functions
 #
 
-def GenFunction(functionFileName, **kwargs):
+def GenerateFunction(functionFileName, **kwargs):
     """
     Generate code for a function.
 
@@ -532,7 +532,7 @@ class FunctionGroup:
         self.kwargs = kwargs
 
 
-def GenFunctions():
+def GenerateFunctions():
     """
     Generate code for templatized function.
 
@@ -675,7 +675,7 @@ def GenFunctions():
 
     for functionGroup in functionGroups:
         for f in functionGroup.files:
-            filePath = GenFunction(f, **functionGroup.kwargs)
+            filePath = GenerateFunction(f, **functionGroup.kwargs)
             filePaths.append(filePath)
 
     # Generate aggregation cpp source.
@@ -692,6 +692,6 @@ def GenFunctions():
 
 
 if __name__ == "__main__":
-    filePaths = GenTypes()
-    filePaths += GenFunctions()
+    filePaths = GenerateTypes()
+    filePaths += GenerateFunctions()
     FormatCode(filePaths)
