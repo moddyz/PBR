@@ -1,41 +1,53 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.17)
 
 # Project Name
 project(
-    PBR VERSION 0.0
-    DESCRIPTION "Physically based rendering."
+    PBR
+    VERSION 0.0
+    DESCRIPTION "Implementation of a physically based renderer."
     LANGUAGES CXX
 )
 
+# Options
+option(BUILD_DOCUMENTATION "Build doxygen documentation." ON)
+
 # Cross-platform compatibility.
-if (UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE)
     set(LINUX TRUE)
 endif()
 
-# Find modules.
-list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake/modules")
-find_package(USD REQUIRED)
-find_package(OpenSubdiv REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(TBB REQUIRED)
-find_package(Boost
-    COMPONENTS
-        python
-    REQUIRED)
-find_package(PythonLibs 2.7 REQUIRED)
-
-list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake/macros")
+# Discover macros.
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
+                      ${CMAKE_CURRENT_SOURCE_DIR}/cmake/macros)
 include(Public)
 
-# Compiler options
-string(APPEND CMAKE_SHARED_LINKER_FLAGS " -Wl,--no-undefined")
-set(CMAKE_CXX_FLAGS_DEBUG "-DPBR_DEBUG")
-
+# Testing.
 if(BUILD_TESTING)
     enable_testing()
+    list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
+endif()
+
+if(BUILD_DOCUMENTATION)
+    file(
+        COPY ${CMAKE_CURRENT_SOURCE_DIR}/README.md
+        DESTINATION ${CMAKE_BINARY_DIR}
+    )
+
+    doxygen_documentation(
+        doxygen_docs
+        GENERATE_TAGFILE
+            TRUE
+        DOXYFILE
+            ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in
+        INPUTS
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/exampleSharedLibrary/
+    )
 endif()
 
 # Build targets.
 add_subdirectory(thirdparty)
-add_subdirectory(pbr)
-add_subdirectory(hdPbr)
+add_subdirectory(src)
+
+# Install exported targets.
+export_project(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake.in)
