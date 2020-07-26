@@ -4,7 +4,6 @@ An implementation of the book [Physically Based Rendering](http://www.pbr-book.o
 
 ## Table of Contents
 
-- [Programs](#programs)
 - [Library](#library)
 - [Documentation](#documentation)
 - [Building](#building)
