@@ -42,6 +42,5 @@ SpacesInSquareBrackets: true
 Standard: Cpp11
 
 # clang-11
-# IndentPPDirectives: AfterHash
 # AlignConsecutiveMacros: true
 # AlignEscapedNewLines: Right
