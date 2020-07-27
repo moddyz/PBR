@@ -14,12 +14,15 @@
 #define PBR_ASSERT( expr )                                                                                             \
     if ( !( expr ) )                                                                                                   \
     {                                                                                                                  \
-        pbr::PrintStacktrace( #expr );                                                                                  \
+        printf( "PBR_ASSERT failed for expression: %s, ", expr );                                                      \
+        pbr::PrintStacktrace();                                                                                        \
     }
 #define PBR_ASSERT_MSG( expr, format, ... )                                                                            \
     if ( !( expr ) )                                                                                                   \
     {                                                                                                                  \
-        pbr::PrintStacktrace( #expr, format, ##__VA_ARGS__ );                                                           \
+        printf( "PBR_ASSERT failed for expression: %s, ", expr );                                                      \
+        printf( format, ##__VA_ARGS__ );                                                                               \
+        pbr::PrintStacktrace();                                                                                        \
     }
 #else
 #define PBR_ASSERT( expr, ... ) void()
