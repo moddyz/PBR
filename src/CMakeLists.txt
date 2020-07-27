@@ -1,1 +1,1 @@
-add_subdirectory(pbr)
+add_subdirectories()

@@ -1,5 +1,1 @@
-file(
-    COPY backward.hpp
-    DESTINATION ${CMAKE_BINARY_DIR}/include/backward/
-)
-
+add_header_only_library(backward)

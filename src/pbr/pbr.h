@@ -4,6 +4,13 @@
 ///
 /// Implementation of a physically based renderer.
 
+#include <pbr/base/export.h>
+
+/// \def PBR_API
+///
+/// Mark a symbol for external linkage.
+#define PBR_API PBR_EXPORT
+
 /// \def PBR_NS
 ///
 /// The namespace hosting all the symbols in the pbr library.

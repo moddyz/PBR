@@ -41,7 +41,6 @@ if(BUILD_DOCUMENTATION)
             ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in
         INPUTS
             ${CMAKE_CURRENT_SOURCE_DIR}/src/
-            ${CMAKE_CURRENT_SOURCE_DIR}/src/exampleSharedLibrary/
     )
 endif()
 

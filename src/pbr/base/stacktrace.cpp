@@ -1,3 +1,4 @@
+#include <pbr/base/stacktrace.h>
 #include <pbr/base/log.h>
 
 #include <sstream>

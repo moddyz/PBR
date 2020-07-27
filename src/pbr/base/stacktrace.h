@@ -1,6 +1,6 @@
 #pragma once
 
-#include <pbr/api.h>
+#include <pbr/pbr.h>
 
 PBR_NS_OPEN
 
