@@ -1,6 +1,6 @@
 #pragma once
 
-/// \file base/stacktrace.h
+/// \file utils/stacktrace.h
 ///
 /// Functionality for printing the stacktrace.
 

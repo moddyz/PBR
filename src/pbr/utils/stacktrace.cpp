@@ -1,5 +1,5 @@
-#include <pbr/base/stacktrace.h>
-#include <pbr/base/log.h>
+#include <pbr/utils/stacktrace.h>
+#include <pbr/utils/log.h>
 
 #include <sstream>
 #include <stdarg.h>
