@@ -13,5 +13,6 @@ cpp_library(${ROOT_PREFIX}_${LIBRARY_SUFFIX}
         ${CPPFILES}
     LIBRARIES
         ${ROOT_PREFIX}_utils
+        gm
 )
 

@@ -64,25 +64,25 @@ public:
     // --------------------------------------------------------------------- //
 
     /// Getter for the origin.
-    inline const gm::Vec3f& GetOrigin() const
+    inline const gm::Vec3f& Origin() const
     {
         return m_origin;
     }
 
     /// Getter for the direction.
-    inline const gm::Vec3f& GetDirection() const
+    inline const gm::Vec3f& Direction() const
     {
         return m_direction;
     }
 
     /// Getter for the time.
-    inline const float& GetTime() const
+    inline const float& Time() const
     {
         return m_time;
     }
 
     /// Getter for the max magnitude.
-    inline const float& GetMaxMagnitude() const
+    inline const float& MaxMagnitude() const
     {
         return m_maxMagnitude;
     }
@@ -94,7 +94,7 @@ public:
     }
 
     /// Getter for the associated medium.
-    inline const Medium* GetMedium() const
+    inline const Medium* Medium() const
     {
         return m_medium;
     }
@@ -108,13 +108,13 @@ public:
     /// \param i_magnitude The magnitude or length factor.
     ///
     /// \return The computed position along the ray.
-    inline const gm::Vec3f ComputePosition( float i_magnitude ) const
+    inline const gm::Vec3f Position( float i_magnitude ) const
     {
         return gm::RayPosition( m_origin, m_direction, i_magnitude );
     }
 
     // --------------------------------------------------------------------- //
-    /// \name Debug
+    /// \name Utility
     // --------------------------------------------------------------------- //
 
     /// Get the string representation.  For debugging purposes.

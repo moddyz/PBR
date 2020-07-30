@@ -1,5 +1,9 @@
 #pragma once
 
+/// \file core/integrator.h
+///
+/// Integrator interface.
+
 #include <pbr/pbr.h>
 
 PBR_NS_OPEN
@@ -8,7 +12,7 @@ class Scene;
 
 /// \class Integrator
 ///
-/// Abstract base class serving as the interface for rendering a scene.
+/// Abstract base class to define an interface for rendering a scene.
 class Integrator
 {
 public:
