@@ -96,4 +96,17 @@ private:
     gm::Mat4f m_inverse;
 };
 
+/// Operator overload for << to enable writing the string representation of \p i_transform into an output
+/// stream \p o_outputStream.
+///
+/// \param o_outputStream the output stream to write into.
+/// \param i_transform the source composite value type.
+///
+/// \return the output stream.
+inline std::ostream& operator<<( std::ostream& o_outputStream, const Transform& i_transform )
+{
+    o_outputStream << i_transform.GetString();
+    return o_outputStream;
+}
+
 PBR_NS_CLOSE
