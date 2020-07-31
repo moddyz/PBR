@@ -23,10 +23,11 @@ public:
     /// \name Construction
     // --------------------------------------------------------------------- //
 
-    /// Constructor with object to world transformation.
+    /// Constructor with object-to-world transformation and its inverse.
     ///
     /// \param i_objectToWorld Object-to-world transform.
-    explicit Shape( const Transform& i_objectToWorld );
+    /// \param i_worldToObject World-to-object transform.
+    explicit Shape( const Transform& i_objectToWorld, const Transform& i_worldToObject );
 
     // Virtual de-constructor.
     ~Shape() {};
@@ -49,12 +50,20 @@ public:
     /// \name Transforms
     // --------------------------------------------------------------------- //
 
-    /// Get the object-space to world-space transform.
+    /// Get the object-to-world transform associated with this shape.
     ///
     /// \return The object-to-world transform.
     const Transform& ObjectToWorldTransform() const
     {
         return m_objectToWorld;
+    }
+
+    /// Get the world-to-object transform associated with this shape.
+    ///
+    /// \return The world-to-object transform.
+    const Transform& WorldToObjectTransform() const
+    {
+        return m_worldToObject;
     }
 
     // --------------------------------------------------------------------- //
@@ -63,6 +72,7 @@ public:
 
 private:
     const Transform& m_objectToWorld;
+    const Transform& m_worldToObject;
 };
 
 PBR_NS_CLOSE

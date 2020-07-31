@@ -5,11 +5,13 @@
 /// Transformation operations.
 
 #include <pbr/pbr.h>
+#include <pbr/utils/assert.h>
 
 #include <gm/types/mat4f.h>
 #include <gm/types/vec3fRange.h>
 
-#include <gm/functions/invert.h>
+#include <gm/functions/lengthSquared.h>
+#include <gm/functions/matrixProduct.h>
 #include <gm/functions/setIdentity.h>
 #include <gm/functions/setRotate.h>
 #include <gm/functions/setRotateX.h>
@@ -17,8 +19,8 @@
 #include <gm/functions/setRotateZ.h>
 #include <gm/functions/setScale.h>
 #include <gm/functions/setTranslate.h>
-#include <gm/functions/transformBounds.h>
 #include <gm/functions/transformPoint.h>
+#include <gm/functions/transformVector.h>
 #include <gm/functions/transpose.h>
 
 PBR_NS_OPEN
@@ -37,12 +39,19 @@ public:
     /// \name Construction
     // --------------------------------------------------------------------- //
 
+    /// Default constructor, setting the matrix and its inverse to the identity element.
+    inline Transform()
+        : m_matrix( _Identity() )
+        , m_inverse( _Identity() )
+    {
+    }
+
     /// Constructor with a 4x4 transformation matrix.
     ///
     /// \param i_matrix The 4x4 matrix.
     inline explicit Transform( const gm::Mat4f& i_matrix )
         : m_matrix( i_matrix )
-        , m_inverse( gm::Invert( i_matrix ) )
+        , m_inverse( i_matrix )
     {
     }
 
@@ -50,11 +59,11 @@ public:
     ///
     /// \param i_matrix The 4x4 matrix.
     /// \param i_inverse The inverse of \p i_matrix.
-    inline explicit Transform( const gm::Mat4f& i_matrix, const gm::Mat3f& i_inverse )
+    inline explicit Transform( const gm::Mat4f& i_matrix, const gm::Mat4f& i_inverse )
         : m_matrix( i_matrix )
         , m_inverse( i_inverse )
     {
-        PBR_ASSERT( gm::MatrixProduct( m_matrix, m_inverse ) == Identity() );
+        PBR_ASSERT( gm::MatrixProduct( m_matrix, m_inverse ) == _Identity() );
     }
 
     // --------------------------------------------------------------------- //
@@ -88,10 +97,10 @@ public:
     /// \return Translation transform.
     static inline Transform Translate( const gm::Vec3f& i_translate )
     {
-        gm::Mat4f matrix  = Identity();
-        gm::Mat4f inverse = Identity();
-        gm::SetTranslate( matrix, i_translate );
-        gm::SetTranslate( inverse, -i_translate );
+        gm::Mat4f matrix  = _Identity();
+        gm::Mat4f inverse = _Identity();
+        gm::SetTranslate( i_translate, matrix );
+        gm::SetTranslate( -i_translate, matrix );
         return Transform( matrix, inverse );
     }
 
@@ -102,10 +111,10 @@ public:
     /// \return Scaling transform.
     static inline Transform Scale( const gm::Vec3f& i_scale )
     {
-        gm::Mat4f matrix  = Identity();
-        gm::Mat4f inverse = Identity();
-        gm::SetScale( matrix, i_scale );
-        gm::SetScale( inverse, gm::Vec3f( 1.0f / i_scale.X(), 1.0f / i_scale.Y(), 1.0f / i_scale.Z() ) );
+        gm::Mat4f matrix  = _Identity();
+        gm::Mat4f inverse = _Identity();
+        gm::SetScale( i_scale, matrix );
+        gm::SetScale( gm::Vec3f( 1.0f / i_scale.X(), 1.0f / i_scale.Y(), 1.0f / i_scale.Z() ), inverse );
         return Transform( matrix, inverse );
     }
 
@@ -116,8 +125,8 @@ public:
     /// \return The x-axis rotation transformation.
     static inline Transform RotateX( float i_angle )
     {
-        gm::Mat4f matrix = Identity();
-        gm::SetRotateX( matrix, i_angle );
+        gm::Mat4f matrix = _Identity();
+        gm::SetRotateX( i_angle, matrix );
         return Transform( matrix, gm::Transpose( matrix ) );
     }
 
@@ -128,8 +137,8 @@ public:
     /// \return The y-axis rotation transformation.
     static inline Transform RotateY( float i_angle )
     {
-        gm::Mat4f matrix = Identity();
-        gm::SetRotateY( matrix, i_angle );
+        gm::Mat4f matrix = _Identity();
+        gm::SetRotateY( i_angle, matrix );
         return Transform( matrix, gm::Transpose( matrix ) );
     }
 
@@ -140,8 +149,8 @@ public:
     /// \return The y-axis rotation transformation.
     static inline Transform RotateZ( float i_angle )
     {
-        gm::Mat4f matrix = Identity();
-        gm::SetRotateZ( matrix, i_angle );
+        gm::Mat4f matrix = _Identity();
+        gm::SetRotateZ( i_angle, matrix );
         return Transform( matrix, gm::Transpose( matrix ) );
     }
 
@@ -153,8 +162,8 @@ public:
     /// \return The rotation transform around an arbituary axis.
     static inline Transform Rotate( float i_angle, const gm::Vec3f& i_axis )
     {
-        gm::Mat4f matrix = Identity();
-        gm::SetRotate( matrix, i_angle, i_axis );
+        gm::Mat4f matrix = _Identity();
+        gm::SetRotate( i_angle, i_axis, matrix );
         return Transform( matrix, gm::Transpose( matrix ) );
     }
 
@@ -163,14 +172,46 @@ public:
     /// \return If the current transform performs scaling.
     inline bool HasScale() const
     {
-        return gm::Vec3f( gm::LengthSquared( gm::TransformVector( gm::Vec3f( 1, 0, 0 ) ) ),
-                          gm::LengthSquared( gm::TransformVector( gm::Vec3f( 0, 1, 0 ) ) ),
-                          gm::LengthSquared( gm::TransformVector( gm::Vec3f( 0, 0, 1 ) ) ) ) == gm::Vec3f( 1, 1, 1 );
+        return gm::Vec3f( gm::LengthSquared( gm::TransformVector( m_matrix, gm::Vec3f( 1, 0, 0 ) ) ),
+                          gm::LengthSquared( gm::TransformVector( m_matrix, gm::Vec3f( 0, 1, 0 ) ) ),
+                          gm::LengthSquared( gm::TransformVector( m_matrix, gm::Vec3f( 0, 0, 1 ) ) ) ) ==
+               gm::Vec3f( 1, 1, 1 );
     }
 
     // --------------------------------------------------------------------- //
     /// \name Transform application
     // --------------------------------------------------------------------- //
+
+    /// Apply the current transform on a vector.
+    ///
+    /// \param i_vector The vector to transform.
+    ///
+    /// \return The transformed vector.
+    inline gm::Vec3f TransformVector( const gm::Vec3f& i_vector ) const
+    {
+        return gm::TransformVector( m_matrix, i_vector );
+    }
+
+    /// Apply the current transform on a point.
+    ///
+    /// \param i_point The point to transform.
+    ///
+    /// \return The transformed point.
+    inline gm::Vec3f TransformPoint( const gm::Vec3f& i_point ) const
+    {
+        return gm::TransformPoint( m_matrix, i_point );
+    }
+
+    /// Apply the current transform on a bounding box.
+    ///
+    /// \param i_bounds The bounding box to transform.
+    ///
+    /// \return The transformed bounding box.
+    inline gm::Vec3fRange TransformBounds( const gm::Vec3fRange& i_bounds ) const
+    {
+        return gm::Vec3fRange( gm::TransformPoint( m_matrix, i_bounds.Min() ),
+                               gm::TransformPoint( m_matrix, i_bounds.Max() ) );
+    }
 
     // --------------------------------------------------------------------- //
     /// \name Utility
@@ -199,17 +240,15 @@ public:
         return m_matrix.HasNans() || m_inverse.HasNans();
     }
 
-    /// Get a 4x4 identity matrix.
-    ///
-    /// \return 4x4 identity matrix.
-    inline static gm::Mat4f Identity()
+private:
+    // Utility to get a 4x4 identity matrix.
+    inline static gm::Mat4f _Identity()
     {
         gm::Mat4f matrix;
         gm::SetIdentity( matrix );
         return matrix;
     }
 
-private:
     gm::Mat4f m_matrix;
     gm::Mat4f m_inverse;
 };
