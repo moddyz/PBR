@@ -11,7 +11,7 @@
 
 #include <gm/gm.h>
 
-#include <gm/base/assert.h>
+#include <gm/base/diagnostic.h>
 
 #include <gm/types/vec2fRange.h>
 #include <gm/types/vec2iRange.h>

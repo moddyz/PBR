@@ -7,7 +7,7 @@
 /// \file functions/setRotate.h
 /// \ingroup gm_functions_linearAlgebra
 ///
-/// Set a rotation for an specified axis on a transformation matrix, with respect to the right-hand rule.
+/// Set a rotation for an specified axis on a transformation matrix, with respect to the left hand rule.
 
 #include <gm/gm.h>
 

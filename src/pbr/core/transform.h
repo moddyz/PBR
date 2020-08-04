@@ -5,11 +5,12 @@
 /// Transformation operations.
 
 #include <pbr/pbr.h>
-#include <pbr/utils/assert.h>
+#include <pbr/utils/diagnostic.h>
 
 #include <gm/types/mat4f.h>
 #include <gm/types/vec3fRange.h>
 
+#include <gm/functions/inverse.h>
 #include <gm/functions/lengthSquared.h>
 #include <gm/functions/matrixProduct.h>
 #include <gm/functions/setIdentity.h>
@@ -51,8 +52,8 @@ public:
     /// \param i_matrix The 4x4 matrix.
     inline explicit Transform( const gm::Mat4f& i_matrix )
         : m_matrix( i_matrix )
-        , m_inverse( i_matrix )
     {
+        GM_VERIFY( gm::Inverse( i_matrix, m_inverse ) );
     }
 
     /// Constructor with a 4x4 transformation matrix, and its inverse.
@@ -67,7 +68,7 @@ public:
     }
 
     // --------------------------------------------------------------------- //
-    /// \name Representation
+    /// \name Unary operations
     // --------------------------------------------------------------------- //
 
     /// Get the inverse of this transform.
@@ -84,6 +85,21 @@ public:
     inline Transform Transpose() const
     {
         return Transform( gm::Transpose( m_matrix ), gm::Transpose( m_inverse ) );
+    }
+
+    // --------------------------------------------------------------------- //
+    /// \name Binary operations.
+    // --------------------------------------------------------------------- //
+
+    /// Transform composition.
+    ///
+    /// \param i_rhs The right-hand-side transform.
+    ///
+    /// \return The composed transformation.
+    inline Transform operator*( const Transform& i_rhs ) const
+    {
+        return Transform( gm::MatrixProduct( m_matrix, i_rhs.m_matrix ),
+                          gm::MatrixProduct( m_inverse, i_rhs.m_inverse ) );
     }
 
     // --------------------------------------------------------------------- //

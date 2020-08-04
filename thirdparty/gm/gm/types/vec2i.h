@@ -13,7 +13,7 @@
 #include <cstring>
 #include <sstream>
 
-#include <gm/base/assert.h>
+#include <gm/base/diagnostic.h>
 
 GM_NS_OPEN
 

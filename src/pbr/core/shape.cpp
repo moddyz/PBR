@@ -9,9 +9,9 @@ Shape::Shape( const Transform& i_objectToWorld, const Transform& i_worldToObject
 {
 }
 
-gm::Vec3fRange Shape::WorldBounds() const
+gm::Vec3fRange Shape::ComputeWorldBounds() const
 {
-    return m_objectToWorld.TransformBounds( ObjectBounds() );
+    return m_objectToWorld.TransformBounds( ComputeObjectBounds() );
 }
 
 PBR_NS_CLOSE

@@ -17,7 +17,7 @@ struct ProgramOptions
 ProgramOptions ParseCommandLineArguments( int i_argc, char** i_argv )
 {
     // Parse command line arguments.
-    cxxopts::Options parser( "pbrt", "Physically based ray tracing program." );
+    cxxopts::Options parser( "pbrProgram", "Physically based ray tracing program." );
 
     parser.add_options()            // Command line parser.
         ( "h,help", "Print usage" ) //
@@ -48,7 +48,7 @@ int main( int i_argc, char** i_argv )
 {
     ProgramOptions options = ParseCommandLineArguments( i_argc, i_argv );
 
-    PBR_LOG_INFO( "[pbrt] Physically based ray tracing program\n" );
+    PBR_LOG_INFO( "[pbrProgram] Physically based rendering program\n" );
     PBR_LOG_INFO( "Input scene file(s): " );
     for ( const std::string& inputFile : options.m_inputFiles )
     {

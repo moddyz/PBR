@@ -7,7 +7,7 @@
 /// \file functions/setRotateY.h
 /// \ingroup gm_functions_linearAlgebra
 ///
-/// Set a Y-axis rotation on a transformation matrix, with respect to the right-hand rule.
+/// Set a Y-axis rotation on a transformation matrix, with respect to the left hand rule.
 ///
 /// An Y-axis rotation in degrees \f$\theta\f$ set on a \p 4 by \p 4 identity matrix \f$I\f$ will produce:
 /// \f[

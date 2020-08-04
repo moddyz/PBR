@@ -39,12 +39,12 @@ public:
     /// Get the object-space bounding box of this shape.
     ///
     /// \return The object-space bounding box.
-    virtual gm::Vec3fRange ObjectBounds() const = 0;
+    virtual gm::Vec3fRange ComputeObjectBounds() const = 0;
 
     /// Get the world-space bounding box of this shape.
     ///
     /// \return The world-space bounding box.
-    gm::Vec3fRange WorldBounds() const;
+    gm::Vec3fRange ComputeWorldBounds() const;
 
     // --------------------------------------------------------------------- //
     /// \name Transforms
@@ -53,7 +53,7 @@ public:
     /// Get the object-to-world transform associated with this shape.
     ///
     /// \return The object-to-world transform.
-    const Transform& ObjectToWorldTransform() const
+    inline const Transform& GetObjectToWorld() const
     {
         return m_objectToWorld;
     }
@@ -61,7 +61,7 @@ public:
     /// Get the world-to-object transform associated with this shape.
     ///
     /// \return The world-to-object transform.
-    const Transform& WorldToObjectTransform() const
+    inline const Transform& GetWorldToObject() const
     {
         return m_worldToObject;
     }
