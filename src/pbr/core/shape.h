@@ -30,7 +30,7 @@ public:
     explicit Shape( const Transform& i_objectToWorld, const Transform& i_worldToObject );
 
     // Virtual de-constructor.
-    ~Shape() {};
+    ~Shape(){};
 
     // --------------------------------------------------------------------- //
     /// \name Bounding box
@@ -44,7 +44,7 @@ public:
     /// Get the world-space bounding box of this shape.
     ///
     /// \return The world-space bounding box.
-    gm::Vec3fRange ComputeWorldBounds() const;
+    virtual gm::Vec3fRange ComputeWorldBounds() const;
 
     // --------------------------------------------------------------------- //
     /// \name Transforms
@@ -67,12 +67,32 @@ public:
     }
 
     // --------------------------------------------------------------------- //
-    /// \name Intersections
+    /// \name Intersection
     // --------------------------------------------------------------------- //
+
+    /// Compute ray intersection against this shape, and capture interaction details.
+    ///
+    /// \param i_ray The incident ray.
+    /// \param o_rayMagnitude The incident ray.
+    /// \param o_interaction Details about the interaction of the ray with the surface.
+    ///
+    /// \return Whether or not the ray intersects this shape.
+    virtual bool
+    Intersect( const Ray& i_ray, float& o_rayMagnitude, SurfaceInteraction& o_interaction ) const = 0;
+
+    /// Check for ray intersection against this shape, without capturing interaction details.
+    ///
+    /// \param i_ray The incident ray.
+    ///
+    /// \return Whether or not the ray intersects this shape.
+    virtual bool IntersectPredicate( const Ray& i_ray ) const;
 
 private:
     const Transform& m_objectToWorld;
     const Transform& m_worldToObject;
 };
+
+/// \typedef ShapeSharedPtr
+using ShapeSharedPtr = std::shared_ptr< Shape >;
 
 PBR_NS_CLOSE

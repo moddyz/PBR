@@ -10,17 +10,23 @@
 class Interaction
 {
 public:
-    /// Check if this interaction is surface-based.
+    //------------------------------------------------------------------------
+    /// \name Construction
+    //------------------------------------------------------------------------
+
+    /// Explicit constructor with position, normal, and time.
     ///
-    /// \retval true If this is a surface-based interaction.
-    /// \retval false Otherwise.
-    inline bool IsSurfaceInteraction() const
+    /// \param i_position The worldspace position of interaction.
+    /// \param i_normal The norma
+    inline explicit Interaction( const gm::Vec3f& i_position, const gm::Vec3f& i_normal, float i_time )
+        : m_position( i_position )
+        , m_normal( i_normal )
+        , m_time( i_time )
     {
-        return m_normal != gm::Vec3f();
     }
 
     //------------------------------------------------------------------------
-    /// \name Members
+    /// \name Member access
     //------------------------------------------------------------------------
 
     /// Get the point of interaction.
@@ -47,9 +53,22 @@ public:
         return m_time;
     }
 
+    //------------------------------------------------------------------------
+    /// \name Introspection
+    //------------------------------------------------------------------------
+
+    /// Check if this interaction is surface-based.
+    ///
+    /// \retval true If this is a surface-based interaction.
+    /// \retval false Otherwise.
+    inline bool IsSurfaceInteraction() const
+    {
+        return m_normal != gm::Vec3f();
+    }
+
 private:
     gm::Vec3f m_position;
     gm::Vec3f m_normal;
-    float     m_time;
+    float     m_time = 0.0f;
 };
 
