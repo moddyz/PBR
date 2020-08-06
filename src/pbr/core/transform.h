@@ -99,7 +99,7 @@ public:
     inline Transform operator*( const Transform& i_rhs ) const
     {
         return Transform( gm::MatrixProduct( m_matrix, i_rhs.m_matrix ),
-                          gm::MatrixProduct( m_inverse, i_rhs.m_inverse ) );
+                          gm::MatrixProduct( i_rhs.m_inverse, m_inverse ) );
     }
 
     // --------------------------------------------------------------------- //

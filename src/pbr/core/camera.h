@@ -11,7 +11,7 @@
 
 PBR_NS_OPEN
 
-// Foward declarations.
+// Forward declarations.
 class CameraSample;
 
 /// \class Camera
@@ -49,7 +49,7 @@ public:
     /// \return The contributing percentage of radiance arriving at the film plane.
     virtual float GenerateRay( const CameraSample& i_sample, Ray& o_ray ) const = 0;
 
-private:
+protected:
     Transform      m_cameraToWorld;
     gm::FloatRange m_shutterRange;
     const Medium&  m_medium;
