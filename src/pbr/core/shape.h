@@ -87,6 +87,13 @@ public:
     /// \return Whether or not the ray intersects this shape.
     virtual bool IntersectPredicate( const Ray& i_ray ) const;
 
+    // --------------------------------------------------------------------- //
+    /// \name Surface area
+    // --------------------------------------------------------------------- //
+
+    /// Compute the surface area of this shape.
+    virtual float ComputeSurfaceArea() const = 0;
+
 private:
     const Transform& m_objectToWorld;
     const Transform& m_worldToObject;
