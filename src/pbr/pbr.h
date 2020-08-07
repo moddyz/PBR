@@ -4,7 +4,7 @@
 ///
 /// Implementation of a physically based renderer.
 
-#include <pbr/base/export.h>
+#include <pbr/utils/export.h>
 
 /// \def PBR_API
 ///
