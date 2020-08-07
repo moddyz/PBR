@@ -21,7 +21,7 @@ public:
     /// \name Construction
     // --------------------------------------------------------------------- //
 
-    /// Parameterized construction.?
+    /// Parameterized construction.
     ///
     /// \param i_resolution The full resolution of the image to render.
     Film( const gm::Vec2i& i_resolution );
@@ -30,7 +30,7 @@ public:
     /// \name Member access
     // --------------------------------------------------------------------- //
 
-    const gm::Vec2i& GetFullResolution() const
+    inline const gm::Vec2i& GetFullResolution() const
     {
         return m_resolution;
     }
