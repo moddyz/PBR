@@ -6,18 +6,51 @@
 
 #include <pbr/pbr.h>
 
+#include <gm/types/vec3fRange.h>
+
+#include <memory>
+
 PBR_NS_OPEN
+
+// Forward declarations.
+class Ray;
+class SurfaceInteraction;
 
 /// \class Primitive
 ///
-/// Abstract base class representation of a single renderable object in a scene.
+/// Representation of a renderable object in a scene.
 class Primitive
 {
 public:
+    virtual ~Primitive() = default;
+
+    // --------------------------------------------------------------------- //
+    /// \name Bounding box
+    // --------------------------------------------------------------------- //
+
     /// Compute the world-space bounding box of this primitive.
     ///
     /// \return The world-space bounding box.
     virtual gm::Vec3fRange ComputeWorldBounds() const = 0;
+
+    // --------------------------------------------------------------------- //
+    /// \name Ray intersection test
+    // --------------------------------------------------------------------- //
+
+    /// Compute ray intersection against this primitive, and capture interaction details.
+    ///
+    /// \param i_ray The incident ray.
+    /// \param o_interaction Details about the interaction of the ray with the surface.
+    ///
+    /// \return Whether or not the ray intersects this primitive.
+    virtual bool Intersect( const Ray& i_ray, SurfaceInteraction& o_interaction ) const = 0;
+
+    /// Check for ray intersection against this shape.
+    ///
+    /// \param i_ray The incident ray.
+    ///
+    /// \return Whether or not the ray intersects this shape.
+    virtual bool IntersectPredicate( const Ray& i_ray ) const;
 };
 
 /// \typedef PrimitiveSharedPtr

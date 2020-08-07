@@ -2,20 +2,24 @@
 
 /// \file core/shape.h
 ///
-/// Shape interface.
+/// Geometric shape interface.
 
 #include <pbr/pbr.h>
 
 #include <gm/types/vec3fRange.h>
 
+#include <memory>
+
 PBR_NS_OPEN
 
 // Forward declarations.
 class Transform;
+class Ray;
+class SurfaceInteraction;
 
 /// \class Shape
 ///
-/// The interface for the raw geometric features of a primitive.
+/// The interface for the geometric component of a primitive.
 class Shape
 {
 public:
@@ -30,7 +34,7 @@ public:
     explicit Shape( const Transform& i_objectToWorld, const Transform& i_worldToObject );
 
     // Virtual de-constructor.
-    ~Shape(){};
+    virtual ~Shape(){};
 
     // --------------------------------------------------------------------- //
     /// \name Bounding box
@@ -67,7 +71,7 @@ public:
     }
 
     // --------------------------------------------------------------------- //
-    /// \name Intersection
+    /// \name Ray intersection test
     // --------------------------------------------------------------------- //
 
     /// Compute ray intersection against this shape, and capture interaction details.
@@ -77,10 +81,9 @@ public:
     /// \param o_interaction Details about the interaction of the ray with the surface.
     ///
     /// \return Whether or not the ray intersects this shape.
-    virtual bool
-    Intersect( const Ray& i_ray, float& o_rayMagnitude, SurfaceInteraction& o_interaction ) const = 0;
+    virtual bool Intersect( const Ray& i_ray, float& o_rayMagnitude, SurfaceInteraction& o_interaction ) const = 0;
 
-    /// Check for ray intersection against this shape, without capturing interaction details.
+    /// Check for ray intersection against this shape.
     ///
     /// \param i_ray The incident ray.
     ///

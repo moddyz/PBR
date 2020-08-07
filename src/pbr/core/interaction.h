@@ -4,6 +4,10 @@
 ///
 /// Ray interactions.
 
+#include <pbr/pbr.h>
+
+PBR_NS_OPEN
+
 /// \class Interaction
 ///
 /// Record of a single interaction between a ray and a surface or medium.
@@ -13,6 +17,9 @@ public:
     //------------------------------------------------------------------------
     /// \name Construction
     //------------------------------------------------------------------------
+
+    /// Default constructor.
+    Interaction() = default;
 
     /// Explicit constructor with position, normal, and time.
     ///
@@ -24,6 +31,8 @@ public:
         , m_time( i_time )
     {
     }
+
+    virtual ~Interaction(){};
 
     //------------------------------------------------------------------------
     /// \name Member access
@@ -72,3 +81,4 @@ private:
     float     m_time = 0.0f;
 };
 
+PBR_NS_CLOSE

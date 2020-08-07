@@ -145,7 +145,7 @@ private:
     gm::Vec3f     m_direction;
     float         m_time         = 0.0f;
     mutable float m_maxMagnitude = std::numeric_limits< float >::max();
-    const Medium* medium         = nullptr;
+    const Medium* m_medium       = nullptr;
 };
 
 /// Operator overload for << to enable writing the string representation of \p i_ray into an output

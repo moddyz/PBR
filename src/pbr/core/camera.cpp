@@ -10,7 +10,7 @@ Camera::Camera( const Transform&      i_cameraToWorld,
     , m_shutterRange( i_shutterRange )
     , m_medium( i_medium )
     , m_film( o_film )
-{}
-
+{
+}
 
 PBR_NS_CLOSE

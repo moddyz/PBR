@@ -1,4 +1,6 @@
+#include <pbr/core/ray.h>
 #include <pbr/core/shape.h>
+#include <pbr/core/surfaceInteraction.h>
 #include <pbr/core/transform.h>
 
 PBR_NS_OPEN
@@ -16,7 +18,7 @@ gm::Vec3fRange Shape::ComputeWorldBounds() const
 
 bool Shape::IntersectPredicate( const Ray& i_ray ) const
 {
-    float rayMagnitude = i_ray.GetMaxMagnitude();
+    float              magnitude = i_ray.GetMaxMagnitude();
     SurfaceInteraction surfaceInteraction;
     return Intersect( i_ray, magnitude, surfaceInteraction );
 }

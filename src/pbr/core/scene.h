@@ -5,9 +5,12 @@
 /// Scene class.
 
 #include <pbr/core/primitive.h>
-#include <pbr/pbr.h>
 
 PBR_NS_OPEN
+
+// Forward declarations.
+class Ray;
+class SurfaceInteraction;
 
 /// \class Scene
 ///
@@ -42,10 +45,6 @@ public:
     ///
     /// \return Whether or not the ray intersects any primitives in this scene.
     virtual bool IntersectPredicate( const Ray& i_ray ) const;
-
-    // --------------------------------------------------------------------- //
-    /// \name Bounding box
-    // --------------------------------------------------------------------- //
 
 private:
     PrimitiveSharedPtr m_aggregate;

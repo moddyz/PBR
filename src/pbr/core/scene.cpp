@@ -14,7 +14,7 @@ bool Scene::Intersect( const Ray& i_ray, SurfaceInteraction& o_interaction ) con
 
 bool Scene::IntersectPredicate( const Ray& i_ray ) const
 {
-    return m_aggregate->IntersectPredicate( i_ray, o_interaction );
+    return m_aggregate->IntersectPredicate( i_ray );
 }
 
 PBR_NS_CLOSE

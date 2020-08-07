@@ -5,7 +5,6 @@
 /// Camera class.
 
 #include <pbr/core/transform.h>
-#include <pbr/pbr.h>
 
 #include <gm/types/floatRange.h>
 
@@ -13,6 +12,9 @@ PBR_NS_OPEN
 
 // Forward declarations.
 class CameraSample;
+class Medium;
+class Film;
+class Ray;
 
 /// \class Camera
 ///
@@ -35,7 +37,7 @@ public:
             const Medium&         i_medium,
             Film&                 o_film );
 
-    virtual ~Camera() = default;
+    virtual ~Camera() {};
 
     // --------------------------------------------------------------------- //
     /// \name Ray generation

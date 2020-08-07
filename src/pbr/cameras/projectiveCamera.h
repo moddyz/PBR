@@ -5,7 +5,9 @@
 /// ProjectiveCamera class.
 
 #include <pbr/core/camera.h>
-#include <pbr/pbr.h>
+
+#include <gm/types/floatRange.h>
+#include <gm/types/vec2fRange.h>
 
 PBR_NS_OPEN
 
@@ -13,7 +15,7 @@ PBR_NS_OPEN
 ///
 /// A camera model which uses a 4x4 projective transformation matrix to
 /// project a 3D screen onto a 2D image for display.
-class ProjectiveCamera
+class ProjectiveCamera : public Camera
 {
 public:
     // --------------------------------------------------------------------- //
@@ -32,7 +34,7 @@ public:
     /// \param o_film ?
     ProjectiveCamera( const Transform&      i_cameraToWorld,
                       const Transform&      i_cameraToScreen,
-                      const Vec2fRange&     i_screenWindow,
+                      const gm::Vec2fRange& i_screenWindow,
                       const gm::FloatRange& i_shutterRange,
                       float                 i_lensRadius,
                       float                 i_focalDistance,
@@ -51,8 +53,8 @@ protected:
     Transform m_screenToRaster;
     Transform m_rasterToScreen;
 
-    float     m_lensRadius    = 0.0f;
-    float     m_focalDistance = 0.0f;
+    float m_lensRadius    = 0.0f;
+    float m_focalDistance = 0.0f;
 };
 
 PBR_NS_CLOSE
