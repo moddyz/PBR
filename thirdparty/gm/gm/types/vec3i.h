@@ -42,7 +42,7 @@ public:
                                                     const int& i_element2 )
         : m_elements{i_element0, i_element1, i_element2}
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
     }
 
     // --------------------------------------------------------------------- //
@@ -58,7 +58,7 @@ public:
     /// \return mutable element value.
     GM_HOST_DEVICE inline int& operator[]( size_t i_index )
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         GM_ASSERT( i_index < 3 );
         return m_elements[ i_index ];
     }
@@ -72,7 +72,7 @@ public:
     /// \return immutable element value.
     GM_HOST_DEVICE inline const int& operator[]( size_t i_index ) const
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         GM_ASSERT( i_index < 3 );
         return m_elements[ i_index ];
     }
@@ -86,7 +86,7 @@ public:
     /// \return Const reference to the element at index 0.
     GM_HOST_DEVICE inline const int& X() const
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         return m_elements[ 0 ];
     }
 
@@ -95,7 +95,7 @@ public:
     /// \return Mutable reference to the element at index 0.
     GM_HOST_DEVICE inline int& X()
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         return m_elements[ 0 ];
     }
     /// Convenience named const accessor for the element at index 1.
@@ -103,7 +103,7 @@ public:
     /// \return Const reference to the element at index 1.
     GM_HOST_DEVICE inline const int& Y() const
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         return m_elements[ 1 ];
     }
 
@@ -112,7 +112,7 @@ public:
     /// \return Mutable reference to the element at index 1.
     GM_HOST_DEVICE inline int& Y()
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         return m_elements[ 1 ];
     }
     /// Convenience named const accessor for the element at index 2.
@@ -120,7 +120,7 @@ public:
     /// \return Const reference to the element at index 2.
     GM_HOST_DEVICE inline const int& Z() const
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         return m_elements[ 2 ];
     }
 
@@ -129,7 +129,7 @@ public:
     /// \return Mutable reference to the element at index 2.
     GM_HOST_DEVICE inline int& Z()
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         return m_elements[ 2 ];
     }
 
@@ -144,7 +144,7 @@ public:
     /// \return the new vector.
     GM_HOST_DEVICE inline Vec3i operator+( const Vec3i& i_vector ) const
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         return Vec3i( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
                       m_elements[ 1 ] + i_vector.m_elements[ 1 ],
                       m_elements[ 2 ] + i_vector.m_elements[ 2 ] );
@@ -153,7 +153,7 @@ public:
     /// Element-wise vector addition assignment.
     GM_HOST_DEVICE inline Vec3i& operator+=( const Vec3i& i_vector )
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
         m_elements[ 1 ] += i_vector.m_elements[ 1 ];
         m_elements[ 2 ] += i_vector.m_elements[ 2 ];
@@ -163,7 +163,7 @@ public:
     /// Vector subtraction.
     GM_HOST_DEVICE inline Vec3i operator-( const Vec3i& i_vector ) const
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         return Vec3i( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
                       m_elements[ 1 ] - i_vector.m_elements[ 1 ],
                       m_elements[ 2 ] - i_vector.m_elements[ 2 ] );
@@ -172,7 +172,7 @@ public:
     /// Vector subtraction assignment.
     GM_HOST_DEVICE inline Vec3i& operator-=( const Vec3i& i_vector )
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
         m_elements[ 1 ] -= i_vector.m_elements[ 1 ];
         m_elements[ 2 ] -= i_vector.m_elements[ 2 ];
@@ -182,7 +182,7 @@ public:
     /// Scalar multiplication assignment.
     GM_HOST_DEVICE inline Vec3i& operator*=( const int& i_scalar )
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         m_elements[ 0 ] *= i_scalar;
         m_elements[ 1 ] *= i_scalar;
         m_elements[ 2 ] *= i_scalar;
@@ -192,7 +192,7 @@ public:
     /// Scalar division.
     GM_HOST_DEVICE inline Vec3i operator/( const int& i_scalar ) const
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         GM_ASSERT( i_scalar != 0 );
         return Vec3i( m_elements[ 0 ] / i_scalar, m_elements[ 1 ] / i_scalar, m_elements[ 2 ] / i_scalar );
     }
@@ -200,7 +200,7 @@ public:
     /// Scalar division assignment.
     GM_HOST_DEVICE inline Vec3i& operator/=( const int& i_scalar )
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         GM_ASSERT( i_scalar != 0 );
         m_elements[ 0 ] /= i_scalar;
         m_elements[ 1 ] /= i_scalar;
@@ -211,7 +211,7 @@ public:
     /// Unary negation.
     GM_HOST_DEVICE inline Vec3i operator-() const
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         return Vec3i( -m_elements[ 0 ], -m_elements[ 1 ], -m_elements[ 2 ] );
     }
 
@@ -247,7 +247,7 @@ public:
     // --------------------------------------------------------------------- //
 
     /// Are any of the element values NaNs?
-    GM_HOST_DEVICE inline bool HasNans() const
+    GM_HOST_DEVICE inline bool HasNaNs() const
     {
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] );
     }
@@ -277,14 +277,14 @@ private:
 /// Vector-scalar multiplication.
 GM_HOST_DEVICE inline Vec3i operator*( const Vec3i& i_vector, const int& i_scalar )
 {
-    GM_ASSERT( !i_vector.HasNans() );
+    GM_ASSERT( !i_vector.HasNaNs() );
     return Vec3i( i_vector[ 0 ] * i_scalar, i_vector[ 1 ] * i_scalar, i_vector[ 2 ] * i_scalar );
 }
 
 /// Scalar-vector multiplication.
 GM_HOST_DEVICE inline Vec3i operator*( const int& i_scalar, const Vec3i& i_vector )
 {
-    GM_ASSERT( !i_vector.HasNans() );
+    GM_ASSERT( !i_vector.HasNaNs() );
     return Vec3i( i_vector[ 0 ] * i_scalar, i_vector[ 1 ] * i_scalar, i_vector[ 2 ] * i_scalar );
 }
 

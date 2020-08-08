@@ -135,9 +135,9 @@ public:
     ///
     /// \retval true If any of the numeric member values is NaN.
     /// \retval false If none of the numeric member values is NaN.
-    inline bool HasNans() const
+    inline bool HasNaNs() const
     {
-        return m_origin.HasNans() || m_direction.HasNans() || std::isnan( m_time ) || std::isnan( m_maxMagnitude );
+        return m_origin.HasNaNs() || m_direction.HasNaNs() || std::isnan( m_time ) || std::isnan( m_maxMagnitude );
     }
 
 private:

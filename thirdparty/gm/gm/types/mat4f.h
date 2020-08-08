@@ -71,7 +71,7 @@ public:
                      i_element14,
                      i_element15}
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
     }
 
     // --------------------------------------------------------------------- //
@@ -87,7 +87,7 @@ public:
     /// \return mutable element value.
     GM_HOST_DEVICE inline float& operator[]( size_t i_index )
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         GM_ASSERT( i_index < 16 );
         return m_elements[ i_index ];
     }
@@ -101,7 +101,7 @@ public:
     /// \return immutable element value.
     GM_HOST_DEVICE inline const float& operator[]( size_t i_index ) const
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         GM_ASSERT( i_index < 16 );
         return m_elements[ i_index ];
     }
@@ -121,7 +121,7 @@ public:
     /// \return Element value.
     GM_HOST_DEVICE inline const float& operator()( size_t i_row, size_t i_column ) const
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         GM_ASSERT( i_row < 4 );
         GM_ASSERT( i_column < 4 );
         return m_elements[ i_row * 4 + i_column ];
@@ -138,7 +138,7 @@ public:
     /// \return Element value.
     GM_HOST_DEVICE inline float& operator()( size_t i_row, size_t i_column )
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         GM_ASSERT( i_row < 4 );
         GM_ASSERT( i_column < 4 );
         return m_elements[ i_row * 4 + i_column ];
@@ -167,7 +167,7 @@ public:
     /// \return the new vector.
     GM_HOST_DEVICE inline Mat4f operator+( const Mat4f& i_vector ) const
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         return Mat4f( m_elements[ 0 ] + i_vector.m_elements[ 0 ],
                       m_elements[ 1 ] + i_vector.m_elements[ 1 ],
                       m_elements[ 2 ] + i_vector.m_elements[ 2 ],
@@ -189,7 +189,7 @@ public:
     /// Element-wise vector addition assignment.
     GM_HOST_DEVICE inline Mat4f& operator+=( const Mat4f& i_vector )
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         m_elements[ 0 ] += i_vector.m_elements[ 0 ];
         m_elements[ 1 ] += i_vector.m_elements[ 1 ];
         m_elements[ 2 ] += i_vector.m_elements[ 2 ];
@@ -212,7 +212,7 @@ public:
     /// Vector subtraction.
     GM_HOST_DEVICE inline Mat4f operator-( const Mat4f& i_vector ) const
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         return Mat4f( m_elements[ 0 ] - i_vector.m_elements[ 0 ],
                       m_elements[ 1 ] - i_vector.m_elements[ 1 ],
                       m_elements[ 2 ] - i_vector.m_elements[ 2 ],
@@ -234,7 +234,7 @@ public:
     /// Vector subtraction assignment.
     GM_HOST_DEVICE inline Mat4f& operator-=( const Mat4f& i_vector )
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         m_elements[ 0 ] -= i_vector.m_elements[ 0 ];
         m_elements[ 1 ] -= i_vector.m_elements[ 1 ];
         m_elements[ 2 ] -= i_vector.m_elements[ 2 ];
@@ -257,7 +257,7 @@ public:
     /// Scalar multiplication assignment.
     GM_HOST_DEVICE inline Mat4f& operator*=( const float& i_scalar )
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         m_elements[ 0 ] *= i_scalar;
         m_elements[ 1 ] *= i_scalar;
         m_elements[ 2 ] *= i_scalar;
@@ -280,7 +280,7 @@ public:
     /// Scalar division.
     GM_HOST_DEVICE inline Mat4f operator/( const float& i_scalar ) const
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         GM_ASSERT( i_scalar != 0.0f );
         return Mat4f( m_elements[ 0 ] / i_scalar,
                       m_elements[ 1 ] / i_scalar,
@@ -303,7 +303,7 @@ public:
     /// Scalar division assignment.
     GM_HOST_DEVICE inline Mat4f& operator/=( const float& i_scalar )
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         GM_ASSERT( i_scalar != 0.0f );
         m_elements[ 0 ] /= i_scalar;
         m_elements[ 1 ] /= i_scalar;
@@ -327,7 +327,7 @@ public:
     /// Unary negation.
     GM_HOST_DEVICE inline Mat4f operator-() const
     {
-        GM_ASSERT( !HasNans() );
+        GM_ASSERT( !HasNaNs() );
         return Mat4f( -m_elements[ 0 ],
                       -m_elements[ 1 ],
                       -m_elements[ 2 ],
@@ -392,7 +392,7 @@ public:
     // --------------------------------------------------------------------- //
 
     /// Are any of the element values NaNs?
-    GM_HOST_DEVICE inline bool HasNans() const
+    GM_HOST_DEVICE inline bool HasNaNs() const
     {
         return std::isnan( m_elements[ 0 ] ) || std::isnan( m_elements[ 1 ] ) || std::isnan( m_elements[ 2 ] ) ||
                std::isnan( m_elements[ 3 ] ) || std::isnan( m_elements[ 4 ] ) || std::isnan( m_elements[ 5 ] ) ||
@@ -458,7 +458,7 @@ private:
 /// Vector-scalar multiplication.
 GM_HOST_DEVICE inline Mat4f operator*( const Mat4f& i_vector, const float& i_scalar )
 {
-    GM_ASSERT( !i_vector.HasNans() );
+    GM_ASSERT( !i_vector.HasNaNs() );
     return Mat4f( i_vector[ 0 ] * i_scalar,
                   i_vector[ 1 ] * i_scalar,
                   i_vector[ 2 ] * i_scalar,
@@ -480,7 +480,7 @@ GM_HOST_DEVICE inline Mat4f operator*( const Mat4f& i_vector, const float& i_sca
 /// Scalar-vector multiplication.
 GM_HOST_DEVICE inline Mat4f operator*( const float& i_scalar, const Mat4f& i_vector )
 {
-    GM_ASSERT( !i_vector.HasNans() );
+    GM_ASSERT( !i_vector.HasNaNs() );
     return Mat4f( i_vector[ 0 ] * i_scalar,
                   i_vector[ 1 ] * i_scalar,
                   i_vector[ 2 ] * i_scalar,

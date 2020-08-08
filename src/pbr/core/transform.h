@@ -306,9 +306,9 @@ public:
     ///
     /// \retval true If there are NaN values.
     /// \retval false If there are no NaN values.
-    inline bool HasNans() const
+    inline bool HasNaNs() const
     {
-        return m_matrix.HasNans() || m_inverse.HasNans();
+        return m_matrix.HasNaNs() || m_inverse.HasNaNs();
     }
 
 private:
