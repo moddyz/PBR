@@ -10,6 +10,7 @@
 #include <gm/types/mat4f.h>
 #include <gm/types/vec3fRange.h>
 
+#include <gm/functions/hasScale.h>
 #include <gm/functions/inverse.h>
 #include <gm/functions/lengthSquared.h>
 #include <gm/functions/matrixProduct.h>
@@ -20,6 +21,7 @@
 #include <gm/functions/setRotateZ.h>
 #include <gm/functions/setScale.h>
 #include <gm/functions/setTranslate.h>
+#include <gm/functions/transformAABB.h>
 #include <gm/functions/transformPoint.h>
 #include <gm/functions/transformVector.h>
 #include <gm/functions/transpose.h>
@@ -229,10 +231,7 @@ public:
     /// \return If the current transform performs scaling.
     inline bool HasScale() const
     {
-        return gm::Vec3f( gm::LengthSquared( gm::TransformVector( m_matrix, gm::Vec3f( 1, 0, 0 ) ) ),
-                          gm::LengthSquared( gm::TransformVector( m_matrix, gm::Vec3f( 0, 1, 0 ) ) ),
-                          gm::LengthSquared( gm::TransformVector( m_matrix, gm::Vec3f( 0, 0, 1 ) ) ) ) !=
-               gm::Vec3f( 1, 1, 1 );
+        return gm::HasScale( m_matrix );
     }
 
     // --------------------------------------------------------------------- //
@@ -266,8 +265,7 @@ public:
     /// \return The transformed bounding box.
     inline gm::Vec3fRange TransformBounds( const gm::Vec3fRange& i_bounds ) const
     {
-        return gm::Vec3fRange( gm::TransformPoint( m_matrix, i_bounds.Min() ),
-                               gm::TransformPoint( m_matrix, i_bounds.Max() ) );
+        return gm::TransformAABB( m_matrix, i_bounds );
     }
 
     // --------------------------------------------------------------------- //
