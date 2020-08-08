@@ -4,7 +4,7 @@
 ///
 /// Transform class.
 
-#include <pbr/pbr.h>
+#include <pbr/core/ray.h>
 #include <pbr/utils/diagnostic.h>
 
 #include <gm/types/mat4f.h>
@@ -266,6 +266,20 @@ public:
     inline gm::Vec3fRange TransformBounds( const gm::Vec3fRange& i_bounds ) const
     {
         return gm::TransformAABB( m_matrix, i_bounds );
+    }
+
+    /// Apply the current transform on a ray.
+    ///
+    /// \param i_ray The ray to transform.
+    ///
+    /// \return The transformed ray.
+    inline Ray TransformRay( const Ray& i_ray ) const
+    {
+        return Ray( TransformPoint( i_ray.GetOrigin() ),
+                    TransformVector( i_ray.GetDirection() ),
+                    i_ray.GetTime(),
+                    i_ray.GetMaxMagnitude(),
+                    i_ray.GetMedium() );
     }
 
     // --------------------------------------------------------------------- //

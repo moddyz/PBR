@@ -181,3 +181,18 @@ TEST_CASE( "testTransformBounds" )
     }
 }
 
+TEST_CASE( "testTransformRay" )
+{
+    pbr::Ray ray( gm::Vec3f( 2, 2, 4 ), gm::Vec3f( 0.5, 0, 0.5 ), 0.5f, 1000.0f, nullptr );
+
+    {
+        pbr::Transform transform      = pbr::Transform::Translate( gm::Vec3f( 1, 2, 3 ) );
+        pbr::Ray       transformedRay = transform.TransformRay( ray );
+        CHECK( transformedRay.GetOrigin() == gm::Vec3f( 3, 4, 7 ) );
+        CHECK( transformedRay.GetDirection() == gm::Vec3f( 0.5, 0, 0.5 ) );
+        CHECK( transformedRay.GetTime() == 0.5f );
+        CHECK( transformedRay.GetMaxMagnitude() == 1000.0f );
+        CHECK( transformedRay.GetMedium() == nullptr );
+    }
+}
+

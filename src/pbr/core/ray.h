@@ -37,7 +37,7 @@ public:
     // --------------------------------------------------------------------- //
 
     /// Default constructor.
-    constexpr inline Ray() = default;
+    inline Ray() = default;
 
     /// Explicit constructor with supplied values.
     ///
@@ -46,11 +46,11 @@ public:
     /// \param i_maxMagnitude The maximum magnitude that this ray is valid for
     /// \param i_time The time associated with this ray.
     /// \param i_medium The medium containing the origin of this ray.
-    explicit constexpr inline Ray( const gm::Vec3f& i_origin,
-                                   const gm::Vec3f& i_direction,
-                                   float            i_time         = 0.0f,
-                                   float            i_maxMagnitude = std::numeric_limits< float >::max(),
-                                   const Medium*    i_medium       = nullptr )
+    explicit inline Ray( const gm::Vec3f& i_origin,
+                         const gm::Vec3f& i_direction,
+                         float            i_time         = 0.0f,
+                         float            i_maxMagnitude = std::numeric_limits< float >::max(),
+                         const Medium*    i_medium       = nullptr )
         : m_origin( i_origin )
         , m_direction( i_direction )
         , m_time( i_time )
