@@ -2,7 +2,7 @@
 
 /// \file core/transform.h
 ///
-/// Transformation operations.
+/// Transform class.
 
 #include <pbr/pbr.h>
 #include <pbr/utils/diagnostic.h>
