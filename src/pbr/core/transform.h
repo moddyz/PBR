@@ -125,7 +125,7 @@ public:
         gm::Mat4f matrix  = gm::Mat4f::Identity();
         gm::Mat4f inverse = gm::Mat4f::Identity();
         gm::SetTranslate( i_translate, matrix );
-        gm::SetTranslate( -i_translate, matrix );
+        gm::SetTranslate( -i_translate, inverse );
         return Transform( matrix, inverse );
     }
 
@@ -199,7 +199,7 @@ public:
     {
         return gm::Vec3f( gm::LengthSquared( gm::TransformVector( m_matrix, gm::Vec3f( 1, 0, 0 ) ) ),
                           gm::LengthSquared( gm::TransformVector( m_matrix, gm::Vec3f( 0, 1, 0 ) ) ),
-                          gm::LengthSquared( gm::TransformVector( m_matrix, gm::Vec3f( 0, 0, 1 ) ) ) ) ==
+                          gm::LengthSquared( gm::TransformVector( m_matrix, gm::Vec3f( 0, 0, 1 ) ) ) ) !=
                gm::Vec3f( 1, 1, 1 );
     }
 

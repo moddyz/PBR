@@ -64,3 +64,159 @@ TEST_CASE( "testTransformTranspose" )
         )
     );
 }
+
+TEST_CASE( "testTransformComposition" )
+{
+    pbr::Transform transformA( gm::Mat4f(
+            1, 0, 0, 1,
+            0, 1, 0, 2,
+            0, 0, 1, 3,
+            0, 0, 0, 1
+        )
+    );
+
+    pbr::Transform transformB( gm::Mat4f(
+            1, 0, 0, 3,
+            0, 1, 0, 4,
+            0, 0, 1, 5,
+            0, 0, 0, 1
+        )
+    );
+
+    pbr::Transform result = transformA * transformB;
+    CHECK( result.GetMatrix() == gm::Mat4f(
+            1, 0, 0, 4,
+            0, 1, 0, 6,
+            0, 0, 1, 8,
+            0, 0, 0, 1
+        )
+    );
+    CHECK( result.GetInverseMatrix() == gm::Mat4f(
+            1, 0, 0, -4,
+            0, 1, 0, -6,
+            0, 0, 1, -8,
+            0, 0, 0,  1
+        )
+    );
+}
+
+TEST_CASE( "testTransformTranslate" )
+{
+    pbr::Transform transform = pbr::Transform::Translate( gm::Vec3f( 1, 2, 3 ) );
+    CHECK( transform.GetMatrix() == gm::Mat4f(
+            1, 0, 0, 1,
+            0, 1, 0, 2,
+            0, 0, 1, 3,
+            0, 0, 0, 1
+        )
+    );
+    CHECK( transform.GetInverseMatrix() == gm::Mat4f(
+            1, 0, 0, -1,
+            0, 1, 0, -2,
+            0, 0, 1, -3,
+            0, 0, 0,  1
+        )
+    );
+}
+
+TEST_CASE( "testTransformScale" )
+{
+    pbr::Transform transform = pbr::Transform::Scale( gm::Vec3f( 1, 2, 4 ) );
+    CHECK( transform.GetMatrix() == gm::Mat4f(
+            1, 0, 0, 0,
+            0, 2, 0, 0,
+            0, 0, 4, 0,
+            0, 0, 0, 1
+        )
+    );
+    CHECK( transform.GetInverseMatrix() == gm::Mat4f(
+            1, 0,   0,    0,
+            0, 0.5, 0,    0,
+            0, 0,   0.25, 0,
+            0, 0,   0,    1
+        )
+    );
+}
+
+TEST_CASE( "testTransformRotateX" )
+{
+    pbr::Transform transform = pbr::Transform::RotateX( 45 );
+    CHECK( transform.GetMatrix() == gm::Mat4f(
+            1, 0,         0,        0,
+            0, 0.707107, -0.707107, 0,
+            0, 0.707107,  0.707107, 0,
+            0, 0,         0,        1
+        )
+    );
+    CHECK( transform.GetInverseMatrix() == gm::Mat4f(
+            1,  0,        0,        0,
+            0,  0.707107, 0.707107, 0,
+            0, -0.707107, 0.707107, 0,
+            0,  0,        0,        1
+        )
+    );
+}
+
+TEST_CASE( "testTransformRotateY" )
+{
+    pbr::Transform transform = pbr::Transform::RotateY( 45 );
+    CHECK( transform.GetMatrix() == gm::Mat4f(
+             0.707107, 0, 0.707107, 0,
+             0,        1, 0,        0,
+            -0.707107, 0, 0.707107, 0,
+             0,        0, 0,        1
+        )
+    );
+    CHECK( transform.GetInverseMatrix() == gm::Mat4f(
+            0.707107, 0, -0.707107, 0,
+            0,        1,  0,        0,
+            0.707107, 0,  0.707107, 0,
+            0,        0,  0,        1
+        )
+    );
+}
+
+TEST_CASE( "testTransformRotateZ" )
+{
+    pbr::Transform transform = pbr::Transform::RotateZ( 45 );
+    CHECK( transform.GetMatrix() == gm::Mat4f(
+            0.707107, -0.707107, 0, 0,
+            0.707107,  0.707107, 0, 0,
+            0,         0,        1, 0,
+            0,         0,        0, 1
+        )
+    );
+    CHECK( transform.GetInverseMatrix() == gm::Mat4f(
+            0.707107,  0.707107, 0, 0,
+            -0.707107, 0.707107, 0, 0,
+            0,         0,        1, 0,
+            0,         0,        0, 1
+        )
+    );
+}
+
+TEST_CASE( "testTransformRotate" )
+{
+    pbr::Transform transform = pbr::Transform::Rotate( 45, gm::Vec3f( 0, 0, 1 ) );
+    CHECK( transform.GetMatrix() == gm::Mat4f(
+            0.707107, -0.707107, 0, 0,
+            0.707107,  0.707107, 0, 0,
+            0,         0,        1, 0,
+            0,         0,        0, 1
+        )
+    );
+    CHECK( transform.GetInverseMatrix() == gm::Mat4f(
+            0.707107,  0.707107, 0, 0,
+            -0.707107, 0.707107, 0, 0,
+            0,         0,        1, 0,
+            0,         0,        0, 1
+        )
+    );
+}
+
+TEST_CASE( "testTransformHasScale" )
+{
+    CHECK( !pbr::Transform::RotateX( 45 ).HasScale() );
+    CHECK( !pbr::Transform::Translate( gm::Vec3f( 1, 2, 3 ) ).HasScale() );
+    CHECK( pbr::Transform::Scale( gm::Vec3f( 1, 2, 3 ) ).HasScale() );
+}
