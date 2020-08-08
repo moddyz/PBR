@@ -37,3 +37,30 @@ TEST_CASE( "testTransformInverse" )
     CHECK( inverse.GetMatrix() == inverseMatrix );
     CHECK( inverse.GetInverseMatrix() == matrix );
 }
+
+TEST_CASE( "testTransformTranspose" )
+{
+    gm::Mat4f matrix(
+        1, 0, 0, 4,
+        0, 1, 0, 5,
+        0, 0, 1, 6,
+        0, 0, 0, 1
+    );
+    pbr::Transform transform( matrix );
+
+    pbr::Transform transpose = transform.Transpose();
+    CHECK( transpose.GetMatrix() == gm::Mat4f(
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            4, 5, 6, 1
+        )
+    );
+    CHECK( transpose.GetInverseMatrix() == gm::Mat4f(
+             1,  0,  0, 0,
+             0,  1,  0, 0,
+             0,  0,  1, 0,
+            -4, -5, -6, 1
+        )
+    );
+}
