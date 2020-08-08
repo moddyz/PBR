@@ -42,8 +42,8 @@ public:
 
     /// Default constructor, setting the matrix and its inverse to the identity element.
     inline Transform()
-        : m_matrix( _Identity() )
-        , m_inverse( _Identity() )
+        : m_matrix( gm::Mat4f::Identity() )
+        , m_inverse( gm::Mat4f::Identity() )
     {
     }
 
@@ -53,7 +53,7 @@ public:
     inline explicit Transform( const gm::Mat4f& i_matrix )
         : m_matrix( i_matrix )
     {
-        GM_VERIFY( gm::Inverse( i_matrix, m_inverse ) );
+        PBR_VERIFY( gm::Inverse( i_matrix, m_inverse ) );
     }
 
     /// Constructor with a 4x4 transformation matrix, and its inverse.
@@ -64,7 +64,27 @@ public:
         : m_matrix( i_matrix )
         , m_inverse( i_inverse )
     {
-        PBR_ASSERT( gm::MatrixProduct( m_matrix, m_inverse ) == _Identity() );
+        PBR_ASSERT( gm::MatrixProduct( m_matrix, m_inverse ) == gm::Mat4f::Identity() );
+    }
+
+    // --------------------------------------------------------------------- //
+    /// \name Matrix access
+    // --------------------------------------------------------------------- //
+
+    /// Get the matrix encoded for this transform.
+    ///
+    /// \return The matrix.
+    inline const gm::Mat4f& GetMatrix() const
+    {
+        return m_matrix;
+    }
+
+    /// Get the inverse matrix encoded for this transform.
+    ///
+    /// \return The inverse matrix.
+    inline const gm::Mat4f& GetInverseMatrix() const
+    {
+        return m_inverse;
     }
 
     // --------------------------------------------------------------------- //
@@ -113,8 +133,8 @@ public:
     /// \return Translation transform.
     static inline Transform Translate( const gm::Vec3f& i_translate )
     {
-        gm::Mat4f matrix  = _Identity();
-        gm::Mat4f inverse = _Identity();
+        gm::Mat4f matrix  = gm::Mat4f::Identity();
+        gm::Mat4f inverse = gm::Mat4f::Identity();
         gm::SetTranslate( i_translate, matrix );
         gm::SetTranslate( -i_translate, matrix );
         return Transform( matrix, inverse );
@@ -127,8 +147,8 @@ public:
     /// \return Scaling transform.
     static inline Transform Scale( const gm::Vec3f& i_scale )
     {
-        gm::Mat4f matrix  = _Identity();
-        gm::Mat4f inverse = _Identity();
+        gm::Mat4f matrix  = gm::Mat4f::Identity();
+        gm::Mat4f inverse = gm::Mat4f::Identity();
         gm::SetScale( i_scale, matrix );
         gm::SetScale( gm::Vec3f( 1.0f / i_scale.X(), 1.0f / i_scale.Y(), 1.0f / i_scale.Z() ), inverse );
         return Transform( matrix, inverse );
@@ -141,7 +161,7 @@ public:
     /// \return The x-axis rotation transformation.
     static inline Transform RotateX( float i_angle )
     {
-        gm::Mat4f matrix = _Identity();
+        gm::Mat4f matrix = gm::Mat4f::Identity();
         gm::SetRotateX( i_angle, matrix );
         return Transform( matrix, gm::Transpose( matrix ) );
     }
@@ -153,7 +173,7 @@ public:
     /// \return The y-axis rotation transformation.
     static inline Transform RotateY( float i_angle )
     {
-        gm::Mat4f matrix = _Identity();
+        gm::Mat4f matrix = gm::Mat4f::Identity();
         gm::SetRotateY( i_angle, matrix );
         return Transform( matrix, gm::Transpose( matrix ) );
     }
@@ -165,7 +185,7 @@ public:
     /// \return The y-axis rotation transformation.
     static inline Transform RotateZ( float i_angle )
     {
-        gm::Mat4f matrix = _Identity();
+        gm::Mat4f matrix = gm::Mat4f::Identity();
         gm::SetRotateZ( i_angle, matrix );
         return Transform( matrix, gm::Transpose( matrix ) );
     }
@@ -178,7 +198,7 @@ public:
     /// \return The rotation transform around an arbituary axis.
     static inline Transform Rotate( float i_angle, const gm::Vec3f& i_axis )
     {
-        gm::Mat4f matrix = _Identity();
+        gm::Mat4f matrix = gm::Mat4f::Identity();
         gm::SetRotate( i_angle, i_axis, matrix );
         return Transform( matrix, gm::Transpose( matrix ) );
     }
@@ -239,9 +259,11 @@ public:
     inline std::string GetString() const
     {
         std::stringstream ss;
-        ss << "Transform( matrix = ";
+        ss << "Transform(\n";
+        ss << "matrix = ";
         ss << m_matrix.GetString();
-        ss << ", inverse = ";
+        ss << ",\n";
+        ss << "inverse = ";
         ss << m_inverse.GetString();
         ss << " )";
         return ss.str();
@@ -257,14 +279,6 @@ public:
     }
 
 private:
-    // Utility to get a 4x4 identity matrix.
-    inline static gm::Mat4f _Identity()
-    {
-        gm::Mat4f matrix;
-        gm::SetIdentity( matrix );
-        return matrix;
-    }
-
     gm::Mat4f m_matrix;
     gm::Mat4f m_inverse;
 };
