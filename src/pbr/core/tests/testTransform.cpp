@@ -106,6 +106,15 @@ TEST_CASE( "testTransformComposition" )
     );
 }
 
+TEST_CASE( "testTransformEquality" )
+{
+    CHECK( pbr::Transform() == pbr::Transform() );
+    CHECK( pbr::Transform::Translate( gm::Vec3f( 1, 2, 3 ) ) ==
+           pbr::Transform::Translate( gm::Vec3f( 1, 2, 3 ) ) );
+    CHECK( pbr::Transform::Translate( gm::Vec3f( 1, 2, 3 ) ) !=
+           pbr::Transform::Translate( gm::Vec3f( 2, 3, 3 ) ) );
+}
+
 TEST_CASE( "testTransformTranslate" )
 {
     pbr::Transform transform = pbr::Transform::Translate( gm::Vec3f( 1, 2, 3 ) );

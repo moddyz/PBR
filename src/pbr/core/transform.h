@@ -105,7 +105,7 @@ public:
     }
 
     // --------------------------------------------------------------------- //
-    /// \name Binary operations.
+    /// \name Binary operators
     // --------------------------------------------------------------------- //
 
     /// Transform composition.
@@ -117,6 +117,30 @@ public:
     {
         return Transform( gm::MatrixProduct( m_matrix, i_rhs.m_matrix ),
                           gm::MatrixProduct( i_rhs.m_inverse, m_inverse ) );
+    }
+
+    // --------------------------------------------------------------------- //
+    /// \name Comparison operators
+    // --------------------------------------------------------------------- //
+
+    /// Transform equality check
+    ///
+    /// \param i_rhs The right-hand-side transform.
+    ///
+    /// \return Whether the lhs and rhs transforms are \em equal.
+    inline bool operator==( const Transform& i_rhs ) const
+    {
+        return ( m_matrix == i_rhs.m_matrix ) && ( m_inverse == i_rhs.m_inverse );
+    }
+
+    /// Transform in-equality check
+    ///
+    /// \param i_rhs The right-hand-side transform.
+    ///
+    /// \return Whether the lhs and rhs transforms are <em>not equal</em>.
+    inline bool operator!=( const Transform& i_rhs ) const
+    {
+        return ( m_matrix != i_rhs.m_matrix ) || ( m_inverse != i_rhs.m_inverse );
     }
 
     // --------------------------------------------------------------------- //
