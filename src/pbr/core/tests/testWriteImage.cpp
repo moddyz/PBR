@@ -11,5 +11,5 @@ TEST_CASE( "testWriteRGBImage" )
         float radiance = ( float ) coord.Y() / ( float ) image.Extent().Max().Y();
         image( coord.X(), coord.Y() ) = gm::Vec3f( radiance, radiance, radiance );
     }
-    CHECK( WriteRGBImage( image, "/tmp/output.jpg" ) );
+    CHECK( WriteRGBImage( image, "/tmp/testWriteRGBImage.jpg" ) );
 }
