@@ -96,6 +96,14 @@ public:
         return Transform( gm::Transpose( m_matrix ), gm::Transpose( m_inverse ) );
     }
 
+    /// Identity matrix check.
+    ///
+    /// \return Whether this matrix is the identity matrix.
+    inline bool IsIdentity() const
+    {
+        return m_matrix == gm::Mat4f::Identity();
+    }
+
     // --------------------------------------------------------------------- //
     /// \name Binary operations.
     // --------------------------------------------------------------------- //

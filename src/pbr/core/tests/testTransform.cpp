@@ -65,6 +65,12 @@ TEST_CASE( "testTransformTranspose" )
     );
 }
 
+TEST_CASE( "testTransformIsIdentity" )
+{
+    CHECK( pbr::Transform().IsIdentity() );
+    CHECK( !pbr::Transform::Translate( gm::Vec3f( 1, 2, 3 ) ).IsIdentity() );
+}
+
 TEST_CASE( "testTransformComposition" )
 {
     pbr::Transform transformA( gm::Mat4f(
