@@ -14,4 +14,16 @@ gm::Vec3fRange Sphere::ComputeObjectBounds() const
     return gm::Vec3fRange( -hypotenuse, hypotenuse );
 }
 
+bool Sphere::Intersect( const Ray& i_ray, float& o_rayMagnitude, SurfaceInteraction& o_interaction ) const
+{
+    // TODO
+    return false;
+}
+
+float Sphere::ComputeSurfaceArea() const
+{
+    // TODO
+    return -1;
+}
+
 PBR_NS_CLOSE

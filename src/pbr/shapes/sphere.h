@@ -29,10 +29,34 @@ public:
     explicit Sphere( const Transform& i_objectToWorld, const Transform& i_worldToObject, float i_radius );
 
     // --------------------------------------------------------------------- //
+    /// \name Member access
+    // --------------------------------------------------------------------- //
+
+    /// Get the radius of the sphere.
+    ///
+    /// \return Radius value.
+    inline float GetRadius() const
+    {
+        return m_radius;
+    }
+
+    // --------------------------------------------------------------------- //
     /// \name Bounding box
     // --------------------------------------------------------------------- //
 
     virtual gm::Vec3fRange ComputeObjectBounds() const override;
+
+    // --------------------------------------------------------------------- //
+    /// \name Ray intersection
+    // --------------------------------------------------------------------- //
+
+    virtual bool Intersect( const Ray& i_ray, float& o_rayMagnitude, SurfaceInteraction& o_interaction ) const override;
+
+    // --------------------------------------------------------------------- //
+    /// \name Surface area
+    // --------------------------------------------------------------------- //
+
+    virtual float ComputeSurfaceArea() const override;
 
 private:
     float m_radius = 0.0f;
