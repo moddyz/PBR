@@ -4,10 +4,11 @@
 ///
 /// Film class.
 
+#include <memory>
 #include <vector>
 
+#include <pbr/core/filmTile.h>
 #include <pbr/core/imageBuffer.h>
-#include <pbr/pbr.h>
 
 #include <gm/types/vec2fRange.h>
 #include <gm/types/vec2i.h>
@@ -40,27 +41,12 @@ public:
     }
 
     // --------------------------------------------------------------------- //
-    /// \name Pixel access
+    /// \name Tile access
     // --------------------------------------------------------------------- //
 
-    /// Pixel read access.
-    ///
-    /// \param i_coord The 2D coordinate of the pixel to access.
-    ///
-    /// \return The pixel value.
-    inline const gm::Vec3f& GetPixel( const gm::Vec2i& i_coord ) const
+    std::unique_ptr< FilmTile > GetTile( const gm::Vec2iRange& i_tileBounds )
     {
-        return m_buffer( i_coord.X(), i_coord.Y() );
-    }
-
-    /// Pixel write access.
-    ///
-    /// \param i_coord The 2D coordinate of the pixel to access.
-    ///
-    /// \return The pixel value.
-    inline gm::Vec3f& GetPixel( const gm::Vec2i& i_coord )
-    {
-        return m_buffer( i_coord.X(), i_coord.Y() );
+        return std::make_unique< FilmTile >( FilmTile( i_tileBounds ) );
     }
 
     // --------------------------------------------------------------------- //
