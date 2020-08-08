@@ -56,17 +56,6 @@ public:
         PBR_VERIFY( gm::Inverse( i_matrix, m_inverse ) );
     }
 
-    /// Constructor with a 4x4 transformation matrix, and its inverse.
-    ///
-    /// \param i_matrix The 4x4 matrix.
-    /// \param i_inverse The inverse of \p i_matrix.
-    inline explicit Transform( const gm::Mat4f& i_matrix, const gm::Mat4f& i_inverse )
-        : m_matrix( i_matrix )
-        , m_inverse( i_inverse )
-    {
-        PBR_ASSERT( gm::MatrixProduct( m_matrix, m_inverse ) == gm::Mat4f::Identity() );
-    }
-
     // --------------------------------------------------------------------- //
     /// \name Matrix access
     // --------------------------------------------------------------------- //
@@ -279,6 +268,17 @@ public:
     }
 
 private:
+    /// Constructor with a 4x4 transformation matrix, and its inverse.
+    ///
+    /// \param i_matrix The 4x4 matrix.
+    /// \param i_inverse The inverse of \p i_matrix.
+    inline explicit Transform( const gm::Mat4f& i_matrix, const gm::Mat4f& i_inverse )
+        : m_matrix( i_matrix )
+        , m_inverse( i_inverse )
+    {
+        PBR_ASSERT( gm::MatrixProduct( m_matrix, m_inverse ) == gm::Mat4f::Identity() );
+    }
+
     gm::Mat4f m_matrix;
     gm::Mat4f m_inverse;
 };
