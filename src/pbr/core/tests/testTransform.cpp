@@ -235,3 +235,44 @@ TEST_CASE( "testTransformHasScale" )
     CHECK( !pbr::Transform::Translate( gm::Vec3f( 1, 2, 3 ) ).HasScale() );
     CHECK( pbr::Transform::Scale( gm::Vec3f( 1, 2, 3 ) ).HasScale() );
 }
+
+TEST_CASE( "testTransformVector" )
+{
+    gm::Vec3f vector( 0, 1, 0 );
+
+    {
+        pbr::Transform transform = pbr::Transform::Translate( gm::Vec3f( 1, 2, 3 ) );
+        CHECK( transform.TransformVector( vector ) == vector );
+    }
+
+    {
+        pbr::Transform transform = pbr::Transform::Scale( gm::Vec3f( 1, 2, 3 ) );
+        CHECK( transform.TransformVector( vector ) == gm::Vec3f( 0, 2, 0 ) );
+    }
+
+    {
+        pbr::Transform transform = pbr::Transform::RotateX( 45 );
+        CHECK( transform.TransformVector( vector ) == gm::Vec3f( 0, 0.707107, 0.707107 ) );
+    }
+}
+
+TEST_CASE( "testTransformPoint" )
+{
+    gm::Vec3f point( 0, 1, 0 );
+
+    {
+        pbr::Transform transform = pbr::Transform::Translate( gm::Vec3f( 1, 2, 3 ) );
+        CHECK( transform.TransformPoint( point ) == gm::Vec3f( 1, 3, 3 ) );
+    }
+
+    {
+        pbr::Transform transform = pbr::Transform::Scale( gm::Vec3f( 1, 2, 3 ) );
+        CHECK( transform.TransformPoint( point ) == gm::Vec3f( 0, 2, 0 ) );
+    }
+
+    {
+        pbr::Transform transform = pbr::Transform::RotateX( 45 );
+        CHECK( transform.TransformPoint( point ) == gm::Vec3f( 0, 0.707107, 0.707107 ) );
+    }
+}
+
