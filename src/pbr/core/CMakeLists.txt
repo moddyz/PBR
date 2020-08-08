@@ -17,3 +17,6 @@ cpp_library(${ROOT_PREFIX}_${LIBRARY_SUFFIX}
         stb
 )
 
+if (BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
