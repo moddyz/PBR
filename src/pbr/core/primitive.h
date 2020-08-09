@@ -14,15 +14,16 @@ PBR_NS_OPEN
 
 // Forward declarations.
 class Ray;
+class Material;
 class SurfaceInteraction;
 
 /// \class Primitive
 ///
-/// Representation of a renderable object in a scene.
+/// Base representation of an object in a scene.
 class Primitive
 {
 public:
-    virtual ~Primitive() = default;
+    virtual ~Primitive(){};
 
     // --------------------------------------------------------------------- //
     /// \name Bounding box
@@ -45,15 +46,26 @@ public:
     /// \return Whether or not the ray intersects this primitive.
     virtual bool Intersect( const Ray& i_ray, SurfaceInteraction& o_interaction ) const = 0;
 
-    /// Check for ray intersection against this shape.
+    /// Check for ray intersection against this primitive.
     ///
     /// \param i_ray The incident ray.
     ///
-    /// \return Whether or not the ray intersects this shape.
+    /// \return Whether or not the ray intersects this primitive.
     virtual bool IntersectPredicate( const Ray& i_ray ) const;
+
+    // --------------------------------------------------------------------- //
+    /// \name Material
+    // --------------------------------------------------------------------- //
+
+    /// Get the primitive's associated material.
+    ///
+    /// \return Associated material.
+    virtual const Material* GetMaterial() const = 0;
 };
 
 /// \typedef PrimitiveSharedPtr
+///
+/// Convenience type definition.
 using PrimitiveSharedPtr = std::shared_ptr< Primitive >;
 
 PBR_NS_CLOSE
