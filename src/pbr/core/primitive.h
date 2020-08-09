@@ -23,6 +23,10 @@ class SurfaceInteraction;
 class Primitive
 {
 public:
+    // --------------------------------------------------------------------- //
+    /// \name Construction
+    // --------------------------------------------------------------------- //
+
     virtual ~Primitive(){};
 
     // --------------------------------------------------------------------- //
@@ -51,7 +55,7 @@ public:
     /// \param i_ray The incident ray.
     ///
     /// \return Whether or not the ray intersects this primitive.
-    virtual bool IntersectPredicate( const Ray& i_ray ) const;
+    virtual bool IntersectPredicate( const Ray& i_ray ) const = 0;
 
     // --------------------------------------------------------------------- //
     /// \name Material

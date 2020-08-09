@@ -77,7 +77,7 @@ public:
     /// Compute ray intersection against this shape, and capture interaction details.
     ///
     /// \param i_ray The incident ray.
-    /// \param o_rayMagnitude The incident ray.
+    /// \param o_rayMagnitude The magnitude of the ray which a intersection occurs.
     /// \param o_interaction Details about the interaction of the ray with the surface.
     ///
     /// \return Whether or not the ray intersects this shape.
