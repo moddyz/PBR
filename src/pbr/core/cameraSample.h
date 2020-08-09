@@ -5,7 +5,6 @@
 /// CameraSample class.
 
 #include <pbr/core/transform.h>
-#include <pbr/pbr.h>
 
 #include <gm/types/floatRange.h>
 

@@ -27,6 +27,8 @@ public:
     // --------------------------------------------------------------------- //
 
     /// Render the scene \p i_scene.
+    ///
+    /// \param i_scene Container of renderable primitives to collect light samples from.
     virtual void Render( const Scene& i_scene ) = 0;
 };
 

@@ -28,6 +28,11 @@ public:
     /// Convenience value type definition of each pixel in the image.
     using ValueType = ValueT;
 
+    /// Default initializer of an empty image buffer.
+    ImageBuffer()
+    {
+    }
+
     /// Construct an image with dimensions \p i_width and \p i_height.
     ///
     /// \param i_width width dimension.

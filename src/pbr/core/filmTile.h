@@ -39,7 +39,7 @@ public:
     explicit FilmTile( const gm::Vec2iRange& i_bounds )
         : m_bounds( i_bounds )
     {
-        GM_VERIFY( !m_bounds.IsEmpty() );
+        PBR_VERIFY( !m_bounds.IsEmpty() );
         m_buffer.resize( gm::Content( i_bounds ) );
     }
 
@@ -47,7 +47,7 @@ public:
     /// \name Bounding box
     // --------------------------------------------------------------------- //
 
-    inline const gm::Vec2iRange& GetBounds() const
+    inline const gm::Vec2iRange& GetPixelBounds() const
     {
         return m_bounds;
     }
@@ -61,11 +61,11 @@ public:
     /// \param i_coord The 2D coordinate of the pixel to access.
     ///
     /// \return The pixel value.
-    inline const gm::Vec3f& GetPixel( const gm::Vec2i& i_coord ) const
+    inline const FilmTilePixel& GetPixel( const gm::Vec2i& i_coord ) const
     {
         int width  = m_bounds.Max().X() - m_bounds.Min().X();
         int offset = ( i_coord.X() - m_bounds.Min().X() ) + ( ( i_coord.Y() - m_bounds.Min().Y() ) * width );
-        GM_ASSERT( offset < gm::Area( m_bounds ) );
+        PBR_ASSERT( offset < gm::Area( m_bounds ) );
         return m_buffer[ offset ];
     }
 
@@ -74,11 +74,11 @@ public:
     /// \param i_coord The 2D coordinate of the pixel to access.
     ///
     /// \return The pixel value.
-    inline gm::Vec3f& GetPixel( const gm::Vec2i& i_coord )
+    inline FilmTilePixel& GetPixel( const gm::Vec2i& i_coord )
     {
         int width  = m_bounds.Max().X() - m_bounds.Min().X();
         int offset = ( i_coord.X() - m_bounds.Min().X() ) + ( ( i_coord.Y() - m_bounds.Min().Y() ) * width );
-        GM_ASSERT( offset < gm::Area( m_bounds ) );
+        PBR_ASSERT( offset < gm::Area( m_bounds ) );
         return m_buffer[ offset ];
     }
 
