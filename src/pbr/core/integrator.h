@@ -2,7 +2,7 @@
 
 /// \file core/integrator.h
 ///
-/// Integrator interface.
+/// Integrator class.
 
 #include <pbr/pbr.h>
 
@@ -16,7 +16,15 @@ class Scene;
 class Integrator
 {
 public:
-    virtual ~Integrator();
+    // --------------------------------------------------------------------- //
+    /// \name Construction
+    // --------------------------------------------------------------------- //
+
+    virtual ~Integrator() {};
+
+    // --------------------------------------------------------------------- //
+    /// \name Rendering
+    // --------------------------------------------------------------------- //
 
     /// Render the scene \p i_scene.
     virtual void Render( const Scene& i_scene ) = 0;

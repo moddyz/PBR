@@ -8,6 +8,8 @@
 
 #include <gm/types/floatRange.h>
 
+#include <memory>
+
 PBR_NS_OPEN
 
 // Forward declarations.
@@ -57,5 +59,10 @@ protected:
     const Medium&  m_medium;
     Film&          m_film;
 };
+
+/// \typedef CameraSharedPtr
+///
+/// Convenience type definition.
+using CameraSharedPtr = std::shared_ptr< Camera >;
 
 PBR_NS_CLOSE
