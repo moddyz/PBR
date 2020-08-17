@@ -16,6 +16,14 @@ PBR_NS_OPEN
 class Sampler
 {
 public:
+    // --------------------------------------------------------------------- //
+    /// \name Construction
+    // --------------------------------------------------------------------- //
+
+    /// Construct this sampler with a specified
+    Sampler( int i_samplesPerPixel );
+
+    // Virtual d'tor.
     virtual ~Sampler();
 };
 
